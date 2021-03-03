@@ -1,0 +1,528 @@
+Time: 2016-12-22 09:42:46 ms:548 Level: LOG INFO     Message: [PN,R,0]
+Time: 2016-12-22 09:42:46 ms:549 Level: LOG INFO     Message: [0,1000]
+Time: 2016-12-22 09:42:46 ms:549 Level: LOG INFO     Message: [PD,R,0]
+Time: 2016-12-22 09:42:46 ms:550 Level: LOG INFO     Message: [0,10]
+Time: 2016-12-22 09:42:46 ms:550 Level: LOG INFO     Message: [OM,R,0]
+Time: 2016-12-22 09:42:46 ms:550 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:46 ms:550 Level: LOG INFO     Message: [CT,R,0]
+Time: 2016-12-22 09:42:46 ms:551 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:46 ms:551 Level: LOG INFO     Message: [DP,R,0]
+Time: 2016-12-22 09:42:46 ms:551 Level: LOG INFO     Message: [0,02]
+Time: 2016-12-22 09:42:46 ms:551 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 09:42:46 ms:552 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 09:42:46 ms:552 Level: LOG INFO     Message: [DA,R,0]
+Time: 2016-12-22 09:42:46 ms:552 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:46 ms:552 Level: LOG INFO     Message: [EM,R,0]
+Time: 2016-12-22 09:42:46 ms:553 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:46 ms:553 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2016-12-22 09:42:46 ms:553 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:42:46 ms:554 Level: LOG INFO     Message: [TP,W,0,2]
+Time: 2016-12-22 09:42:46 ms:557 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:42:47 ms:250 Level: LOG INFO     Message: [GT,R,0]
+Time: 2016-12-22 09:42:47 ms:251 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:47 ms:251 Level: LOG INFO     Message: [CT,R,0]
+Time: 2016-12-22 09:42:47 ms:252 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:47 ms:252 Level: LOG INFO     Message: [OM,R,0]
+Time: 2016-12-22 09:42:47 ms:252 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:47 ms:252 Level: LOG INFO     Message: [PD,R,0]
+Time: 2016-12-22 09:42:47 ms:252 Level: LOG INFO     Message: [0,10]
+Time: 2016-12-22 09:42:47 ms:252 Level: LOG INFO     Message: [DA,R,0]
+Time: 2016-12-22 09:42:47 ms:253 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:47 ms:253 Level: LOG INFO     Message: [EM,R,0]
+Time: 2016-12-22 09:42:47 ms:253 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:47 ms:253 Level: LOG INFO     Message: [DP,R,0]
+Time: 2016-12-22 09:42:47 ms:254 Level: LOG INFO     Message: [0,02]
+Time: 2016-12-22 09:42:47 ms:254 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 09:42:47 ms:254 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 09:42:52 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:52 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:52 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:53 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:53 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:53 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:54 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:54 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:54 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:55 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:55 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:55 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:56 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:56 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:56 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:57 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:57 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:57 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:58 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:58 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:58 ms:059 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:58 ms:709 Level: LOG INFO     Message: [ST,R,0]
+Time: 2016-12-22 09:42:58 ms:710 Level: LOG INFO     Message: [0,000003E8]
+Time: 2016-12-22 09:42:58 ms:710 Level: LOG INFO     Message: [NT,R,0]
+Time: 2016-12-22 09:42:58 ms:710 Level: LOG INFO     Message: [0,03E8]
+Time: 2016-12-22 09:42:58 ms:710 Level: LOG INFO     Message: [LC,R,0]
+Time: 2016-12-22 09:42:58 ms:711 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:42:58 ms:711 Level: LOG INFO     Message: [ED,R,0]
+Time: 2016-12-22 09:42:58 ms:711 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:42:58 ms:711 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 09:42:58 ms:712 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 09:42:59 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:59 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:59 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:42:59 ms:557 Level: LOG INFO     Message: [EG,R,0]
+Time: 2016-12-22 09:42:59 ms:557 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:557 Level: LOG INFO     Message: [BS,R,0]
+Time: 2016-12-22 09:42:59 ms:558 Level: LOG INFO     Message: [0,0000]
+Time: 2016-12-22 09:42:59 ms:558 Level: LOG INFO     Message: [EB,R,0]
+Time: 2016-12-22 09:42:59 ms:558 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:558 Level: LOG INFO     Message: [EL,R,0]
+Time: 2016-12-22 09:42:59 ms:559 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:559 Level: LOG INFO     Message: [LM,R,0]
+Time: 2016-12-22 09:42:59 ms:559 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:559 Level: LOG INFO     Message: [TD,R,0]
+Time: 2016-12-22 09:42:59 ms:559 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:42:59 ms:559 Level: LOG INFO     Message: [RD,R,0]
+Time: 2016-12-22 09:42:59 ms:560 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:42:59 ms:560 Level: LOG INFO     Message: [EF,R,0]
+Time: 2016-12-22 09:42:59 ms:560 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:560 Level: LOG INFO     Message: [FM,R,0]
+Time: 2016-12-22 09:42:59 ms:561 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:561 Level: LOG INFO     Message: [FD,R,0]
+Time: 2016-12-22 09:42:59 ms:561 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:42:59 ms:561 Level: LOG INFO     Message: [AF,R,0]
+Time: 2016-12-22 09:42:59 ms:562 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:42:59 ms:562 Level: LOG INFO     Message: [SU,R,0]
+Time: 2016-12-22 09:42:59 ms:562 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:43:00 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:00 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:00 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:01 ms:004 Level: LOG INFO     Message: [SF,W,0,1]
+Time: 2016-12-22 09:43:01 ms:004 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 26 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 29 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 32 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 35 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 56 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 26 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 29 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 32 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 35 packet crc error
+Time: 2016-12-22 09:43:01 ms:007 Level: LOG WARNING  Message: DM 56 packet crc error
+Time: 2016-12-22 09:43:01 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:01 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:01 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:01 ms:560 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2016-12-22 09:43:01 ms:560 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:43:02 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:02 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:02 ms:557 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:03 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:03 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:03 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:04 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:04 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:04 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:05 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:05 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:05 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:06 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:06 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:06 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:07 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:07 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:07 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:08 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:08 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:08 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:09 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:09 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:09 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:10 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:10 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:10 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:11 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:11 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:11 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:12 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:12 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:12 ms:558 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:13 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:13 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:13 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:14 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:14 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:14 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:15 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:15 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:15 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:16 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:16 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:16 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:17 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:17 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:17 ms:559 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:43:18 ms:559 Level: LOG INFO     Message: [TP,W,0,0]
+Time: 2016-12-22 09:43:18 ms:559 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:44:36 ms:150 Level: LOG INFO     Message: [PN,R,0]
+Time: 2016-12-22 09:44:36 ms:152 Level: LOG INFO     Message: [0,1000]
+Time: 2016-12-22 09:44:36 ms:152 Level: LOG INFO     Message: [PD,R,0]
+Time: 2016-12-22 09:44:36 ms:153 Level: LOG INFO     Message: [0,10]
+Time: 2016-12-22 09:44:36 ms:153 Level: LOG INFO     Message: [OM,R,0]
+Time: 2016-12-22 09:44:36 ms:155 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:155 Level: LOG INFO     Message: [CT,R,0]
+Time: 2016-12-22 09:44:36 ms:156 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:156 Level: LOG INFO     Message: [DP,R,0]
+Time: 2016-12-22 09:44:36 ms:157 Level: LOG INFO     Message: [0,02]
+Time: 2016-12-22 09:44:36 ms:157 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 09:44:36 ms:158 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 09:44:36 ms:158 Level: LOG INFO     Message: [DA,R,0]
+Time: 2016-12-22 09:44:36 ms:160 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:160 Level: LOG INFO     Message: [EM,R,0]
+Time: 2016-12-22 09:44:36 ms:161 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:161 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2016-12-22 09:44:36 ms:162 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:44:36 ms:181 Level: LOG INFO     Message: [TP,W,0,2]
+Time: 2016-12-22 09:44:36 ms:182 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:44:36 ms:898 Level: LOG INFO     Message: [GT,R,0]
+Time: 2016-12-22 09:44:36 ms:899 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:899 Level: LOG INFO     Message: [CT,R,0]
+Time: 2016-12-22 09:44:36 ms:900 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:900 Level: LOG INFO     Message: [OM,R,0]
+Time: 2016-12-22 09:44:36 ms:902 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:902 Level: LOG INFO     Message: [PD,R,0]
+Time: 2016-12-22 09:44:36 ms:903 Level: LOG INFO     Message: [0,10]
+Time: 2016-12-22 09:44:36 ms:903 Level: LOG INFO     Message: [DA,R,0]
+Time: 2016-12-22 09:44:36 ms:904 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:904 Level: LOG INFO     Message: [EM,R,0]
+Time: 2016-12-22 09:44:36 ms:906 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:36 ms:906 Level: LOG INFO     Message: [DP,R,0]
+Time: 2016-12-22 09:44:36 ms:907 Level: LOG INFO     Message: [0,02]
+Time: 2016-12-22 09:44:36 ms:907 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 09:44:36 ms:909 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 09:44:38 ms:684 Level: LOG INFO     Message: [ST,R,0]
+Time: 2016-12-22 09:44:38 ms:685 Level: LOG INFO     Message: [0,000003E8]
+Time: 2016-12-22 09:44:38 ms:685 Level: LOG INFO     Message: [NT,R,0]
+Time: 2016-12-22 09:44:38 ms:686 Level: LOG INFO     Message: [0,03E8]
+Time: 2016-12-22 09:44:38 ms:686 Level: LOG INFO     Message: [LC,R,0]
+Time: 2016-12-22 09:44:38 ms:687 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:44:38 ms:687 Level: LOG INFO     Message: [ED,R,0]
+Time: 2016-12-22 09:44:38 ms:688 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:44:38 ms:689 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 09:44:38 ms:690 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 09:44:39 ms:117 Level: LOG INFO     Message: [EG,R,0]
+Time: 2016-12-22 09:44:39 ms:118 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:118 Level: LOG INFO     Message: [BS,R,0]
+Time: 2016-12-22 09:44:39 ms:118 Level: LOG INFO     Message: [0,0000]
+Time: 2016-12-22 09:44:39 ms:118 Level: LOG INFO     Message: [EB,R,0]
+Time: 2016-12-22 09:44:39 ms:119 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:119 Level: LOG INFO     Message: [EL,R,0]
+Time: 2016-12-22 09:44:39 ms:119 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:119 Level: LOG INFO     Message: [LM,R,0]
+Time: 2016-12-22 09:44:39 ms:120 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:120 Level: LOG INFO     Message: [TD,R,0]
+Time: 2016-12-22 09:44:39 ms:120 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:44:39 ms:120 Level: LOG INFO     Message: [RD,R,0]
+Time: 2016-12-22 09:44:39 ms:121 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:44:39 ms:121 Level: LOG INFO     Message: [EF,R,0]
+Time: 2016-12-22 09:44:39 ms:121 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:121 Level: LOG INFO     Message: [FM,R,0]
+Time: 2016-12-22 09:44:39 ms:122 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:122 Level: LOG INFO     Message: [FD,R,0]
+Time: 2016-12-22 09:44:39 ms:123 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 09:44:39 ms:123 Level: LOG INFO     Message: [AF,R,0]
+Time: 2016-12-22 09:44:39 ms:123 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:39 ms:123 Level: LOG INFO     Message: [SU,R,0]
+Time: 2016-12-22 09:44:39 ms:124 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 09:44:40 ms:684 Level: LOG INFO     Message: [SF,W,0,1]
+Time: 2016-12-22 09:44:40 ms:685 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:44:40 ms:687 Level: LOG WARNING  Message: DM 26 packet crc error
+Time: 2016-12-22 09:44:40 ms:687 Level: LOG WARNING  Message: DM 29 packet crc error
+Time: 2016-12-22 09:44:40 ms:687 Level: LOG WARNING  Message: DM 32 packet crc error
+Time: 2016-12-22 09:44:40 ms:687 Level: LOG WARNING  Message: DM 35 packet crc error
+Time: 2016-12-22 09:44:40 ms:687 Level: LOG WARNING  Message: DM 56 packet crc error
+Time: 2016-12-22 09:44:40 ms:688 Level: LOG WARNING  Message: DM 26 packet crc error
+Time: 2016-12-22 09:44:40 ms:688 Level: LOG WARNING  Message: DM 29 packet crc error
+Time: 2016-12-22 09:44:40 ms:688 Level: LOG WARNING  Message: DM 32 packet crc error
+Time: 2016-12-22 09:44:40 ms:688 Level: LOG WARNING  Message: DM 35 packet crc error
+Time: 2016-12-22 09:44:40 ms:688 Level: LOG WARNING  Message: DM 56 packet crc error
+Time: 2016-12-22 09:44:41 ms:273 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2016-12-22 09:44:41 ms:275 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 09:44:42 ms:183 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:42 ms:183 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:42 ms:183 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:43 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:43 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:43 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:44 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:44 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:44 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:45 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:45 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:45 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:46 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:46 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:46 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:47 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:47 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:47 ms:192 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:48 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:48 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:48 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:49 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:49 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:49 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:50 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:50 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:50 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:51 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:51 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:51 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:52 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:52 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:52 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:53 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:53 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:53 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:54 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:54 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:54 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:55 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:55 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:55 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:56 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:56 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:56 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:57 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:57 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:57 ms:193 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:58 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:58 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:58 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:59 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:59 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:44:59 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:00 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:00 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:00 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:01 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:01 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:01 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:02 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:02 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:02 ms:194 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:03 ms:195 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:03 ms:195 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:03 ms:195 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:04 ms:195 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:04 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:04 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:05 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:05 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:05 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:06 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:06 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:06 ms:197 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 09:45:07 ms:197 Level: LOG INFO     Message: [TP,W,0,0]
+Time: 2016-12-22 09:45:07 ms:199 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 10:09:58 ms:041 Level: LOG INFO     Message: [PN,R,0]
+Time: 2016-12-22 10:09:58 ms:043 Level: LOG INFO     Message: [0,1000]
+Time: 2016-12-22 10:09:58 ms:043 Level: LOG INFO     Message: [PD,R,0]
+Time: 2016-12-22 10:09:58 ms:044 Level: LOG INFO     Message: [0,10]
+Time: 2016-12-22 10:09:58 ms:044 Level: LOG INFO     Message: [OM,R,0]
+Time: 2016-12-22 10:09:58 ms:046 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:046 Level: LOG INFO     Message: [CT,R,0]
+Time: 2016-12-22 10:09:58 ms:047 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:047 Level: LOG INFO     Message: [DP,R,0]
+Time: 2016-12-22 10:09:58 ms:048 Level: LOG INFO     Message: [0,06]
+Time: 2016-12-22 10:09:58 ms:048 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 10:09:58 ms:049 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 10:09:58 ms:049 Level: LOG INFO     Message: [DA,R,0]
+Time: 2016-12-22 10:09:58 ms:051 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:051 Level: LOG INFO     Message: [EM,R,0]
+Time: 2016-12-22 10:09:58 ms:052 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:052 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2016-12-22 10:09:58 ms:053 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 10:09:58 ms:053 Level: LOG INFO     Message: [TP,W,0,2]
+Time: 2016-12-22 10:09:58 ms:055 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 10:09:58 ms:928 Level: LOG INFO     Message: [GT,R,0]
+Time: 2016-12-22 10:09:58 ms:929 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:929 Level: LOG INFO     Message: [CT,R,0]
+Time: 2016-12-22 10:09:58 ms:930 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:930 Level: LOG INFO     Message: [OM,R,0]
+Time: 2016-12-22 10:09:58 ms:932 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:932 Level: LOG INFO     Message: [PD,R,0]
+Time: 2016-12-22 10:09:58 ms:933 Level: LOG INFO     Message: [0,10]
+Time: 2016-12-22 10:09:58 ms:933 Level: LOG INFO     Message: [DA,R,0]
+Time: 2016-12-22 10:09:58 ms:934 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:934 Level: LOG INFO     Message: [EM,R,0]
+Time: 2016-12-22 10:09:58 ms:935 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:09:58 ms:935 Level: LOG INFO     Message: [DP,R,0]
+Time: 2016-12-22 10:09:58 ms:937 Level: LOG INFO     Message: [0,06]
+Time: 2016-12-22 10:09:58 ms:937 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 10:09:58 ms:938 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 10:10:02 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:02 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:02 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:03 ms:201 Level: LOG INFO     Message: [ST,R,0]
+Time: 2016-12-22 10:10:03 ms:203 Level: LOG INFO     Message: [0,000003E8]
+Time: 2016-12-22 10:10:03 ms:204 Level: LOG INFO     Message: [NT,R,0]
+Time: 2016-12-22 10:10:03 ms:205 Level: LOG INFO     Message: [0,03E8]
+Time: 2016-12-22 10:10:03 ms:205 Level: LOG INFO     Message: [LC,R,0]
+Time: 2016-12-22 10:10:03 ms:206 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 10:10:03 ms:206 Level: LOG INFO     Message: [ED,R,0]
+Time: 2016-12-22 10:10:03 ms:207 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 10:10:03 ms:207 Level: LOG INFO     Message: [CN,R,0]
+Time: 2016-12-22 10:10:03 ms:209 Level: LOG INFO     Message: [0,2010101000]
+Time: 2016-12-22 10:10:03 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:03 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:03 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:04 ms:467 Level: LOG INFO     Message: [EG,R,0]
+Time: 2016-12-22 10:10:04 ms:468 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:468 Level: LOG INFO     Message: [BS,R,0]
+Time: 2016-12-22 10:10:04 ms:469 Level: LOG INFO     Message: [0,0000]
+Time: 2016-12-22 10:10:04 ms:470 Level: LOG INFO     Message: [EB,R,0]
+Time: 2016-12-22 10:10:04 ms:471 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:471 Level: LOG INFO     Message: [EL,R,0]
+Time: 2016-12-22 10:10:04 ms:472 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:472 Level: LOG INFO     Message: [LM,R,0]
+Time: 2016-12-22 10:10:04 ms:473 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:473 Level: LOG INFO     Message: [TD,R,0]
+Time: 2016-12-22 10:10:04 ms:474 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 10:10:04 ms:474 Level: LOG INFO     Message: [RD,R,0]
+Time: 2016-12-22 10:10:04 ms:475 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 10:10:04 ms:476 Level: LOG INFO     Message: [EF,R,0]
+Time: 2016-12-22 10:10:04 ms:477 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:477 Level: LOG INFO     Message: [FM,R,0]
+Time: 2016-12-22 10:10:04 ms:478 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:478 Level: LOG INFO     Message: [FD,R,0]
+Time: 2016-12-22 10:10:04 ms:479 Level: LOG INFO     Message: [0,01]
+Time: 2016-12-22 10:10:04 ms:479 Level: LOG INFO     Message: [AF,R,0]
+Time: 2016-12-22 10:10:04 ms:480 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:480 Level: LOG INFO     Message: [SU,R,0]
+Time: 2016-12-22 10:10:04 ms:482 Level: LOG INFO     Message: [0,00]
+Time: 2016-12-22 10:10:04 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:04 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:04 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:05 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:05 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:05 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:06 ms:497 Level: LOG INFO     Message: [SF,W,0,1]
+Time: 2016-12-22 10:10:06 ms:498 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 10:10:06 ms:505 Level: LOG WARNING  Message: DM 26 packet crc error
+Time: 2016-12-22 10:10:06 ms:505 Level: LOG WARNING  Message: DM 29 packet crc error
+Time: 2016-12-22 10:10:06 ms:505 Level: LOG WARNING  Message: DM 32 packet crc error
+Time: 2016-12-22 10:10:06 ms:505 Level: LOG WARNING  Message: DM 35 packet crc error
+Time: 2016-12-22 10:10:06 ms:505 Level: LOG WARNING  Message: DM 56 packet crc error
+Time: 2016-12-22 10:10:06 ms:521 Level: LOG WARNING  Message: DM 26 packet crc error
+Time: 2016-12-22 10:10:06 ms:521 Level: LOG WARNING  Message: DM 29 packet crc error
+Time: 2016-12-22 10:10:06 ms:521 Level: LOG WARNING  Message: DM 32 packet crc error
+Time: 2016-12-22 10:10:06 ms:521 Level: LOG WARNING  Message: DM 35 packet crc error
+Time: 2016-12-22 10:10:06 ms:521 Level: LOG WARNING  Message: DM 56 packet crc error
+Time: 2016-12-22 10:10:06 ms:952 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:06 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:06 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:07 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:07 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:07 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:08 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:08 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:08 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:09 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:09 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:09 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:10 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:10 ms:955 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:10 ms:956 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:11 ms:956 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:11 ms:956 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:11 ms:956 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:12 ms:956 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:12 ms:956 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:12 ms:957 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:13 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:13 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:13 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:14 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:14 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:14 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:15 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:15 ms:958 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:15 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:16 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:16 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:16 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:17 ms:113 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2016-12-22 10:10:17 ms:115 Level: LOG INFO     Message: [0]
+Time: 2016-12-22 10:10:17 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:17 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:17 ms:959 Level: LOG ERROR    Message: XCmd heartbeat voltage error
+Time: 2016-12-22 10:10:18 ms:959 Level: LOG INFO     Message: [TP,W,0,0]
+Time: 2016-12-22 10:10:18 ms:960 Level: LOG INFO     Message: [0]
+Time: 2018-01-10 16:48:33 ms:725 Level: LOG INFO     Message: [PN,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,1000]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [PD,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,10]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [OM,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [CT,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [DP,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,02]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [CN,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,2010101000]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [DA,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [EM,R,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [TP,W,0,2]
+Time: 2018-01-10 16:48:33 ms:755 Level: LOG INFO     Message: [0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [GT,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [CT,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [OM,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [PD,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,10]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [DA,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [EM,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [DP,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,02]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [CN,R,0]
+Time: 2018-01-10 16:48:34 ms:267 Level: LOG INFO     Message: [0,2010101000]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [EG,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [BS,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,0000]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [EB,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [EL,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [LM,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [TD,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,01]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [RD,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,01]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [EF,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [FM,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [FD,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,01]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [AF,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [SU,R,0]
+Time: 2018-01-10 16:48:35 ms:157 Level: LOG INFO     Message: [0,00]
+Time: 2018-01-10 16:48:36 ms:267 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2018-01-10 16:48:36 ms:267 Level: LOG INFO     Message: [0]
+Time: 2018-01-10 16:48:36 ms:777 Level: LOG INFO     Message: [SF,W,0,1]
+Time: 2018-01-10 16:48:36 ms:777 Level: LOG INFO     Message: [0]
+Time: 2018-01-10 16:49:17 ms:819 Level: LOG WARNING  Message: Lost 2 packets
+Time: 2018-01-10 16:49:30 ms:423 Level: LOG INFO     Message: [SF,W,0,0]
+Time: 2018-01-10 16:49:30 ms:423 Level: LOG INFO     Message: [0]
+Time: 2018-01-10 16:49:31 ms:283 Level: LOG INFO     Message: [TP,W,0,0]
+Time: 2018-01-10 16:49:31 ms:283 Level: LOG INFO     Message: [0]

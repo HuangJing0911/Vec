@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>SapClassGui</ProjectName>
+    <ProjectGuid>{FDA57B35-1A4E-46F9-85EA-DCD15C7D4011}</ProjectGuid>
+    <RootNamespace>SapClassGui</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration).NET_2012\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration).NET_2012\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)64.NET_2012\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)64.NET_2012\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration).NET_2012\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration).NET_2012\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)64.NET_2012\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)64.NET_2012\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)74D.NET_2012</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)74.NET_2012</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)74D.NET_2012</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName)74.NET_2012</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Command>if not exist %SystemRoot%\SysWOW64 goto end
+echo (Sapera LT warning) Compiling a 32-bit configuration under 64-bit Windows
+:end
+</Command>
+    </PreBuildEvent>
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release.NET_2008/SapClassGui.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\Basic;..\..\Include;..\..\externals\CorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_AFXEXT;SAPCLASSGUI;WINVER=0x0501;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>SapClassGui.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\$(IntDir)SapClassGui.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>.\$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(IntDir)</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_AFXDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ProgramDatabaseFile>.\$(OutDir)SapClassGui74.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>false</OptimizeReferences>
+      <BaseAddress>0x67d80000</BaseAddress>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)SapClassGui.lib</ImportLibrary>
+      <AdditionalDependencies>..\..\Lib\Win32\Corapi.lib;..\..\Lib\Win32\SapClassBasic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist %SystemRoot%\SysWOW64 goto is64bit
+echo Updating System32 directory
+copy "$(TargetPath)" %SystemRoot%\System32
+goto end
+:is64bit
+echo Not updating System32 directory (32-bit binary file on 64-bit Windows)
+:end
+echo Updating Sapera library directory
+copy $(OutDir)SapClassGui.lib ..\..\Lib\Win32\VS2012</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>if exist %SystemRoot%\SysWOW64 goto end
+echo (Sapera LT warning) Compiling a 64-bit configuration under 32-bit Windows
+:end
+</Command>
+    </PreBuildEvent>
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Release.NET_2008/SapClassGui.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\Basic;..\..\Include;..\..\externals\CorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;_AFXEXT;SAPCLASSGUI;WINVER=0x0501;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>SapClassGui.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\$(IntDir)SapClassGui.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>.\$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(IntDir)</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_AFXDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <ProgramDatabaseFile>.\$(OutDir)SapClassGui74.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>false</OptimizeReferences>
+      <BaseAddress>0x67d80000</BaseAddress>
+      <ImportLibrary>$(OutDir)SapClassGui.lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>..\..\Lib\Win64\Corapi.lib;..\..\Lib\Win64\SapClassBasic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if not exist %SystemRoot%\SysWOW64 goto is32bit
+echo Updating System32 directory (this does not work for Windows XP 64-bit, for which you must manually copy to System32)
+copy "$(TargetPath)" %SystemRoot%\Sysnative
+goto end
+:is32bit
+echo Not updating System32 directory (64-bit binary file on 32-bit Windows)
+:end
+echo Updating Sapera library directory
+copy $(OutDir)SapClassGui.lib ..\..\Lib\Win64\VS2012</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Command>if not exist %SystemRoot%\SysWOW64 goto end
+echo (Sapera LT warning) Compiling a 32-bit configuration under 64-bit Windows
+:end
+</Command>
+    </PreBuildEvent>
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug.NET_2008/SapClassGui.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\Basic;..\..\Include;..\..\externals\CorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_AFXEXT;SAPCLASSGUI;WINVER=0x0501;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>SapClassGui.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\$(IntDir)SapClassGui.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>.\$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(IntDir)</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_AFXDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\$(OutDir)SapClassGui74D.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <BaseAddress>0x67d80000</BaseAddress>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>$(OutDir)SapClassGuiD.lib</ImportLibrary>
+      <AdditionalDependencies>..\..\Lib\Win32\Corapi.lib;..\..\Lib\Win32\SapClassBasic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist %SystemRoot%\SysWOW64 goto is64bit
+echo Updating System32 directory
+copy "$(TargetPath)" %SystemRoot%\System32
+goto end
+:is64bit
+echo Not updating System32 directory (32-bit binary file on 64-bit Windows)
+:end
+echo Updating Sapera library directory
+copy $(OutDir)SapClassGuiD.lib ..\..\Lib\Win32\VS2012
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Command>if exist %SystemRoot%\SysWOW64 goto end
+echo (Sapera LT warning) Compiling a 64-bit configuration under 32-bit Windows
+:end
+</Command>
+    </PreBuildEvent>
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Debug.NET_2008/SapClassGui.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\Basic;..\..\Include;..\..\externals\CorLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_AFXEXT;SAPCLASSGUI;WINVER=0x0501;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>SapClassGui.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\$(IntDir)SapClassGui.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>.\$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>.\$(IntDir)</ProgramDataBaseFileName>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_AFXDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\$(OutDir)SapClassGui74D.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <BaseAddress>0x67d80000</BaseAddress>
+      <ImportLibrary>$(OutDir)SapClassGuiD.lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>..\..\Lib\Win64\Corapi.lib;..\..\Lib\Win64\SapClassBasic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if not exist %SystemRoot%\SysWOW64 goto is32bit
+echo Updating System32 directory (this does not work for Windows XP 64-bit, for which you must manually copy to System32)
+copy "$(TargetPath)" %SystemRoot%\Sysnative
+goto end
+:is32bit
+echo Not updating System32 directory (64-bit binary file on 32-bit Windows)
+:end
+echo Updating Sapera library directory
+copy $(OutDir)SapClassGuiD.lib ..\..\Lib\Win64\VS2012</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AbortDlg.cpp" />
+    <ClCompile Include="AcqConfigDlg.cpp" />
+    <ClCompile Include="AcqDlg.cpp" />
+    <ClCompile Include="AScanDlg.cpp" />
+    <ClCompile Include="AviFileDlg.cpp" />
+    <ClCompile Include="BayerDlg.cpp" />
+    <ClCompile Include="BrowseDirDlg.cpp" />
+    <ClCompile Include="BufDlg.cpp" />
+    <ClCompile Include="CabDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CamVicDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="CompDlg.cpp" />
+    <ClCompile Include="FlatFieldDlg.cpp" />
+    <ClCompile Include="GioBidirectionalDlg.cpp" />
+    <ClCompile Include="GioInputDlg.cpp" />
+    <ClCompile Include="GioOutputDlg.cpp" />
+    <ClCompile Include="ImageWnd.cpp" />
+    <ClCompile Include="JpegFileDlg.cpp" />
+    <ClCompile Include="LoadSaveDlg.cpp" />
+    <ClCompile Include="LScanDlg.cpp" />
+    <ClCompile Include="PixProAbsSubDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="PixProDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="PixProIntScaleDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="PixProRefImageDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="PixProUflowSubDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="PixProWAvgDlg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="RawFileDlg.cpp" />
+    <ClCompile Include="SapClassGui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TiffFileDlg.cpp" />
+    <ClCompile Include="ViewDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SapClassGui.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbortDlg.h" />
+    <ClInclude Include="AcqConfigDlg.h" />
+    <ClInclude Include="AcqDlg.h" />
+    <ClInclude Include="AScanDlg.h" />
+    <ClInclude Include="AviFileDlg.h" />
+    <ClInclude Include="BayerDlg.h" />
+    <ClInclude Include="BrowseDirDlg.h" />
+    <ClInclude Include="BufDlg.h" />
+    <ClInclude Include="CabDlg.h" />
+    <ClInclude Include="CamVicDlg.h" />
+    <ClInclude Include="CompDlg.h" />
+    <ClInclude Include="corenv.h" />
+    <ClInclude Include="FlatFieldDlg.h" />
+    <ClInclude Include="GioBidirectionalDlg.h" />
+    <ClInclude Include="GioInputDlg.h" />
+    <ClInclude Include="GioOutputDlg.h" />
+    <ClInclude Include="ImageWnd.h" />
+    <ClInclude Include="JpegFileDlg.h" />
+    <ClInclude Include="LoadSaveDlg.h" />
+    <ClInclude Include="LScanDlg.h" />
+    <ClInclude Include="PixProAbsSubDlg.h" />
+    <ClInclude Include="PixProDlg.h" />
+    <ClInclude Include="PixProIntScaleDlg.h" />
+    <ClInclude Include="PixProRefImageDlg.h" />
+    <ClInclude Include="PixProUflowSubDlg.h" />
+    <ClInclude Include="PixProWAvgDlg.h" />
+    <ClInclude Include="RawFileDlg.h" />
+    <ClInclude Include="SapClassGui.h" />
+    <ClInclude Include="SapClassGuiRes.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="TiffFileDlg.h" />
+    <ClInclude Include="ViewDlg.h" />
+    <ClInclude Include="..\Basic\SapAcqToBufThruCab.h" />
+    <ClInclude Include="..\Basic\SapAcquisition.h" />
+    <ClInclude Include="..\Basic\SapBayer.h" />
+    <ClInclude Include="..\Basic\SapBuffer.h" />
+    <ClInclude Include="..\Basic\SapBufferRemote.h" />
+    <ClInclude Include="..\Basic\SapBufferRoi.h" />
+    <ClInclude Include="..\Basic\SapBufferWithTrash.h" />
+    <ClInclude Include="..\Basic\SapBufferWithTrashAndRoi.h" />
+    <ClInclude Include="..\Basic\SapCab.h" />
+    <ClInclude Include="..\Basic\SapClassBasic.h" />
+    <ClInclude Include="..\Basic\SapClassBasicDef.h" />
+    <ClInclude Include="..\Basic\SapClassBasicObsolete.h" />
+    <ClInclude Include="..\Basic\SapClassBasicRes.h" />
+    <ClInclude Include="..\Basic\SapCommBoard.h" />
+    <ClInclude Include="..\Basic\SapCommHost.h" />
+    <ClInclude Include="..\Basic\SapCommunication.h" />
+    <ClInclude Include="..\Basic\SapCounter.h" />
+    <ClInclude Include="..\Basic\SapData.h" />
+    <ClInclude Include="..\Basic\SapDisplay.h" />
+    <ClInclude Include="..\Basic\SapDynamicLut.h" />
+    <ClInclude Include="..\Basic\SapFlatField.h" />
+    <ClInclude Include="..\Basic\SapGio.h" />
+    <ClInclude Include="..\Basic\SapGraphic.h" />
+    <ClInclude Include="..\Basic\SapLut.h" />
+    <ClInclude Include="..\Basic\SapManager.h" />
+    <ClInclude Include="..\Basic\SapMultiAcqToBufThruCab.h" />
+    <ClInclude Include="..\Basic\SapPerformance.h" />
+    <ClInclude Include="..\Basic\SapPixPro.h" />
+    <ClInclude Include="..\Basic\SapProcessing.h" />
+    <ClInclude Include="..\Basic\SapRTPro.h" />
+    <ClInclude Include="..\Basic\SapRTProDesign.h" />
+    <ClInclude Include="..\Basic\SapRTProDesignOnBrdBuffers.h" />
+    <ClInclude Include="..\Basic\SapTransfer.h" />
+    <ClInclude Include="..\Basic\SapTransferEx.h" />
+    <ClInclude Include="..\Basic\SapView.h" />
+    <ClInclude Include="..\Basic\SapXferMultiNode.h" />
+    <ClInclude Include="..\Basic\SapXferNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Align_BG_GR.bmp" />
+    <None Include="res\Align_GB_RG.bmp" />
+    <None Include="res\Align_GR_BG.bmp" />
+    <None Include="res\Align_RG_GB.bmp" />
+    <None Include="res\green_flag.bmp" />
+    <None Include="res\red_flag.bmp" />
+    <None Include="res\SapClassGui.rc2" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

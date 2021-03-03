@@ -1,0 +1,229 @@
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+E:\Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojAssemblyReference.cache
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.cache
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.CoreCompileInputs.cache
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.CopyComplete
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+E:\Study\研一\项目\XView2-v1.2.0.0Ethernet-Windows\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+E:\桌面\x光项目\工作汇总\12.3\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+C:\Users\Administrator\Desktop\X-LIB SDK\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+E:\Study\研一\项目\0112\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+C:\Users\Administrator\Desktop\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+E:\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+E:\Study\研一\项目\0118\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+C:\Users\Administrator\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+E:\Study\研一\项目\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\Study\研一\项目\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb

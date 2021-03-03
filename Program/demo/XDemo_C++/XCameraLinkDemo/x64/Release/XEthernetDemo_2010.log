@@ -1,0 +1,36 @@
+﻿生成启动时间为 1/23/2015 9:13:40 AM。
+     1>项目“C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\XEthernetDemo\XEthernetDemo_2010.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在对“x64\Release\XEthernetDemo.unsuccessfulbuild”执行 Touch 任务。
+       ClCompile:
+         所有输出均为最新。
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\include /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt XConfigDlg.cpp XControlDlg.cpp XEthernetDemo.cpp XEthernetDemoDlg.cpp XOperateDlg.cpp
+         XConfigDlg.cpp
+         XControlDlg.cpp
+         XEthernetDemo.cpp
+         XEthernetDemoDlg.cpp
+         XOperateDlg.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /l"0x0409" /Ix64\Release\ /nologo /fo"x64\Release\XEthernetDemo.res" XEthernetDemo.rc 
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.exe" /INCREMENTAL:NO /NOLOGO /MANIFEST /ManifestFile:"x64\Release\XEthernetDemo.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.lib" /MACHINE:X64 x64\Release\XEthernetDemo.res
+         x64\Release\stdafx.obj
+         x64\Release\XConfigDlg.obj
+         x64\Release\XControlDlg.obj
+         x64\Release\XEthernetDemo.obj
+         x64\Release\XEthernetDemoDlg.obj
+         x64\Release\XOperateDlg.obj
+            正在创建库 C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.lib 和对象 C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.exp
+         正在生成代码
+         已完成代码的生成
+         XEthernetDemo_2010.vcxproj -> C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\x64\Release\XEthernetDemo.exe;#1" /manifest x64\Release\XEthernetDemo.exe.intermediate.manifest "c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+       FinalizeBuildStatus:
+         正在删除文件“x64\Release\XEthernetDemo.unsuccessfulbuild”。
+         正在对“x64\Release\XEthernetDemo.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB\demo1\XDemo_C++\XEthernetDemo\XEthernetDemo_2010.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:30.23

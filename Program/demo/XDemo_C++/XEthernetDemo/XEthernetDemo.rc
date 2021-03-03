@@ -1,0 +1,517 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\XEthernetDemo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\XEthernetDemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_XETHERNETDEMO_DIALOG DIALOGEX 0, 0, 900, 500
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "XEthernetDemo"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_DISPLAY_WND,"Static",SS_BLACKFRAME,7,33,700,300
+    CONTROL         "",IDC_AVG_MAP,"Static",SS_BLACKFRAME,7,337,350,156
+    CONTROL         "",IDC_NOI_MAP,"Static",SS_BLACKFRAME,357,337,350,156
+    CONTROL         "",IDC_TAB1,"SysTabControl32",0x0,711,7,182,486
+    LTEXT           "SN:",IDC_SN,7,7,136,11
+    LTEXT           "Temperature:",IDC_XGCU_TEMP,150,6,136,11
+    LTEXT           "Humidity:",IDC_XGCU_HUM,294,6,136,11
+    LTEXT           "Error: ",IDC_ERROR,438,6,270,11
+    LTEXT           "Lost Line: ",IDC_LOST,150,19,136,11
+    LTEXT           "Frame Count:",IDC_FRAME_COUNT,7,19,136,11
+END
+
+IDD_CONFIGURE_DIALOG DIALOGEX 0, 0, 180, 471
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Network Configuration",IDC_STATIC,0,0,180,120
+    GROUPBOX        "Image Property",IDC_STATIC,0,120,180,48
+    COMBOBOX        IDC_COMBO_LOCAL_ADAPTER,78,12,96,60,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_GCU_MAC,78,30,96,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_GCU_CMD_PORT,78,66,96,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GCU_IMG_PORT,78,83,96,12,ES_AUTOHSCROLL
+    LTEXT           "Local Adapter:",IDC_STATIC,6,14,60,12
+    LTEXT           "X-GCU MAC:",IDC_STATIC,6,32,60,12
+    LTEXT           "X-GCU IP:",IDC_STATIC,6,50,60,12
+    LTEXT           "X-GCU CMD Port:",IDC_STATIC,6,67,60,12
+    LTEXT           "X-GCU IMG Port:",IDC_STATIC,6,85,60,12
+    PUSHBUTTON      "Recover",IDC_RECOVER,6,102,60,12
+    PUSHBUTTON      "Reset",IDC_RESET,114,102,60,12
+    CONTROL         "",IDC_IPADDRESS_GCU_IP,"SysIPAddress32",WS_TABSTOP,78,48,96,12
+    GROUPBOX        "Detector Configuration",IDC_STATIC,0,171,180,293
+    LTEXT           "Line Number:",IDC_STATIC,6,134,60,12
+    EDITTEXT        IDC_EDIT_LINE_NUMBER,78,133,96,12,ES_AUTOHSCROLL
+    LTEXT           "Pseudo Color:",IDC_STATIC,6,150,60,12
+    COMBOBOX        IDC_COMBO_PSEUDO_COLOR,78,149,96,60,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Open",IDC_OPEN,6,186,60,12
+    PUSHBUTTON      "Close",IDC_CLOSE,114,186,60,12
+    LTEXT           "X-GCU Type:",IDC_STATIC,6,207,60,12
+    COMBOBOX        IDC_COMBO_GCU_TYPE,78,204,96,36,CBS_DROPDOWN | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Card Type:",IDC_STATIC,6,224,60,12
+    COMBOBOX        IDC_COMBO_CARD_TYPE,78,222,96,60,CBS_DROPDOWN | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Operation Mode:",IDC_STATIC,6,242,60,12
+    COMBOBOX        IDC_COMBO_OP_MODE,78,240,96,78,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Pixel Depth:",IDC_STATIC,6,260,60,12
+    COMBOBOX        IDC_COMBO_PIXEL_DEPTH,78,258,96,60,CBS_DROPDOWN | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "CH1 Card Num:",IDC_STATIC,6,343,60,12
+    EDITTEXT        IDC_EDIT_CARD_NUM1,78,341,96,12,ES_AUTOHSCROLL
+    LTEXT           "CH2 Card Num:",IDC_STATIC,6,361,60,12
+    EDITTEXT        IDC_EDIT_CARD_NUM2,78,359,96,12,ES_AUTOHSCROLL
+    LTEXT           "CH3 Card Num:",IDC_STATIC,6,378,60,12
+    EDITTEXT        IDC_EDIT_CARD_NUM3,78,376,96,12,ES_AUTOHSCROLL
+    LTEXT           "CH4 Card Num:",IDC_STATIC,6,394,60,12
+    EDITTEXT        IDC_EDIT_CARD_NUM4,78,392,96,12,ES_AUTOHSCROLL
+    LTEXT           "CH5 Card Num:",IDC_STATIC,6,410,60,12
+    EDITTEXT        IDC_EDIT_CARD_NUM5,78,408,96,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Reset",IDC_RESET_CONFIG,114,433,60,12
+    PUSHBUTTON      "Restore",IDC_RESTORE,6,433,60,12
+    LTEXT           "Binning Mode:",IDC_STATIC,6,299,60,12
+    COMBOBOX        IDC_COMBO_BINNING_MODE,78,296,96,60,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "DM Pixel Number:",IDC_STATIC,6,279,60,12
+    COMBOBOX        IDC_COMBO_DM_PIXEL,78,276,96,60,CBS_DROPDOWN | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Energy Mode:",IDC_STATIC,6,320,60,12
+    COMBOBOX        IDC_ENERGY_MODE,78,317,96,60,CBS_DROPDOWN | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_OPERATE_DIALOG DIALOGEX 0, 0, 180, 470
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Operate",IDC_STATIC,0,6,180,90
+    PUSHBUTTON      "Grab",IDC_GRAB,6,18,60,12
+    PUSHBUTTON      "Stop",IDC_STOP,114,18,60,12
+    PUSHBUTTON      "Snap",IDC_SNAP,6,37,60,12
+    PUSHBUTTON      "Gama-",IDC_GAMA_SUB,114,56,60,12
+    PUSHBUTTON      "Gama+",IDC_GAMA_PLUS,6,56,60,12
+    PUSHBUTTON      "Save Image",IDC_SAVE_IMG,6,76,60,12
+    EDITTEXT        IDC_EDIT_FILE_NAME,114,76,60,12,ES_AUTOHSCROLL
+    GROUPBOX        "Correction",IDC_STATIC,0,102,180,150
+    PUSHBUTTON      "Calculate Offset",IDC_CALC_OFFSET,6,115,60,12
+    PUSHBUTTON      "Calculate Gain",IDC_CALC_GAIN,6,136,60,12
+    EDITTEXT        IDC_EDIT_GAIN_TARGET,114,136,60,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Save Gain/Offset to Flash",IDC_SAVE_GAIN_OFFSET,6,157,96,12
+    EDITTEXT        IDC_EDIT_FLASH_INDEX,114,168,60,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Load Gain/Offset from Flash",IDC_LOAD_GAIN_OFFSET,6,177,96,12
+    CONTROL         "Enable Gain/Offset Correct",IDC_CHECK_EN_GAIN_OFFSET,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,196,102,12
+    CONTROL         "Enable Base Line Correct",IDC_CHECK_EN_BASELINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,230,102,12
+    EDITTEXT        IDC_EDIT_BASELINE_VALUE,114,230,60,12,ES_AUTOHSCROLL
+    GROUPBOX        "External Line Trigger",IDC_STATIC,0,257,180,84
+    CONTROL         "Enable External Line Trigger",IDC_CHECK_EN_EX_LINE_TRIGGER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,271,102,12
+    LTEXT           "Line Trigger Mode:",IDC_STATIC,6,289,60,12
+    COMBOBOX        IDC_COMBO_LINE_TR_MODE,114,288,60,54,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Fine Delay",IDC_LINE_FINE_DELAY,6,307,60,12
+    PUSHBUTTON      "Raw Delay",IDC_LINE_RAW_DELAY,6,325,60,12
+    EDITTEXT        IDC_EDIT_LINE_FINE_DELAY,114,306,60,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_LINE_RAW_DELAY,114,324,60,12,ES_AUTOHSCROLL
+    LTEXT           "x 0.125us",IDC_STATIC,72,308,36,12
+    LTEXT           "x 64us",IDC_STATIC,72,327,36,12
+    GROUPBOX        "External Frame Trigger",IDC_STATIC,0,348,180,66
+    CONTROL         "Enable External Frame Trigger",IDC_CHECK_EN_EX_FRAME_TRIGGER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,361,102,12
+    LTEXT           "FrameTriggerMode:",IDC_STATIC,6,379,66,12
+    COMBOBOX        IDC_COMBO_FRAME_TR_MODE,114,378,60,54,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Delay",IDC_FRAME_DELAY,4,398,60,12
+    EDITTEXT        IDC_EDIT_FRAME_DELAY,114,397,60,12,ES_AUTOHSCROLL
+    LTEXT           "x 32 line",IDC_STATIC,70,400,36,12
+    GROUPBOX        "Filter",IDC_STATIC,0,419,180,46
+    LTEXT           "Averaging:",IDC_STATIC,6,432,66,12
+    COMBOBOX        IDC_COMBO_AVERAGE,114,430,60,54,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Summing:",IDC_STATIC,6,452,66,12
+    COMBOBOX        IDC_COMBO_SUM,114,450,60,54,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Enable Gain/Offset Correct Off Board",IDC_CHECK_EN_GAIN_OFFSET_OFFBOARD,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,213,138,12
+END
+
+IDD_CONTROL_DIALOG DIALOGEX 0, 0, 180, 460
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Set Int Time",IDC_SET_INT_TIME,6,12,60,12
+    PUSHBUTTON      "Set Non Int Time",IDC_SET_NON_INT_TIME,6,31,60,12
+    EDITTEXT        IDC_EDIT_INT_TIME,78,12,78,12,ES_AUTOHSCROLL
+    LTEXT           "us",IDC_STATIC,159,13,18,12
+    EDITTEXT        IDC_EDIT_NON_INT_TIME,78,31,78,12,ES_AUTOHSCROLL
+    LTEXT           "us",IDC_STATIC,159,32,18,12
+    PUSHBUTTON      "Send Command",IDC_SEND_CMD,6,105,60,12
+    EDITTEXT        IDC_EDIT_CMD,6,88,150,12,ES_AUTOHSCROLL
+    GROUPBOX        "General",IDC_STATIC,0,0,180,120
+    GROUPBOX        "DM",IDC_STATIC,0,126,180,102
+    LTEXT           "DM Index:",IDC_STATIC,6,140,60,12
+    COMBOBOX        IDC_COMBO_DM_INDEX,78,138,78,67,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "High Gain:",IDC_STATIC,6,158,60,12
+    EDITTEXT        IDC_EDIT_HIGH_GAIN,78,157,78,12,ES_AUTOHSCROLL
+    LTEXT           "Low Gain:",IDC_STATIC,6,175,60,12
+    EDITTEXT        IDC_EDIT_LOW_GAIN,78,174,78,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Reset a DM Gain",IDC_RESET_DM_GAIN,6,192,60,12
+    PUSHBUTTON      "Reset All DM Gain",IDC_RESET_ALL_DM,97,192,60,12
+    LTEXT           "Health Info:",IDC_HEALTH,6,234,150,96
+    GROUPBOX        "Down Load",IDC_STATIC,0,355,180,98
+    CONTROL         "",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,6,370,150,6
+    PUSHBUTTON      "Down GCU",IDC_DOWN_GCU,6,386,60,12
+    PUSHBUTTON      "Down DM",IDC_DOWN_DM,96,386,60,12
+    PUSHBUTTON      "Down Script",IDC_DOWN_SCRIPT,5,413,60,12
+    CONTROL         "Enable LED",IDC_CHECK_EN_LED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,68,102,12
+    LTEXT           "GCU Test Pattern:",IDC_STATIC,6,51,60,12
+    COMBOBOX        IDC_COMBO_GCU_TEST_PAT,78,48,78,67,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "DM Test Pattern:",IDC_STATIC,6,213,60,12
+    COMBOBOX        IDC_COMBO_DM_TEST_PAT,78,210,78,67,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "GCU Health",IDC_GCU_HEALTH,6,334,60,12
+END
+
+IDD_ADV_DIALOG DIALOGEX 0, 0, 180, 460
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Piecewise Correction",IDC_STATIC,0,6,180,155
+    PUSHBUTTON      "Calculate Offset",IDC_CALC_P_OFFSET,6,20,60,12
+    PUSHBUTTON      "Calculate Gain1",IDC_CALC_P_GAIN1,6,40,60,12
+    PUSHBUTTON      "Calculate Gain2",IDC_CALC_P_GAIN2,6,60,60,12
+    PUSHBUTTON      "Calculate Gain3",IDC_CALC_P_GAIN3,6,80,60,12
+    EDITTEXT        IDC_EDIT_TARGET1,114,40,60,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TARGET2,114,60,60,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TARGET3,114,80,60,12,ES_AUTOHSCROLL
+    CONTROL         "Enable Piecewise Correct",IDC_CHECK_EN_P_CORRECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,140,121,12
+    PUSHBUTTON      "Save Parameter",IDC_SAVE_PARA,6,100,60,12
+    PUSHBUTTON      "Load Parameter",IDC_LOAD_PARA,6,120,60,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Detection Technology"
+            VALUE "FileDescription", "XDemo"
+            VALUE "FileVersion", "1.0.0.2"
+            VALUE "InternalName", "XEthernetDemo.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2015, Detection Technology.  All rights reserved."
+            VALUE "OriginalFilename", "XEthernetDemo.exe"
+            VALUE "ProductName", "XDemo"
+            VALUE "ProductVersion", "1.0.0.2"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_XETHERNETDEMO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 893
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 493
+    END
+
+    IDD_CONFIGURE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 173
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 464
+    END
+
+    IDD_OPERATE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 173
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 463
+    END
+
+    IDD_CONTROL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 173
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 453
+    END
+
+    IDD_ADV_DIALOG, DIALOG
+    BEGIN
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 453
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CONFIGURE_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_PSEUDO_COLOR, 0x403, 5, 0
+0x5247, 0x5941, "\000" 
+    IDC_COMBO_PSEUDO_COLOR, 0x403, 4, 0
+0x4953, 0x004e, 
+    IDC_COMBO_PSEUDO_COLOR, 0x403, 4, 0
+0x4f43, 0x0053, 
+    IDC_COMBO_PSEUDO_COLOR, 0x403, 4, 0
+0x4f48, 0x0054, 
+    IDC_COMBO_PSEUDO_COLOR, 0x403, 5, 0
+0x454a, 0x2054, "\000" 
+    IDC_COMBO_GCU_TYPE, 0x403, 9, 0
+0x7445, 0x6568, 0x6e72, 0x7465, "\000" 
+    IDC_COMBO_GCU_TYPE, 0x403, 12, 0
+0x6143, 0x656d, 0x6172, 0x4c20, 0x6e69, 0x006b, 
+    IDC_COMBO_CARD_TYPE, 0x403, 5, 0
+0x434c, 0x3253, "\000" 
+    IDC_COMBO_CARD_TYPE, 0x403, 19, 0
+0x2d58, 0x4143, 0x4452, 0x3020, 0x322e, 0x302f, 0x342e, 0x302f, 0x382e, 
+"\000" 
+    IDC_COMBO_CARD_TYPE, 0x403, 19, 0
+0x2d58, 0x4143, 0x4452, 0x3120, 0x352e, 0x312f, 0x362e, 0x322f, 0x352e, 
+"\000" 
+    IDC_COMBO_CARD_TYPE, 0x403, 8, 0
+0x2d58, 0x4143, 0x4452, 0x0032, 
+    IDC_COMBO_CARD_TYPE, 0x403, 15, 0
+0x434c, 0x3253, 0x4420, 0x4155, 0x204c, 0x494c, 0x454e, "\000" 
+    IDC_COMBO_CARD_TYPE, 0x403, 9, 0
+0x2d58, 0x4143, 0x4452, 0x4133, "\000" 
+    IDC_COMBO_CARD_TYPE, 0x403, 6, 0
+0x2d58, 0x4349, 0x0054, 
+    IDC_COMBO_CARD_TYPE, 0x403, 9, 0
+0x2d58, 0x4143, 0x4452, 0x4233, "\000" 
+    IDC_COMBO_OP_MODE, 0x403, 11, 0
+0x6f43, 0x746e, 0x6e69, 0x6f75, 0x7375, "\000" 
+    IDC_COMBO_OP_MODE, 0x403, 15, 0
+0x6f4e, 0x2d6e, 0x6f63, 0x746e, 0x6e69, 0x6f75, 0x7375, "\000" 
+    IDC_COMBO_OP_MODE, 0x403, 9, 0
+0x6f43, 0x736e, 0x6174, 0x746e, "\000" 
+    IDC_COMBO_OP_MODE, 0x403, 21, 0
+0x6f4e, 0x2d6e, 0x6f63, 0x746e, 0x6e69, 0x6f75, 0x7375, 0x4820, 0x2f49, 
+0x4f4c, "\000" 
+    IDC_COMBO_PIXEL_DEPTH, 0x403, 8, 0
+0x3631, 0x622d, 0x7469, 0x0073, 
+    IDC_COMBO_PIXEL_DEPTH, 0x403, 8, 0
+0x3831, 0x622d, 0x7469, 0x0073, 
+    IDC_COMBO_PIXEL_DEPTH, 0x403, 8, 0
+0x3032, 0x622d, 0x7469, 0x0073, 
+    IDC_COMBO_BINNING_MODE, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_BINNING_MODE, 0x403, 6, 0
+0x7641, 0x2067, 0x0032, 
+    IDC_COMBO_BINNING_MODE, 0x403, 6, 0
+0x7553, 0x206d, 0x0032, 
+    IDC_COMBO_BINNING_MODE, 0x403, 6, 0
+0x7641, 0x2067, 0x0034, 
+    IDC_COMBO_BINNING_MODE, 0x403, 6, 0
+0x7553, 0x206d, 0x0034, 
+    IDC_COMBO_DM_PIXEL, 0x403, 3, 0
+0x3233, "\000" 
+    IDC_COMBO_DM_PIXEL, 0x403, 3, 0
+0x3436, "\000" 
+    IDC_COMBO_DM_PIXEL, 0x403, 4, 0
+0x3231, 0x0038, 
+    IDC_COMBO_DM_PIXEL, 0x403, 4, 0
+0x3532, 0x0036, 
+    IDC_COMBO_DM_PIXEL, 0x403, 4, 0
+0x3135, 0x0032, 
+    IDC_ENERGY_MODE, 0x403, 7, 0
+0x6953, 0x676e, 0x656c, "\000" 
+    IDC_ENERGY_MODE, 0x403, 11, 0
+0x7544, 0x6c61, 0x5320, 0x6174, 0x6b63, "\000" 
+    IDC_ENERGY_MODE, 0x403, 14, 0
+0x7544, 0x6c61, 0x5020, 0x7261, 0x6c61, 0x656c, 0x006c, 
+    0
+END
+
+IDD_OPERATE_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_LINE_TR_MODE, 0x403, 12, 0
+0x6952, 0x6973, 0x676e, 0x4520, 0x6764, 0x0065, 
+    IDC_COMBO_LINE_TR_MODE, 0x403, 13, 0
+0x6146, 0x6c6c, 0x6e69, 0x2067, 0x6445, 0x6567, "\000" 
+    IDC_COMBO_LINE_TR_MODE, 0x403, 14, 0
+0x7254, 0x6769, 0x6567, 0x2072, 0x7453, 0x6d61, 0x0070, 
+    IDC_COMBO_FRAME_TR_MODE, 0x403, 12, 0
+0x6952, 0x6973, 0x676e, 0x4520, 0x6764, 0x0065, 
+    IDC_COMBO_FRAME_TR_MODE, 0x403, 13, 0
+0x6146, 0x6c6c, 0x6e69, 0x2067, 0x6445, 0x6567, "\000" 
+    IDC_COMBO_AVERAGE, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_AVERAGE, 0x403, 8, 0
+0x2032, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_AVERAGE, 0x403, 8, 0
+0x2034, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_AVERAGE, 0x403, 8, 0
+0x2038, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_AVERAGE, 0x403, 9, 0
+0x3631, 0x4c20, 0x6e69, 0x7365, "\000" 
+    IDC_COMBO_AVERAGE, 0x403, 9, 0
+0x3233, 0x4c20, 0x6e69, 0x7365, "\000" 
+    IDC_COMBO_AVERAGE, 0x403, 9, 0
+0x3436, 0x4c20, 0x6e69, 0x7365, "\000" 
+    IDC_COMBO_AVERAGE, 0x403, 10, 0
+0x3231, 0x2038, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_AVERAGE, 0x403, 10, 0
+0x3532, 0x2036, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_SUM, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_SUM, 0x403, 8, 0
+0x2032, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_SUM, 0x403, 8, 0
+0x2034, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_SUM, 0x403, 8, 0
+0x2038, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_SUM, 0x403, 9, 0
+0x3631, 0x4c20, 0x6e69, 0x7365, "\000" 
+    IDC_COMBO_SUM, 0x403, 9, 0
+0x3233, 0x4c20, 0x6e69, 0x7365, "\000" 
+    IDC_COMBO_SUM, 0x403, 9, 0
+0x3436, 0x4c20, 0x6e69, 0x7365, "\000" 
+    IDC_COMBO_SUM, 0x403, 10, 0
+0x3231, 0x2038, 0x694c, 0x656e, 0x0073, 
+    IDC_COMBO_SUM, 0x403, 10, 0
+0x3532, 0x2036, 0x694c, 0x656e, 0x0073, 
+    0
+END
+
+IDD_CONTROL_DIALOG DLGINIT
+BEGIN
+    IDC_COMBO_GCU_TEST_PAT, 0x403, 5, 0
+0x6f4e, 0x656e, "\000" 
+    IDC_COMBO_GCU_TEST_PAT, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_COMBO_GCU_TEST_PAT, 0x403, 6, 0
+0x6c53, 0x706f, 0x0065, 
+    IDC_COMBO_DM_TEST_PAT, 0x403, 7, 0
+0x6f4e, 0x6d72, 0x6c61, "\000" 
+    IDC_COMBO_DM_TEST_PAT, 0x403, 6, 0
+0x4141, 0x4141, 0x0041, 
+    IDC_COMBO_DM_TEST_PAT, 0x403, 9, 0
+0x2749, 0x206d, 0x6568, 0x6572, "\000" 
+    0
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\XEthernetDemo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

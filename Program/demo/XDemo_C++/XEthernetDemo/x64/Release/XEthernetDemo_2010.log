@@ -1,0 +1,39 @@
+﻿Build started 8/31/2018 3:33:16 PM.
+     1>Project "C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\XEthernetDemo\XEthernetDemo_2010.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "x64\Release\XEthernetDemo.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\include /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"x64\Release\XEthernetDemo.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I..\..\..\include /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt XAdvanceDlg.cpp XConfigDlg.cpp XControlDlg.cpp XEthernetDemo.cpp XEthernetDemoDlg.cpp XOperateDlg.cpp
+         XAdvanceDlg.cpp
+         XConfigDlg.cpp
+         XControlDlg.cpp
+         XEthernetDemo.cpp
+         XEthernetDemoDlg.cpp
+         XOperateDlg.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /l"0x0409" /Ix64\Release\ /nologo /fo"x64\Release\XEthernetDemo.res" XEthernetDemo.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\..\..\lib\vs2010\x64 XLibDll.lib /MANIFEST /ManifestFile:"x64\Release\XEthernetDemo.exe.intermediate.manifest" /MANIFESTUAC:"level='requireAdministrator' uiAccess='false'" /DEBUG /PDB:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.lib" /MACHINE:X64 x64\Release\XEthernetDemo.res
+         x64\Release\stdafx.obj
+         x64\Release\XAdvanceDlg.obj
+         x64\Release\XConfigDlg.obj
+         x64\Release\XControlDlg.obj
+         x64\Release\XEthernetDemo.obj
+         x64\Release\XEthernetDemoDlg.obj
+         x64\Release\XOperateDlg.obj
+            Creating library C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.lib and object C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.exp
+         Generating code
+         Finished generating code
+         XEthernetDemo_2010.vcxproj -> C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\x64\Release\XEthernetDemo.exe;#1" /manifest x64\Release\XEthernetDemo.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+       FinalizeBuildStatus:
+         Deleting file "x64\Release\XEthernetDemo.unsuccessfulbuild".
+         Touching "x64\Release\XEthernetDemo.lastbuildstate".
+     1>Done Building Project "C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_C++\XEthernetDemo\XEthernetDemo_2010.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:59.85

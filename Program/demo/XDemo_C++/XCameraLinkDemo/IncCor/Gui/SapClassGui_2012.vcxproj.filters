@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{b2df090c-2bdb-4ed5-8c7d-b18149171a63}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files - SapClassBasic">
+      <UniqueIdentifier>{0c2dcc6c-ac90-4fb8-bc1c-59b84f5e144c}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{1e2cb772-df7d-40f3-8b2c-c0313e15c0bc}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{024b0698-4804-4150-b57b-3e26504ff6b5}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AbortDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AcqConfigDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AcqDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AScanDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AviFileDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BayerDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BrowseDirDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BufDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CabDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CamVicDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlatFieldDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GioInputDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GioOutputDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JpegFileDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadSaveDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LScanDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixProAbsSubDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixProDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixProIntScaleDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixProRefImageDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixProUflowSubDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PixProWAvgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RawFileDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SapClassGui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TiffFileDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GioBidirectionalDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SapClassGui.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Basic\SapAcqToBufThruCab.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapAcquisition.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapBayer.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapBuffer.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapBufferRemote.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapBufferRoi.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapBufferWithTrash.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapBufferWithTrashAndRoi.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapCab.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapClassBasic.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapClassBasicDef.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapClassBasicObsolete.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapClassBasicRes.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapCommBoard.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapCommHost.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapCommunication.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapCounter.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapData.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapDisplay.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapDynamicLut.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapFlatField.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapGio.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapGraphic.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapLut.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapManager.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapMultiAcqToBufThruCab.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapPerformance.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapPixPro.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapProcessing.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapRTPro.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapRTProDesign.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapRTProDesignOnBrdBuffers.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapTransfer.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapTransferEx.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapView.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapXferMultiNode.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Basic\SapXferNode.h">
+      <Filter>Header Files - SapClassBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="AbortDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AcqConfigDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AcqDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AScanDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AviFileDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BayerDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BrowseDirDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BufDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CabDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CamVicDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="corenv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatFieldDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GioInputDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GioOutputDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JpegFileDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadSaveDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LScanDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixProAbsSubDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixProDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixProIntScaleDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixProRefImageDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixProUflowSubDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PixProWAvgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RawFileDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SapClassGui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SapClassGuiRes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TiffFileDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GioBidirectionalDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Align_BG_GR.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Align_GB_RG.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Align_GR_BG.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Align_RG_GB.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\green_flag.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\red_flag.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\SapClassGui.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
