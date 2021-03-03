@@ -130,7 +130,7 @@ namespace XEthernetDemo
         }*/
         void OnFrameReady_testimage()
         {
-
+            //测试数据
             time_now = DateTime.Now.Millisecond;
             Mat image = GetTXT_as_mat(test_txt_filepath);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));

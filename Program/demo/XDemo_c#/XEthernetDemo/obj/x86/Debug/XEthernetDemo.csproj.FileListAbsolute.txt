@@ -227,3 +227,6 @@ C:\Users\96342\Desktop\0123\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetD
 E:\Study\研一\项目\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
 E:\Study\研一\项目\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
 E:\Study\研一\项目\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+E:\Study\研一\项目\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+E:\Study\研一\项目\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+E:\Study\研一\项目\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
