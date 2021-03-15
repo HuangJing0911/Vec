@@ -142,6 +142,7 @@
             this.GamaSub = new System.Windows.Forms.Button();
             this.Total_Block_Num = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.TestPLC = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.Configure.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -1580,11 +1581,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // TestPLC
+            // 
+            this.TestPLC.Location = new System.Drawing.Point(938, 38);
+            this.TestPLC.Name = "TestPLC";
+            this.TestPLC.Size = new System.Drawing.Size(148, 27);
+            this.TestPLC.TabIndex = 15;
+            this.TestPLC.Text = "TestPLC";
+            this.TestPLC.UseVisualStyleBackColor = true;
+            this.TestPLC.Click += new System.EventHandler(this.TestPLC_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1579, 879);
+            this.Controls.Add(this.TestPLC);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Total_Block_Num);
             this.Controls.Add(this.GamaSub);
@@ -1747,6 +1759,7 @@
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox Total_Block_Num;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button TestPLC;
     }
 }
 

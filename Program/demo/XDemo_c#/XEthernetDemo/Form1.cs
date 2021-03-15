@@ -17,6 +17,8 @@ using System.Windows.Forms;
 using XLibWrapper;
 using System.Threading;
 using OpenCvSharp;
+using System.Net.Sockets;
+using System.Net;
 
 namespace XEthernetDemo
 {
@@ -47,6 +49,10 @@ namespace XEthernetDemo
         int pic_num = 0;
         string result_pic;
         string init_pic;
+        Socket client = null;
+        public byte[] Rcvbuffer;    //接收字节组数
+        delegate void AppendDelegate(string str);
+        AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
@@ -128,6 +134,26 @@ namespace XEthernetDemo
             };
             SNTPTimeClient.SetLocalTime(ref st);//设置本地时间
         }*/
+
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+
+                //Socket client1 = (Socket)ar.AsyncState;
+                client.EndConnect(ar);
+                CardNum1.Invoke(AppendString, String.Format("已经成功连接到服务器{0}！", client.RemoteEndPoint.ToString()));
+                CardNum2.Invoke(AppendString, String.Format("本地端接点为{0}！", client.LocalEndPoint.ToString()));
+                Rcvbuffer = new byte[client.SendBufferSize];
+                //AsyncCallback callback = new AsyncCallback(ReceiveCallback);
+                //client.BeginReceive(Rcvbuffer, 0, Rcvbuffer.Length, SocketFlags.None, callback, client);
+            }
+            catch
+            {
+                CardNum1.Invoke(AppendString, String.Format("无法建立与服务器的连接！"));
+            }
+        }
+
         void OnFrameReady_testimage()
         {
             //测试数据
@@ -848,6 +874,21 @@ namespace XEthernetDemo
         {
             //GetTXT_as_mat(test_txt_filepath);
             OnFrameReady_testimage();
+        }
+
+        private void TestPLC_Click(object sender, EventArgs e)
+        {
+            if (client == null)
+            {
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            }
+            if (!client.Connected)
+            {
+                IPEndPoint remoteep = new IPEndPoint(IPAddress.Parse("192.168.1.107"), 59152);
+                AsyncCallback callback = new AsyncCallback(ConnectCallback);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                client.BeginConnect(remoteep, callback, client);
+            }
         }
     }
 }
