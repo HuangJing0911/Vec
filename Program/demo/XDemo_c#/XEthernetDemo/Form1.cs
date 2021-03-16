@@ -245,13 +245,13 @@ namespace XEthernetDemo
         void threadCounters(Object obj)
         {
             XImageW image = (XImageW)obj;
-            XTifFormatW image_tif = new XTifFormatW(image,xdevice);
+            //XTifFormatW image_tif = new XTifFormatW(image,xdevice);
             pic_num++;
             string save_file;
-            save_file = "C:/Users/Administrator/Desktop/0118/pic_data/TEST" + pic_num + ".txt";
-            string save_tif = "C:/Users/Administrator/Desktop/0118/pic_data/TEST" + pic_num + ".tif";
-            //image.Save(save_file);
-            image_tif.Save(save_tif);
+            save_file = "C:/Users/77170/Desktop/0316/2/TEST" + pic_num + ".txt";
+            //string save_tif = "C:/Users/77170/Desktop/0316/pic_data/TEST" + pic_num + ".tif";
+            image.Save(save_file);
+            //image_tif.Save(save_tif);
             int value = Marshal.ReadInt32(image.DataAddr, 0);
 
             try
@@ -260,15 +260,38 @@ namespace XEthernetDemo
                 //XImageW image = (XImageW)obj;
                 time_now = DateTime.Now.Millisecond;
                 uint[,] pixelval = new uint[image.Height, image.Width];
+                uint maxp = 0;
+                uint minp = 65536;
                 for (uint i = 0; i < (uint)image.Height; i++)
                     for (uint j = 0; j < (uint)image.Width; j++)
+                    {
                         pixelval[i, j] = (uint)image.GetPixelVal(i, j);
+                        if (pixelval[i, j] > maxp)
+                            maxp = pixelval[i, j];
+                        else if (pixelval[i, j] < minp)
+                            minp = pixelval[i, j];
+                    }
+                int m, n, row, col;
+                row = (int)image.Height;
+                col = (int)image.Width;
+                Mat image_mat = new Mat(row, col, MatType.CV_8UC1);
+                for (m = 0; m < row; m++)
+                {
+                    for (n = 0; n < col; n++)
+                    {
+                        float k = ((float)(pixelval[m, n] - minp)) / (maxp - minp);
+                        k = k * 255;
+                        //pixelval[m, n] = (int)k;
+                        image_mat.Set(m, n, (int)k);
+                    }
+                }
                 //Console.WriteLine("successfully get array");
                 time_finish = DateTime.Now.Millisecond;
                 Console.WriteLine("==================================");
                 Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
                 //getCounters(image.DataAddr, (int)image.Height, (int)image.Width, MatType.CV_8UC3);
-                getCounters_Pixel(pixelval, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
+                getCounters_Pixel(image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
+
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
             }
@@ -278,21 +301,19 @@ namespace XEthernetDemo
             }
             
         }
-        public void getCounters_Pixel(Array p, int row, int col, MatType type)
+        public void getCounters_Pixel(Mat image, int row, int col, MatType type)
         {
 
             time_now = DateTime.Now.Millisecond;
-            Mat image = new Mat(row, col, type,p);
+            //Mat image = new Mat(row, col, type,p);
             image.ConvertTo(image, MatType.CV_32F);
             Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
-            init_pic = "C:/Users/Administrator/Desktop/0118/pic_data/init" + pic_num + ".png";
+            init_pic = "C:/Users/77170/Desktop/0316/2/init" + pic_num + ".png";
             Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
-
             image.CopyTo(connImage);
-
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
             Cv2.Canny(image, image, 10, 80, 3, false); // 输入图像虚为单通道8位图像
@@ -332,7 +353,7 @@ namespace XEthernetDemo
                     new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                     new Scalar(0, 255, 0), 2, LineTypes.Link8);
             }
-            result_pic = "C:/Users/Administrator/Desktop/0118/pic_data/result" + pic_num + ".png";
+            result_pic = "C:/Users/77170/Desktop/0316/2/result" + pic_num + ".png";
             Cv2.ImWrite(result_pic, connImage);
             /*
             XImageW imageW ;
@@ -509,6 +530,7 @@ namespace XEthernetDemo
                 xacquisition.Transfer = xtransfer;
                 xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
                 xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
+                xacquisition.EnableLineInfo = 1;
 
                 if (xacquisition.Open(xdevice, xcommand) > 0)
                 {
