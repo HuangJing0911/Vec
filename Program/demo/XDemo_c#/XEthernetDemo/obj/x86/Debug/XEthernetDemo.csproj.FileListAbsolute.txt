@@ -255,3 +255,36 @@ H:\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyRefer
 H:\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
 H:\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
 H:\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Users\Huang Jing\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+C:\Users\Huang Jing\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\Huang Jing\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XLibWrapper.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.xml
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Blob.xml
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensions.xml
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\HslCommunication.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\Newtonsoft.Json.dll
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\HslCommunication.xml
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\Newtonsoft.Json.xml

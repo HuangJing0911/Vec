@@ -906,10 +906,12 @@ namespace XEthernetDemo
             }
             if (!client.Connected)
             {
-                IPEndPoint remoteep = new IPEndPoint(IPAddress.Parse("192.168.1.107"), 59152);
+                IPEndPoint remoteep = new IPEndPoint(IPAddress.Parse("192.168.250.1"), 9600);
                 AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.BeginConnect(remoteep, callback, client);
+                if (client.Connected)
+                    Total_Block_Num.Text = "successfully connect!";
             }
         }
     }
