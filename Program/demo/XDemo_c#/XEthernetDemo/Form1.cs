@@ -56,6 +56,7 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
+        const string ntpServer = "192.168.250.110";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 9600);
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
@@ -906,24 +907,30 @@ namespace XEthernetDemo
             
             if (client == null)
             {
-                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             }
             if (!client.Connected)
             {
-                OperateResult connect = omronFinisNet.ConnectServer();
-                /*IPEndPoint remoteep = new IPEndPoint(IPAddress.Parse("192.168.250.1"), 9600);
+                // OperateResult connect = omronFinisNet.ConnectServer();
+                byte[] ntp_testdata = new byte[48];
+
+                IPAddress ip = IPAddress.Parse(ntpServer);
+                IPEndPoint remoteep = new IPEndPoint(ip, 9600);
                 AsyncCallback callback = new AsyncCallback(ConnectCallback);
-                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                client.BeginConnect(remoteep, callback, client);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                client.Connect(remoteep);
                 if (client.Connected)
                     Total_Block_Num.Text = "Successfully Connect!";
                 else
-                    Total_Block_Num.Text = "Unsuccessfully connect!";
-                */
-                if (connect.IsSuccess)
+                    Total_Block_Num.Text = "Unsuccessfully Connect!";
+                client.ReceiveTimeout = 3000;
+                client.Send(ntp_testdata);
+                client.Receive(ntp_testdata);
+                client.Close();
+                /*if (connect.IsSuccess)
                     MessageBox.Show("连接成功!");
                 else
-                    MessageBox.Show("连接失败!");
+                    MessageBox.Show("连接失败!");*/
             }
         }
     }
