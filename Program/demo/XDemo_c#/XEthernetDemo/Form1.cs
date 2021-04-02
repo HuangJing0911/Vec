@@ -1,7 +1,7 @@
 ﻿/*
 =======================================================================================
-============================最新版本20210303===========================================
-解决了图片矩阵读入出现问题的情况
+============================最新版本20210402==========================================
+修改增加PLC连接的相关程序，目前程序可以正常连接
 =======================================================================================
 */
 using System;
@@ -19,6 +19,8 @@ using System.Threading;
 using OpenCvSharp;
 using System.Net.Sockets;
 using System.Net;
+using HslCommunication;
+using HslCommunication.Profinet.Omron;
 
 namespace XEthernetDemo
 {
@@ -54,6 +56,7 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
+        OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 9600);
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
         {
@@ -900,18 +903,27 @@ namespace XEthernetDemo
 
         private void TestPLC_Click(object sender, EventArgs e)
         {
+            
             if (client == null)
             {
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             }
             if (!client.Connected)
             {
-                IPEndPoint remoteep = new IPEndPoint(IPAddress.Parse("192.168.250.1"), 9600);
+                OperateResult connect = omronFinisNet.ConnectServer();
+                /*IPEndPoint remoteep = new IPEndPoint(IPAddress.Parse("192.168.250.1"), 9600);
                 AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.BeginConnect(remoteep, callback, client);
                 if (client.Connected)
-                    Total_Block_Num.Text = "successfully connect!";
+                    Total_Block_Num.Text = "Successfully Connect!";
+                else
+                    Total_Block_Num.Text = "Unsuccessfully connect!";
+                */
+                if (connect.IsSuccess)
+                    MessageBox.Show("连接成功!");
+                else
+                    MessageBox.Show("连接失败!");
             }
         }
     }
