@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data_Set.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

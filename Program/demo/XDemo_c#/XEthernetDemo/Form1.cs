@@ -902,6 +902,8 @@ namespace XEthernetDemo
             OnFrameReady_testimage();
         }
 
+        
+
         private void TestPLC_Click(object sender, EventArgs e)
         {
             
@@ -916,7 +918,7 @@ namespace XEthernetDemo
 
                 IPAddress ip = IPAddress.Parse(ntpServer);
                 IPEndPoint remoteep = new IPEndPoint(ip, 9600);
-                AsyncCallback callback = new AsyncCallback(ConnectCallback);
+                // AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 client.Connect(remoteep);
                 if (client.Connected)
@@ -925,7 +927,7 @@ namespace XEthernetDemo
                     Total_Block_Num.Text = "Unsuccessfully Connect!";
                 client.ReceiveTimeout = 3000;
                 client.Send(ntp_testdata);
-                client.Receive(ntp_testdata);
+                // client.Receive(ntp_testdata);
                 client.Close();
                 /*if (connect.IsSuccess)
                     MessageBox.Show("连接成功!");
