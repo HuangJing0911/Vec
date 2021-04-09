@@ -132,7 +132,7 @@ namespace XEthernetDemo
             if (!client.Connected)
             {
                 // OperateResult connect = omronFinisNet.ConnectServer();
-                Data_Set syn_data = new Data_Set
+                // Data_Set syn_data = new Data_Set
 
                 IPAddress ip = IPAddress.Parse(ntpServer);
                 IPEndPoint remoteep = new IPEndPoint(ip, 9600);
@@ -303,7 +303,7 @@ namespace XEthernetDemo
                 Console.WriteLine("==================================");
                 Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
                 //getCounters(image.DataAddr, (int)image.Height, (int)image.Width, MatType.CV_8UC3);
-                getCounters_Pixel(image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
+                getCounters_Pixel(image, image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
 
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
@@ -314,7 +314,7 @@ namespace XEthernetDemo
             }
             
         }
-        public void getCounters_Pixel(Mat image, int row, int col, MatType type)
+        public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type)
         {
 
             time_now = DateTime.Now.Millisecond;
