@@ -22,6 +22,7 @@ using System.Net;
 using HslCommunication;
 using HslCommunication.Profinet.Omron;
 
+
 namespace XEthernetDemo
 {
     public partial class Form1 : Form
@@ -31,7 +32,7 @@ namespace XEthernetDemo
             InitializeComponent();
             PsColor.SelectedIndex = 0;
         }
-
+        
         XSystemW        xsystem;
         XDeviceW        xdevice;
         XGigFactoryW    xfactory;
@@ -65,6 +66,7 @@ namespace XEthernetDemo
             float value = image.At<float>(0, 1);
             return image;
         }
+
         Mat GetTXT_as_mat(string filepath)  //将txt转为mat
         {
             StreamReader rd = File.OpenText(filepath);
@@ -120,24 +122,31 @@ namespace XEthernetDemo
             Cv2.ImWrite("C:/Users/96342/Desktop/TEST_PRE.png", image);
             return image;
         }
-        /*void SetUpNTPTime()               //设置通信连接
+
+        void Connect_to_PLC()
         {
-            var client = new SNTPTimeClient("127.0.0.1", "123");
-            client.Connect();
-            DateTime getEd = client.ReceiveTimestamp;//获取指定IP的系统时间
-            var st = new SystemTime
+            if (client == null)
             {
-                wDay = (ushort)getEd.Day,
-                wDayOfWeek = (ushort)getEd.DayOfWeek,
-                wHour = (ushort)getEd.Hour,
-                wMiliseconds = (ushort)getEd.Millisecond,
-                wMinute = (ushort)getEd.Minute,
-                wMonth = (ushort)getEd.Month,
-                wSecond = (ushort)getEd.Second,
-                wYear = (ushort)getEd.Year
-            };
-            SNTPTimeClient.SetLocalTime(ref st);//设置本地时间
-        }*/
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            }
+            if (!client.Connected)
+            {
+                // OperateResult connect = omronFinisNet.ConnectServer();
+                Data_Set syn_data = new Data_Set
+
+                IPAddress ip = IPAddress.Parse(ntpServer);
+                IPEndPoint remoteep = new IPEndPoint(ip, 9600);
+                // AsyncCallback callback = new AsyncCallback(ConnectCallback);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                client.Connect(remoteep);
+                if (client.Connected)
+                    Total_Block_Num.Text = "Successfully Connect!";
+                else
+                    Total_Block_Num.Text = "Unsuccessfully Connect!";
+                client.ReceiveTimeout = 3000;
+                // client.Send(ntp_testdata);
+            }
+        }
 
         private void ConnectCallback(IAsyncResult ar)
         {
