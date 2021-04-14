@@ -261,7 +261,7 @@ namespace XEthernetDemo
             //XTifFormatW image_tif = new XTifFormatW(image,xdevice);
             pic_num++;
             string save_file;
-            save_file = "C:/Users/77170/Desktop/0316/2/TEST" + pic_num + ".txt";
+            save_file = "C:/Users/weike/Desktop/0413_data/1_with_timestamp/TEST" + pic_num + ".txt";
             //string save_tif = "C:/Users/77170/Desktop/0316/pic_data/TEST" + pic_num + ".tif";
             image.Save(save_file);
             //image_tif.Save(save_tif);
@@ -302,9 +302,13 @@ namespace XEthernetDemo
                 time_finish = DateTime.Now.Millisecond;
                 Console.WriteLine("==================================");
                 Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
-                //getCounters(image.DataAddr, (int)image.Height, (int)image.Width, MatType.CV_8UC3);
+                Console.WriteLine(image.GetPixelVal(0, 0));
+                Console.WriteLine(image.GetPixelVal(0, 1));
+                Console.WriteLine(image.GetPixelVal(0, 2));
+                Console.WriteLine(image.GetPixelVal(0, 3));
+                Console.WriteLine(image.GetPixelVal(0, 4));
+                uint offset = image.DataOffset;
                 getCounters_Pixel(image, image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
-
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
             }
@@ -323,7 +327,7 @@ namespace XEthernetDemo
             Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
-            init_pic = "C:/Users/77170/Desktop/0316/2/init" + pic_num + ".png";
+            init_pic = "C:/Users/weike/Desktop/0413_data/1_with_timestamp/init" + pic_num + ".png";
             Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
@@ -366,7 +370,7 @@ namespace XEthernetDemo
                     new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                     new Scalar(0, 255, 0), 2, LineTypes.Link8);
             }
-            result_pic = "C:/Users/77170/Desktop/0316/2/result" + pic_num + ".png";
+            result_pic = "C:/Users/weike/Desktop/0413_data/1_with_timestamp/result" + pic_num + ".png";
             Cv2.ImWrite(result_pic, connImage);
             /*
             XImageW imageW ;
