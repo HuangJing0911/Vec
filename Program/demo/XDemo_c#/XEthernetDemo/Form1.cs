@@ -313,10 +313,11 @@ namespace XEthernetDemo
         }
 
         // 获取时间戳函数(第一版暂时先获得整个图像数据的时间戳)
-        public ushort[][] get_timestamp(XImageW image)
+        public byte[,] get_timestamp(XImageW image)
         {
-            ushort[][] line_info = new ushort[(int)image.Height][];
+            ushort[,] line_info = new ushort[(int)image.Height, (int)image.DataOffset];
             uint dep = image.PixelDepth;
+            
             if (dep == 16)
             {
                 uint stride = image.Width * 2 + image.DataOffset;
@@ -328,12 +329,35 @@ namespace XEthernetDemo
                         ushort* pLineAddr = (ushort*)(pImageAddr + stride);
                         for (int wi = 0; wi < image.DataOffset; wi++)
                         {
-                            *(pLineAddr + wi) = (ushort)(wi);
-                            line_info[hi][wi] = *(pLineAddr + wi);
+                            // *(pLineAddr + wi) = (ushort)(wi);
+                            line_info[hi,wi] = *(pLineAddr + wi);
+                            // Console.WriteLine(*(pLineAddr + wi));
                         }
                     }
                 }
+                
             }
+            /*
+            byte[,] line_info = new byte[(int)image.Height, (int)image.DataOffset];
+            if (dep == 16)
+            {
+                // uint stride = image.Width + image.DataOffset;
+                unsafe
+                {
+                    byte* pImageAddr = (byte*)image.DataAddr;
+                    for (int hi = 0; hi < image.Height; hi++)
+                    {
+                        byte* pLineAddr = (byte*)(pImageAddr + image.Width);
+                        for (int wi = 0; wi < image.DataOffset; wi++)
+                        {
+                            // *(pLineAddr + wi) = (ushort)(wi);
+                            line_info[hi, wi] = *(pLineAddr + wi);
+                            // Console.WriteLine(*(pLineAddr + wi));
+                        }
+                    }
+                }
+
+            }*/
             return line_info;
         } 
 
@@ -395,7 +419,8 @@ namespace XEthernetDemo
                  
             }
 
-            ushort[][] line_info = get_timestamp(ximagew);
+            byte[,] line_info = get_timestamp(ximagew);
+            Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
             
