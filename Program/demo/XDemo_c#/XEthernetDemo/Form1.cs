@@ -294,7 +294,6 @@ namespace XEthernetDemo
                     {
                         float k = ((float)(pixelval[m, n] - minp)) / (maxp - minp);
                         k = k * 255;
-                        //pixelval[m, n] = (int)k;
                         image_mat.Set(m, n, (int)k);
                     }
                 }
@@ -302,12 +301,6 @@ namespace XEthernetDemo
                 time_finish = DateTime.Now.Millisecond;
                 Console.WriteLine("==================================");
                 Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
-                Console.WriteLine(image.GetPixelVal(0, 0));
-                Console.WriteLine(image.GetPixelVal(0, 1));
-                Console.WriteLine(image.GetPixelVal(0, 2));
-                Console.WriteLine(image.GetPixelVal(0, 3));
-                Console.WriteLine(image.GetPixelVal(0, 4));
-                uint offset = image.DataOffset;
                 getCounters_Pixel(image, image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
@@ -318,6 +311,32 @@ namespace XEthernetDemo
             }
             
         }
+
+        // 获取时间戳函数(第一版暂时先获得整个图像数据的时间戳)
+        public ushort[][] get_timestamp(XImageW image)
+        {
+            ushort[][] line_info = new ushort[(int)image.Height][];
+            uint dep = image.PixelDepth;
+            if (dep == 16)
+            {
+                uint stride = image.Width * 2 + image.DataOffset;
+                unsafe
+                {
+                    char* pImageAddr = (char*)image.DataAddr;
+                    for (int hi = 0; hi < image.Height; hi++)
+                    {
+                        ushort* pLineAddr = (ushort*)(pImageAddr + stride);
+                        for (int wi = 0; wi < image.DataOffset; wi++)
+                        {
+                            *(pLineAddr + wi) = (ushort)(wi);
+                            line_info[hi][wi] = *(pLineAddr + wi);
+                        }
+                    }
+                }
+            }
+            return line_info;
+        } 
+
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type)
         {
 
@@ -350,6 +369,7 @@ namespace XEthernetDemo
             //Console.WriteLine("=====================");
             time_finish = DateTime.Now.Millisecond;
             Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
+
             if (contours.Length != 0)
             {
                 //Console.WriteLine("=====================");
@@ -357,31 +377,25 @@ namespace XEthernetDemo
                 Console.WriteLine("==================================\n\n");
                 total_card_num += contours.Length;
                 Total_Block_Num.Text = Convert.ToString(total_card_num);
+                // 画出检测的轮廓
+                for (int i = 0; i < contours.Length; i++)
+                {
+                    double area = Cv2.ContourArea(contours[i]);
+                    if (area == 0) continue;
+                    Scalar color = new Scalar(0, 0, 255);
+                    Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
+                    boundRect[i] = Cv2.BoundingRect(contours[i]);
+                    Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                        new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
+                        new Scalar(0, 255, 0), 2, LineTypes.Link8);
+                }
+                result_pic = "C:/Users/weike/Desktop/0413_data/1_with_timestamp/result" + pic_num + ".png";
+                Cv2.ImWrite(result_pic, connImage); 
+                // 求出时间戳
+                 
             }
-                
-            for (int i = 0; i < contours.Length; i++)
-            {
-                double area = Cv2.ContourArea(contours[i]);
-                if (area == 0) continue;
-                Scalar color = new Scalar(0, 0, 255);
-                Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
-                boundRect[i] = Cv2.BoundingRect(contours[i]);
-                Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
-                    new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
-                    new Scalar(0, 255, 0), 2, LineTypes.Link8);
-            }
-            result_pic = "C:/Users/weike/Desktop/0413_data/1_with_timestamp/result" + pic_num + ".png";
-            Cv2.ImWrite(result_pic, connImage);
-            /*
-            XImageW imageW ;
-            int[,] matrix = new int[row, col];
-            for (int i = 0; i < row; i++)
-                for (int j = 0; j < col; j++)
-                    matrix[i,j] = image.Get<int>(i, j);
-            for (int i = 0; i < row; i++)
-                for (int j = 0; j < col; j++)
-                    matrix[i, j] = image.Get<int>(i, j);
-            */
+
+            ushort[][] line_info = get_timestamp(ximagew);
             image.Dispose();
             connImage.Dispose();
             
