@@ -313,9 +313,9 @@ namespace XEthernetDemo
         }
 
         // 获取时间戳函数(第一版暂时先获得整个图像数据的时间戳)
-        public byte[,] get_timestamp(XImageW image)
+        public ushort[,] get_timestamp(XImageW image)
         {
-            ushort[,] line_info = new ushort[(int)image.Height, (int)image.DataOffset];
+            ushort[,] line_info = new ushort[(int)image.Height, (int)image.Width];
             uint dep = image.PixelDepth;
             
             if (dep == 16)
@@ -327,7 +327,7 @@ namespace XEthernetDemo
                     for (int hi = 0; hi < image.Height; hi++)
                     {
                         ushort* pLineAddr = (ushort*)(pImageAddr + stride);
-                        for (int wi = 0; wi < image.DataOffset; wi++)
+                        for (int wi = 0; wi < image.Width; wi++)
                         {
                             // *(pLineAddr + wi) = (ushort)(wi);
                             line_info[hi,wi] = *(pLineAddr + wi);
@@ -419,7 +419,7 @@ namespace XEthernetDemo
                  
             }
 
-            byte[,] line_info = get_timestamp(ximagew);
+            ushort[,] line_info = get_timestamp(ximagew);
             Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
