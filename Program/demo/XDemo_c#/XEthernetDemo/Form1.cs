@@ -1,7 +1,7 @@
 ﻿/*
 =======================================================================================
-============================最新版本20210402==========================================
-修改增加PLC连接的相关程序，目前程序可以正常连接
+============================最新版本20210415==========================================
+0415_解决了读取不到时间戳的问题，目前还需要对时间戳信息进行分析
 =======================================================================================
 */
 using System;
@@ -382,22 +382,21 @@ namespace XEthernetDemo
 
         public ushort[,] get_timestamp_test(XImageW image)
         {
-            ushort[,] line_info = new ushort[(int)image.Height, (int)image.Width];
+            ushort[,] line_info = new ushort[(int)image.Height, (int)(image.Width + image.DataOffset/2)];
             uint dep = image.PixelDepth;
             if (dep == 16)
             {
-                uint stride = image.Width * 2 + image.DataOffset;
+                uint stride = image.Width + image.DataOffset / 2;
                 unsafe
                 {
                     char* pImageAddr = (char*)image.DataAddr;
                     ushort* pLineAddr = (ushort*)pImageAddr;
                     for (int hi = 0; hi < image.Height; hi++)
                     {
-                        for (int wi = 0; wi < image.Width; wi++)
+                        byte* time_info = (byte*)pLineAddr;
+                        for (int wi = 0; wi < (image.Width + image.DataOffset/2); wi++)
                         {
-                            // *(pLineAddr + wi) = (ushort)(wi);
                             line_info[hi, wi] = *(pLineAddr + wi);
-                            // Console.WriteLine(*(pLineAddr + wi));
                         }
                         pLineAddr = (ushort*)(pLineAddr + stride);
                     }
