@@ -337,7 +337,7 @@ namespace XEthernetDemo
             
             if (dep == 16)
             {
-                uint stride = image.Width * 2 + image.DataOffset;
+                uint stride = image.Width + image.DataOffset;
                 unsafe
                 {
                     char* pImageAddr = (char*)image.DataAddr;
@@ -375,9 +375,37 @@ namespace XEthernetDemo
                 }
 
             }*/
+            write_stamp(line_info);
             return line_info;
         } 
 
+
+        public ushort[,] get_timestamp_test(XImageW image)
+        {
+            ushort[,] line_info = new ushort[(int)image.Height, (int)image.Width];
+            uint dep = image.PixelDepth;
+            if (dep == 16)
+            {
+                uint stride = image.Width * 2 + image.DataOffset;
+                unsafe
+                {
+                    char* pImageAddr = (char*)image.DataAddr;
+                    ushort* pLineAddr = (ushort*)pImageAddr;
+                    for (int hi = 0; hi < image.Height; hi++)
+                    {
+                        for (int wi = 0; wi < image.Width; wi++)
+                        {
+                            // *(pLineAddr + wi) = (ushort)(wi);
+                            line_info[hi, wi] = *(pLineAddr + wi);
+                            // Console.WriteLine(*(pLineAddr + wi));
+                        }
+                        pLineAddr = (ushort*)(pLineAddr + stride);
+                    }
+                }
+            }
+            write_stamp(line_info);
+            return line_info;
+        }
 
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type)
         {
@@ -437,7 +465,7 @@ namespace XEthernetDemo
                  
             }
 
-            ushort[,] line_info = get_timestamp(ximagew);
+            ushort[,] line_info = get_timestamp_test(ximagew);
             Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
