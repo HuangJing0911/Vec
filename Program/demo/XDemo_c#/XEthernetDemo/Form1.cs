@@ -312,6 +312,23 @@ namespace XEthernetDemo
             
         }
 
+        // 时间戳对比测试函数
+        public void write_stamp(ushort[,] stamp)
+        {
+            string filename = "C:/Users/weike/Desktop/0413_data/test.txt";
+            string sign = "\t";
+            StreamWriter sw = new StreamWriter(filename, true);
+            for(int i = 0; i < 512; i++)
+            {
+                for (int j = 0; j < 896; j++)
+                    sw.Write(stamp[i, j] + sign); //如果不是string数组，可使用.Tostring()转换在进行连接
+                sw.WriteLine();
+            }
+            sw.Flush();
+            sw.Close();
+            sw.Dispose();
+        }
+
         // 获取时间戳函数(第一版暂时先获得整个图像数据的时间戳)
         public ushort[,] get_timestamp(XImageW image)
         {
@@ -360,6 +377,7 @@ namespace XEthernetDemo
             }*/
             return line_info;
         } 
+
 
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type)
         {
