@@ -683,6 +683,11 @@ namespace XEthernetDemo
                     }
                 }
 
+                // 设置初始化参数
+                xcommand.SetPara(25, 2, 0);     // External line trigger mode value : Sync trigger stamp mode
+                xcommand.SetPara(30, 512, 0);   // External frame trigger state value
+                xcommand.SetPara(66, 1, 0);     // Trigger stamp parity mode : Use “odd” parity check;
+                xcommand.SendCommand(0x92, 0x01, 0x00, 0x01, "1");     // 设置波特率为9600
             }
             
         }
