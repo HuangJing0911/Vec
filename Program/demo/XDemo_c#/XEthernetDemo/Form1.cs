@@ -445,7 +445,7 @@ namespace XEthernetDemo
                 Console.WriteLine("successfully detect{0} blocks!", contours.Length);
                 Console.WriteLine("==================================\n\n");
                 total_card_num += contours.Length;
-                Total_Block_Num.Text = Convert.ToString(total_card_num);
+                // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
                 for (int i = 0; i < contours.Length; i++)
                 {
@@ -632,6 +632,7 @@ namespace XEthernetDemo
                 xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
                 xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
                 xacquisition.EnableLineInfo = 1;
+                MessageBox.Show("Finished Start the Line Info!");
 
                 if (xacquisition.Open(xdevice, xcommand) > 0)
                 {
@@ -683,11 +684,16 @@ namespace XEthernetDemo
                     }
                 }
 
+                
                 // 设置初始化参数
-                xcommand.SetPara(25, 2, 0);     // External line trigger mode value : Sync trigger stamp mode
-                xcommand.SetPara(30, 512, 0);   // External frame trigger state value
+                // xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
+                MessageBox.Show("Finished Init the X-GCU");
+                xcommand.SetPara(25, 3, 0);     // External line trigger mode value : Async trigger stamp mode
+                xcommand.SetPara(26, 1, 0);     // Enables external line trigger function
+                // xcommand.SetPara(30, 512, 0);   // External frame trigger state value
                 xcommand.SetPara(66, 1, 0);     // Trigger stamp parity mode : Use “odd” parity check;
-                xcommand.SendCommand(0x92, 0x01, 0x00, 0x01, "1");     // 设置波特率为9600
+                xcommand.SendCommand(0x92, 0x01, 0x00, 0x01, "1");     // 设置波特率为9600   
+                
             }
             
         }
