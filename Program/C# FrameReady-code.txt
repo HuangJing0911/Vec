@@ -1,0 +1,34 @@
+void OnFrameReady(XImageW image)
+        {
+            frame_count++;
+            ///#Way 1
+            for (uint hi = 0; hi < image.Height; hi++)
+            {
+                for (uint wi = 0; wi < image.Width; wi++)
+                {
+                    image.SetPixelVal(hi, wi, wi);
+                }
+            }
+            ///#way 2
+            unsafe
+            {
+                uint dep = image.PixelDepth;
+                if (dep == 16)
+                {
+                    uint stride = image.Width * 2 + image.DataOffset;
+                    char* pImageAddr = (char*)image.DataAddr;
+                    for (int hi = 0; hi < image.Height; hi++)
+                    {
+                        ushort* pLineAddr = (ushort*)(pImageAddr + stride);
+                        for (int wi = 0; wi < image.Width; wi++)
+                        {
+                            *(pLineAddr + wi) = (ushort)(wi);
+                        }
+                    }
+                }
+            }
+            xdisplay.Display(image);
+            //string name = frame_count.ToString() + ".txt";
+            //image.Save(name);
+            //image.DataAddr
+        }
