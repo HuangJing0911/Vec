@@ -341,8 +341,28 @@ namespace COMDBG
         /// <param name="e"></param>
         private void sendbtn_Click(object sender, EventArgs e)
         {
-            String sendText = sendtbx.Text;
+            // String sendText = sendtbx.Text;
             bool flag = false;
+
+            // 把64位时间戳取前32位并转为4byte的字符串
+            TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            Int64 time = (Int64)time_stamp.TotalMilliseconds;
+            UInt32 time_32 = (UInt32)(time & 0xffffffff);
+            receivetbx.Text = Convert.ToString(time_stamp.TotalMilliseconds);
+            String sendText, a;
+            char k;
+            sendText = "";
+            String pre_time = Convert.ToString(time_32, 2);     // 转为二进制
+            for(int i = 0; i < 4; i++)
+            {
+                a = pre_time.Substring(i * 8, 8);
+                UInt16 c = Convert.ToUInt16(a, 2);
+                k = Convert.ToChar(c);
+                sendText = sendText + k;
+            }
+            sendtbx.Text = sendText;
+
+            /*
             if (sendText == null)
             {
                 return;
@@ -368,6 +388,26 @@ namespace COMDBG
                 sendbtn.Enabled = true;
                 sendBytesCount += sendText.Length;
             }
+            */
+
+            // 发送时间戳信息
+            if (sendHexRadiobtn.Checked)
+            {
+                Byte[] bytes = IController.Hex2Bytes(sendText);
+                sendbtn.Enabled = false;//wait return
+                flag = controller.SendDataToCom(bytes);
+                sendbtn.Enabled = true;
+                sendBytesCount += bytes.Length;
+            }
+            else
+            {
+                //send String to serial port
+                sendbtn.Enabled = false;//wait return
+                flag = controller.SendDataToCom(sendText);
+                sendbtn.Enabled = true;
+                sendBytesCount += sendText.Length;
+            }
+
             if (flag)
             {
                 statuslabel.Text = "Send OK !";
@@ -543,6 +583,7 @@ namespace COMDBG
 
         private void autoSendtimer_Tick(object sender, EventArgs e)
         {
+            // 发送当前时间点的时间戳
             sendbtn_Click(sender, e);
         }
 
@@ -682,7 +723,5 @@ namespace COMDBG
                 help.Location = new Point(Math.Max(x, 0), Math.Max(y, 0));
             }
         }
-
-
     }
 }
