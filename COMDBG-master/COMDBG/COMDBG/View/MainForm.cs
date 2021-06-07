@@ -348,19 +348,23 @@ namespace COMDBG
             TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             Int64 time = (Int64)time_stamp.TotalMilliseconds;
             UInt32 time_32 = (UInt32)(time & 0xffffffff);
+            String b = Convert.ToString(time, 2);
             receivetbx.Text = Convert.ToString(time_stamp.TotalMilliseconds);
-            String sendText, a;
-            char k;
-            sendText = "";
+            String a;
+            Byte[] bytes = new byte[4];
             String pre_time = Convert.ToString(time_32, 2);     // 转为二进制
             for(int i = 0; i < 4; i++)
             {
                 a = pre_time.Substring(i * 8, 8);
-                UInt16 c = Convert.ToUInt16(a, 2);
-                k = Convert.ToChar(c);
-                sendText = sendText + k;
+                bytes[i] = Convert.ToByte(a, 2);
             }
-            sendtbx.Text = sendText;
+            sendtbx.Text = Convert.ToString(time_32);
+
+            // 发送时间戳信息
+            sendbtn.Enabled = false;//wait return
+            flag = controller.SendDataToCom(bytes);
+            sendbtn.Enabled = true;
+            sendBytesCount += bytes.Length;
 
             /*
             if (sendText == null)
@@ -388,7 +392,7 @@ namespace COMDBG
                 sendbtn.Enabled = true;
                 sendBytesCount += sendText.Length;
             }
-            */
+            
 
             // 发送时间戳信息
             if (sendHexRadiobtn.Checked)
@@ -406,7 +410,7 @@ namespace COMDBG
                 flag = controller.SendDataToCom(sendText);
                 sendbtn.Enabled = true;
                 sendBytesCount += sendText.Length;
-            }
+            }*/
 
             if (flag)
             {
