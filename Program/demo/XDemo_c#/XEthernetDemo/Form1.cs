@@ -47,9 +47,10 @@ namespace XEthernetDemo
         int total_card_num = 0;
         uint cur_dm_index = 0;
         int total_clock_num = 0;
-        int time_now;
-        int time_finish;
+        Int64 time_now;
+        Int64 time_finish;
         int pic_num = 0;
+        int line_num_persecond = 5000; 
         string result_pic;
         string init_pic;
         Socket client = null;
@@ -257,6 +258,7 @@ namespace XEthernetDemo
         int count_thread = 0;
         void threadCounters(Object obj)
         {
+            TimeSpan stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             XImageW image = (XImageW)obj;
             //XTifFormatW image_tif = new XTifFormatW(image,xdevice);
             pic_num++;
@@ -301,7 +303,7 @@ namespace XEthernetDemo
                 time_finish = DateTime.Now.Millisecond;
                 Console.WriteLine("==================================");
                 Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
-                getCounters_Pixel(image, image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1);
+                getCounters_Pixel(image, image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1, stamp);
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
             }
@@ -406,7 +408,7 @@ namespace XEthernetDemo
             return line_info;
         }
 
-        public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type)
+        public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, TimeSpan stamp)
         {
 
             time_now = DateTime.Now.Millisecond;
