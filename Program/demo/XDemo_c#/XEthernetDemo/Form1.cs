@@ -50,7 +50,8 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        int line_num_persecond = 5000; 
+        int line_num_persecond = 5000;
+        int num_of_mouth = 128;
         string result_pic;
         string init_pic;
         Socket client = null;
@@ -448,6 +449,7 @@ namespace XEthernetDemo
                 Console.WriteLine("==================================\n\n");
                 total_card_num += contours.Length;
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
+
                 // 画出检测的轮廓
                 for (int i = 0; i < contours.Length; i++)
                 {
@@ -461,12 +463,20 @@ namespace XEthernetDemo
                         new Scalar(0, 255, 0), 2, LineTypes.Link8);
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
-                Cv2.ImWrite(result_pic, connImage); 
-                // 求出时间戳
-                 
+                Cv2.ImWrite(result_pic, connImage);
+
+                // 求出时间戳并发送物块信息
+                for (int i = 0; i < contours.Length; i++)
+                {
+                    Data_Set data = new Data_Set();                                 // 发送数据包
+                    data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气    
+                    data.start_time = (Int64)stamp.TotalMilliseconds;               // 设置开始喷吹时间         
+                    
+                }
+
             }
 
-            ushort[,] line_info = get_timestamp_test(ximagew);
+            // ushort[,] line_info = get_timestamp_test(ximagew);
             Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
@@ -688,13 +698,13 @@ namespace XEthernetDemo
 
                 
                 // 设置初始化参数
-                // xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
+                xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
                 MessageBox.Show("Finished Init the X-GCU");
-                xcommand.SetPara(25, 3, 0);     // External line trigger mode value : Async trigger stamp mode
-                xcommand.SetPara(26, 1, 0);     // Enables external line trigger function
+                // xcommand.SetPara(25, 3, 0);     // External line trigger mode value : Async trigger stamp mode
+                // xcommand.SetPara(26, 1, 0);     // Enables external line trigger function
                 // xcommand.SetPara(30, 512, 0);   // External frame trigger state value
-                xcommand.SetPara(66, 1, 0);     // Trigger stamp parity mode : Use “odd” parity check;
-                xcommand.SendCommand(0x92, 0x01, 0x00, 0x01, "1");     // 设置波特率为9600   
+                // xcommand.SetPara(66, 1, 0);     // Trigger stamp parity mode : Use “odd” parity check;
+                // xcommand.SendCommand(0x92, 0x01, 0x00, 0x01, "1");     // 设置波特率为9600   
                 
             }
             
