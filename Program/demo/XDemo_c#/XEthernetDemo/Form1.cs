@@ -51,7 +51,7 @@ namespace XEthernetDemo
         Int64 time_finish;
         int pic_num = 0;
         int line_num_persecond = 5;     // 5lines/ms
-        int num_of_mouth = 128;
+        int num_of_mouth = 198;
         string result_pic;
         string init_pic;
         Socket client = null;
@@ -59,7 +59,7 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
-        const string ntpServer = "192.168.250.110";
+        const string ntpServer = "196.168.250.1";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 9600);
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
@@ -552,14 +552,14 @@ namespace XEthernetDemo
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
                 Cv2.ImWrite(result_pic, connImage);
-
+                
                 // 求出时间戳并发送物块信息
                 for (int i = 0; i < contours.Length; i++)
                 {
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间
-                    data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].X / line_num_persecond);
+                    data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].X / line_num_persecond) + 780 - 120;
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Width / line_num_persecond);
                     // 设置开始吹气阀号和停止吹气阀号
@@ -793,7 +793,7 @@ namespace XEthernetDemo
 
                 
                 // 设置初始化参数
-                xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
+                // xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
                 MessageBox.Show("Finished Init the X-GCU");
                 // xcommand.SetPara(25, 3, 0);     // External line trigger mode value : Async trigger stamp mode
                 // xcommand.SetPara(26, 1, 0);     // Enables external line trigger function
