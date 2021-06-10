@@ -30,7 +30,9 @@ namespace XEthernetDemo
         public Form1()
         {
             InitializeComponent();
+            LocalAdapter.Text = "169.254.84.167";
             PsColor.SelectedIndex = 0;
+
         }
         
         XSystemW        xsystem;
@@ -42,6 +44,7 @@ namespace XEthernetDemo
         XDisplayW       xdisplay;
         XOffCorrectW    xcorrect;
         XTifFormatW     xtifform;
+        
         int frame_count = 0;
         int lost_line = 0;
         int total_card_num = 0;
@@ -59,8 +62,8 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
-        const string ntpServer = "196.168.250.1";
-        OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 9600);
+        const string ntpServer = "192.168.250.1";
+        OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
         {
@@ -137,7 +140,7 @@ namespace XEthernetDemo
                 // Data_Set syn_data = new Data_Set
 
                 IPAddress ip = IPAddress.Parse(ntpServer);
-                IPEndPoint remoteep = new IPEndPoint(ip, 9600);
+                IPEndPoint remoteep = new IPEndPoint(ip, 6000);
                 // AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 client.Connect(remoteep);
@@ -448,7 +451,7 @@ namespace XEthernetDemo
                 ntp_data[22] = data.check_num;              // 校验值
 
                 IPAddress ip = IPAddress.Parse(ntpServer);
-                IPEndPoint remoteep = new IPEndPoint(ip, 9600);
+                IPEndPoint remoteep = new IPEndPoint(ip, 6000);
                 // AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 client.Connect(remoteep);
@@ -499,7 +502,8 @@ namespace XEthernetDemo
 
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, TimeSpan stamp)
         {
-
+            //CardNum2.Text = Convert.ToString(row)+"row";
+            //CardNum3.Text = Convert.ToString(col) + "col";
             time_now = DateTime.Now.Millisecond;
             //Mat image = new Mat(row, col, type,p);
             image.ConvertTo(image, MatType.CV_32F);
@@ -556,17 +560,22 @@ namespace XEthernetDemo
                 // 求出时间戳并发送物块信息
                 for (int i = 0; i < contours.Length; i++)
                 {
+                    Rect rec = boundRect[i];
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间
-                    data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].X / line_num_persecond) + 780 - 120;
+                    data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond) + 780 - 120;
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Width / line_num_persecond);
+                    data.blow_time = (Int16)(boundRect[i].Height / line_num_persecond);
                     // 设置开始吹气阀号和停止吹气阀号
-                    data.start_num = (Int16)(boundRect[i].Y / col * num_of_mouth);
-                    data.end_num = (Int16)(data.start_num + boundRect[i].Height / col + num_of_mouth + 1);
+                    data.start_num = (Int16)(boundRect[i].X / col * num_of_mouth);
+                    data.end_num = (Int16)(data.start_num + boundRect[i].Width / col * num_of_mouth + 1);
                     int num = SendData(data);
-                    CardNum1.Text = Convert.ToString(num) + "bytes seccessfully send!";
+                    if (num == 23)
+                    {
+                        CardNum1.Text = Convert.ToString(frame_count) + "is seccessfully send!";
+                    }
+                        
                 }
 
             }
@@ -794,13 +803,17 @@ namespace XEthernetDemo
                 
                 // 设置初始化参数
                 // xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
-                MessageBox.Show("Finished Init the X-GCU");
+                // MessageBox.Show("Finished Init the X-GCU");
                 // xcommand.SetPara(25, 3, 0);     // External line trigger mode value : Async trigger stamp mode
                 // xcommand.SetPara(26, 1, 0);     // Enables external line trigger function
                 // xcommand.SetPara(30, 512, 0);   // External frame trigger state value
                 // xcommand.SetPara(66, 1, 0);     // Trigger stamp parity mode : Use “odd” parity check;
                 // xcommand.SendCommand(0x92, 0x01, 0x00, 0x01, "1");     // 设置波特率为9600   
-                
+
+                // 连接到PLC
+                Connect_to_PLC();
+                if (client.Connected)
+                    MessageBox.Show("Successfully Connect to PLC!");
             }
             
         }
@@ -1127,13 +1140,13 @@ namespace XEthernetDemo
             {
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             }
-            if (!client.Connected)
+            if (!client.Connected)   
             {
                 // OperateResult connect = omronFinisNet.ConnectServer();
                 byte[] ntp_testdata = new byte[48];
 
                 IPAddress ip = IPAddress.Parse(ntpServer);
-                IPEndPoint remoteep = new IPEndPoint(ip, 9600);
+                IPEndPoint remoteep = new IPEndPoint(ip, 6000);
                 // AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 client.Connect(remoteep);
