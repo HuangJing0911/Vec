@@ -50,7 +50,7 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        int line_num_persecond = 5000;
+        int line_num_persecond = 5;     // 5lines/ms
         int num_of_mouth = 128;
         string result_pic;
         string init_pic;
@@ -278,8 +278,12 @@ namespace XEthernetDemo
                 uint[,] pixelval = new uint[image.Height, image.Width];
                 uint maxp = 0;
                 uint minp = 65536;
-                for (uint i = 0; i < (uint)image.Height; i++)
-                    for (uint j = 0; j < (uint)image.Width; j++)
+                int m, n, row, col;
+                row = (int)image.Height;
+                col = (int)image.Width - 1;
+                col = col / 2;
+                for (uint i = 0; i < row; i++)
+                    for (uint j = 0; j < col; j++)
                     {
                         pixelval[i, j] = (uint)image.GetPixelVal(i, j);
                         if (pixelval[i, j] > maxp)
@@ -287,9 +291,7 @@ namespace XEthernetDemo
                         else if (pixelval[i, j] < minp)
                             minp = pixelval[i, j];
                     }
-                int m, n, row, col;
-                row = (int)image.Height;
-                col = (int)image.Width;
+                
                 Mat image_mat = new Mat(row, col, MatType.CV_8UC1);
                 for (m = 0; m < row; m++)
                 {
@@ -304,7 +306,7 @@ namespace XEthernetDemo
                 time_finish = DateTime.Now.Millisecond;
                 Console.WriteLine("==================================");
                 Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
-                getCounters_Pixel(image, image_mat, (int)image.Height, (int)image.Width, MatType.CV_16UC1, stamp);
+                getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
             }
@@ -409,6 +411,92 @@ namespace XEthernetDemo
             return line_info;
         }
 
+        // 向PLC发送消息
+        public int SendData(Data_Set data)
+        {
+            if (client == null)
+            {
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            }
+            if (!client.Connected)
+            {
+                // OperateResult connect = omronFinisNet.ConnectServer();
+                byte[] ntp_data = new byte[23];             // 整个数据包一共23byte
+
+                // 将数据转换成byte类型
+                ntp_data[0] = data.syn_code;                // 同步码
+                byte[] a = new byte[4];
+                a = Encoding.UTF8.GetBytes(data.flow_num);
+                for (int i = 0; i < 4; i++)
+                    ntp_data[1 + i] = a[i];                 // 流水编号
+                ntp_data[5] = data.typof_block;             // 物块类型
+                ntp_data[6] = Convert.ToByte(data.blow);    // 是否吹气
+                byte[] b = new byte[8];
+                for (int i = 0; i < 7; i++)
+                    ntp_data[i + 7] = (byte)(data.start_time >> (i * 8) & 0xff);    // 开始吹气时间
+                byte[] c = new byte[2];
+                c = BitConverter.GetBytes(data.blow_time);
+                ntp_data[15] = c[0];
+                ntp_data[16] = c[1];                        // 吹气持续时间
+                c = BitConverter.GetBytes(data.start_num);
+                ntp_data[17] = c[0];
+                ntp_data[18] = c[1];                        // 开始吹气阀号
+                c = BitConverter.GetBytes(data.end_num);
+                ntp_data[19] = c[0];
+                ntp_data[20] = c[1];                        // 开始吹气阀号
+                ntp_data[21] = data.reserve;                // 保留值
+                ntp_data[22] = data.check_num;              // 校验值
+
+                IPAddress ip = IPAddress.Parse(ntpServer);
+                IPEndPoint remoteep = new IPEndPoint(ip, 9600);
+                // AsyncCallback callback = new AsyncCallback(ConnectCallback);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                client.Connect(remoteep);
+                if (client.Connected)
+                    Total_Block_Num.Text = "Successfully Connect!";
+                else
+                    Total_Block_Num.Text = "Unsuccessfully Connect!";
+                client.ReceiveTimeout = 3000;
+                return client.Send(ntp_data);
+                // client.Receive(ntp_testdata);
+                /*if (connect.IsSuccess)
+                    MessageBox.Show("连接成功!");
+                else
+                    MessageBox.Show("连接失败!");*/
+            }
+            else
+            {
+                byte[] ntp_data = new byte[23];             // 整个数据包一共23byte
+
+                // 将数据转换成byte类型
+                ntp_data[0] = data.syn_code;                // 同步码
+                byte[] a = new byte[4];
+                a = Encoding.UTF8.GetBytes(data.flow_num);
+                for (int i = 0; i < 4; i++)
+                    ntp_data[1 + i] = a[i];                 // 流水编号
+                ntp_data[5] = data.typof_block;             // 物块类型
+                ntp_data[6] = Convert.ToByte(data.blow);    // 是否吹气
+                byte[] b = new byte[8];
+                for (int i = 0; i < 7; i++)
+                    ntp_data[i + 7] = (byte)(data.start_time >> (i * 8) & 0xff);    // 开始吹气时间
+                byte[] c = new byte[2];
+                c = BitConverter.GetBytes(data.blow_time);
+                ntp_data[15] = c[0];
+                ntp_data[16] = c[1];                        // 吹气持续时间
+                c = BitConverter.GetBytes(data.start_num);
+                ntp_data[17] = c[0];
+                ntp_data[18] = c[1];                        // 开始吹气阀号
+                c = BitConverter.GetBytes(data.end_num);
+                ntp_data[19] = c[0];
+                ntp_data[20] = c[1];                        // 开始吹气阀号
+                ntp_data[21] = data.reserve;                // 保留值
+                ntp_data[22] = data.check_num;              // 校验值
+
+                client.ReceiveTimeout = 3000;
+                return client.Send(ntp_data);
+            }
+        }
+
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, TimeSpan stamp)
         {
 
@@ -469,9 +557,16 @@ namespace XEthernetDemo
                 for (int i = 0; i < contours.Length; i++)
                 {
                     Data_Set data = new Data_Set();                                 // 发送数据包
-                    data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气    
-                    data.start_time = (Int64)stamp.TotalMilliseconds;               // 设置开始喷吹时间         
-                    
+                    data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
+                    // 设置开始喷吹时间
+                    data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].X / line_num_persecond);
+                    // 设置持续喷吹的时间
+                    data.blow_time = (Int16)(boundRect[i].Width / line_num_persecond);
+                    // 设置开始吹气阀号和停止吹气阀号
+                    data.start_num = (Int16)(boundRect[i].Y / col * num_of_mouth);
+                    data.end_num = (Int16)(data.start_num + boundRect[i].Height / col + num_of_mouth + 1);
+                    int num = SendData(data);
+                    CardNum1.Text = Convert.ToString(num) + "bytes seccessfully send!";
                 }
 
             }
@@ -718,6 +813,8 @@ namespace XEthernetDemo
                 xacquisition.Close();
             if (xcommand != null)
                 xcommand.Close();
+            if (client.Connected)
+                client.Close();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -1026,7 +1123,6 @@ namespace XEthernetDemo
 
         private void TestPLC_Click(object sender, EventArgs e)
         {
-            
             if (client == null)
             {
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

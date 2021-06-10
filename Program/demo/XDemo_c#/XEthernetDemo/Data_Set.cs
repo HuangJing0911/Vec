@@ -10,16 +10,16 @@ namespace XEthernetDemo
 {
     public class Data_Set
     {
-        Byte syn_code = Convert.ToByte("A5");   // 同步码(1 btye)
-        string flow_num = "0000";               // 流水编号(4 byte)
-        byte typof_block = 2;                    // 物块类型：0：镁，1：铝，2：重金属(1 byte)
-        bool blow = false;                      // 是否吹气(1 byte)
+        public byte syn_code = Convert.ToByte("A5");   // 同步码(1 btye)
+        public string flow_num = "0000";               // 流水编号(4 byte)
+        public byte typof_block = 2;                    // 物块类型：0：镁，1：铝，2：重金属(1 byte)
+        public bool blow = false;                      // 是否吹气(1 byte)
         public Int64 start_time;                       // 开始吹气时间(8 byte)
-        public Int16 end_time = 0;                     // 吹气持续时间(2 byte)
+        public Int16 blow_time = 0;                     // 吹气持续时间(2 byte)
         public Int16 start_num = 0;                    // 开始吹气阀号(2 byte)
         public Int16 end_num = 0;                      // 结束吹气阀号(2 byte)
-        public Byte reserve = 0;                       // 保留(1 byte)
-        Byte check_num = 0;                     // 校验值(1 byte)
+        public byte reserve = 0;                       // 保留(1 byte)
+        public byte check_num = 0;                     // 校验值(1 byte)
 
         public Data_Set()
         {
