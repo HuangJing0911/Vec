@@ -44,7 +44,7 @@ namespace XEthernetDemo
         XDisplayW       xdisplay;
         XOffCorrectW    xcorrect;
         XTifFormatW     xtifform;
-        
+        //啊撒啊
         int frame_count = 0;
         int lost_line = 0;
         int total_card_num = 0;

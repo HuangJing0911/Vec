@@ -381,3 +381,6 @@ C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEt
 C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Form1.resources
 C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
 C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
+I:\vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+I:\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+I:\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
