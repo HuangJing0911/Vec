@@ -269,7 +269,7 @@ namespace XEthernetDemo
             string save_file;
             save_file = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt";
             //string save_tif = "C:/Users/77170/Desktop/0316/pic_data/TEST" + pic_num + ".tif";
-            //image.Save(save_file);
+            image.Save(save_file);
             //image_tif.Save(save_tif);
             int value = Marshal.ReadInt32(image.DataAddr, 0);
 
@@ -511,7 +511,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            //Cv2.ImWrite(init_pic, image);
+            Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -546,46 +546,37 @@ namespace XEthernetDemo
                 for (int i = 0; i < contours.Length; i++)
                 {
                     double area = Cv2.ContourArea(contours[i]);
-                    boundRect[i] = Cv2.BoundingRect(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3)
-                        continue;
+                    if (area == 0) continue;
                     Scalar color = new Scalar(0, 0, 255);
                     Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
+                    boundRect[i] = Cv2.BoundingRect(contours[i]);
                     Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                         new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                         new Scalar(0, 255, 0), 2, LineTypes.Link8);
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
-                int flag = 0;
-
+                Cv2.ImWrite(result_pic, connImage);
+                
                 // 求出时间戳并发送物块信息
                 for (int i = 0; i < contours.Length; i++)
                 {
-                    double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3)
-                        continue;
-                    flag = 1;
+                    Rect rec = boundRect[i];
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间
                     data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond) + 780 - 120;
-                    //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Height / line_num_persecond);
                     // 设置开始吹气阀号和停止吹气阀号
-                    data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
-                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth + 1);
+                    data.start_num = (Int16)(boundRect[i].X / col * num_of_mouth);
+                    data.end_num = (Int16)(data.start_num + boundRect[i].Width / col * num_of_mouth + 1);
                     int num = SendData(data);
                     if (num == 23)
                     {
-                        total_clock_num++;
-                        CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
+                        CardNum1.Text = Convert.ToString(frame_count) + "is seccessfully send!";
                     }
-
+                        
                 }
-                // 画出原始图像和处理后图像
-                if (flag == 1)
-                    Cv2.ImWrite(result_pic, connImage);
 
             }
 
@@ -757,7 +748,7 @@ namespace XEthernetDemo
                 xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
                 xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
                 xacquisition.EnableLineInfo = 1;
-                //MessageBox.Show("Finished Start the Line Info!");
+                MessageBox.Show("Finished Start the Line Info!");
 
                 if (xacquisition.Open(xdevice, xcommand) > 0)
                 {
