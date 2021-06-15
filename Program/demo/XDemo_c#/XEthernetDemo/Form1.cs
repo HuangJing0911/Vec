@@ -21,20 +21,12 @@ using System.Net.Sockets;
 using System.Net;
 using HslCommunication;
 using HslCommunication.Profinet.Omron;
-using Newtonsoft.Json;
+
 
 namespace XEthernetDemo
 {
-    struct Msg
-    {
-        internal byte[] bytes;
-        internal int length;
-        internal string getTime;
-    }
-
     public partial class Form1 : Form
     {
-
         public Form1()
         {
             InitializeComponent();
@@ -42,43 +34,7 @@ namespace XEthernetDemo
             PsColor.SelectedIndex = 0;
 
         }
-
-        //功放变量
-        static Queue<Msg> msg_queue;
-        static Socket socket;
-        static AutoResetEvent conditional_variable;
-        static Object locker;
-        static volatile bool quit_flag = false;
-        static IPEndPoint ep;
-        public int[,,] SCAData = new int[10000, 10, 10];    //40为一秒轮次，可存储25秒数据
-        string[,] DataGetTime = new string[10000, 10];
-        private int RunFlag = 0;                   //是否运行标志
-        public int udpCnt = 1;
-        public int getInfoTimes = 0;               //波峰检测标志
-        Socket udpRecv = null;
-        private int firstProcessFlag = 0;
-        public int CycleCount = 0;
-        public int chnldx;
-        public double lifetime = 0;
-        public string getTime = "";
-        public string currenTime = "";
-        public int count = 0;
-        public int gapsum = 0;
-        DateTime lastBeginRecive;
-        DateTime endRecive;
-        public int DataLen = 0;
-        // url
-        public Controller Conupdate = new Controller();
-        public ConSettings ConSet = new ConSettings();
-        public ConInformation ConInfo = new ConInformation();
-        public Channel Channelupdate = new Channel();
-        public ChannelInformation channInfo = new ChannelInformation();
-        public ChannelSettings channSet = new ChannelSettings();
-        public Parset parsetinfo = new Parset();
-        public List<SingleChannelAnalyzerConfigItem> Singleset = new List<SingleChannelAnalyzerConfigItem>();
-        public List<double> peaktime = new List<double>();
-        public DateTime starttime;
-
+        
         XSystemW        xsystem;
         XDeviceW        xdevice;
         XGigFactoryW    xfactory;
@@ -313,7 +269,7 @@ namespace XEthernetDemo
             string save_file;
             save_file = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt";
             //string save_tif = "C:/Users/77170/Desktop/0316/pic_data/TEST" + pic_num + ".tif";
-            image.Save(save_file);
+            //image.Save(save_file);
             //image_tif.Save(save_tif);
             int value = Marshal.ReadInt32(image.DataAddr, 0);
 
@@ -555,7 +511,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            Cv2.ImWrite(init_pic, image);
+            //Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -590,37 +546,47 @@ namespace XEthernetDemo
                 for (int i = 0; i < contours.Length; i++)
                 {
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0) continue;
+                    boundRect[i] = Cv2.BoundingRect(contours[i]);
+                    if (area == 0 || boundRect[i].Height > row / 3)
+                        continue;
                     Scalar color = new Scalar(0, 0, 255);
                     Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
-                    boundRect[i] = Cv2.BoundingRect(contours[i]);
                     Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                         new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                         new Scalar(0, 255, 0), 2, LineTypes.Link8);
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
-                Cv2.ImWrite(result_pic, connImage);
-                
+                int flag = 0;
+
                 // 求出时间戳并发送物块信息
                 for (int i = 0; i < contours.Length; i++)
                 {
-                    Rect rec = boundRect[i];
+                    double area = Cv2.ContourArea(contours[i]);
+                    if (area == 0 || boundRect[i].Height > row / 3)
+                        continue;
+                    flag = 1;
                     Data_Set data = new Data_Set();                                 // 发送数据包
+                    // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间
                     data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond) + 780 - 120;
+                    //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Height / line_num_persecond);
                     // 设置开始吹气阀号和停止吹气阀号
-                    data.start_num = (Int16)(boundRect[i].X / col * num_of_mouth);
-                    data.end_num = (Int16)(data.start_num + boundRect[i].Width / col * num_of_mouth + 1);
+                    data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth + 1);
                     int num = SendData(data);
                     if (num == 23)
                     {
-                        CardNum1.Text = Convert.ToString(frame_count) + "is seccessfully send!";
+                        total_clock_num++;
+                        CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
                     }
-                        
+
                 }
+                // 画出原始图像和处理后图像
+                if (flag == 1)
+                    Cv2.ImWrite(result_pic, connImage);
 
             }
 
@@ -792,7 +758,7 @@ namespace XEthernetDemo
                 xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
                 xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
                 xacquisition.EnableLineInfo = 1;
-                MessageBox.Show("Finished Start the Line Info!");
+                //MessageBox.Show("Finished Start the Line Info!");
 
                 if (xacquisition.Open(xdevice, xcommand) > 0)
                 {
@@ -1162,21 +1128,7 @@ namespace XEthernetDemo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            msg_queue = new Queue<Msg>();
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            conditional_variable = new AutoResetEvent(false);
-            locker = new object();
-            ep = new IPEndPoint(IPAddress.Parse("172.28.110.50"), 27001);
-            socket.Bind(ep);
 
-            /*udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse("172.28.110.110"), 27001);          //172.28.110.110   27001
-            udpRecv.Bind(endpoint);*/
-            string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 0;
-            Conupdate.Settings = ConSet;
-            string putData = JsonConvert.SerializeObject(Conupdate);
-            string putReturnJson = op.Put(url, putData);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -1187,7 +1139,8 @@ namespace XEthernetDemo
         private void button1_Click(object sender, EventArgs e)
         {
             //GetTXT_as_mat(test_txt_filepath);
-            OnFrameReady_testimage();
+            //OnFrameReady_testimage();
+            //Total_Block_Num.Text = Convert.ToString("0000"+1);
         }
 
         
@@ -1223,450 +1176,18 @@ namespace XEthernetDemo
             }
         }
 
-        private void startGF_Click(object sender, EventArgs e)
+        private void AutoCheckTimer_Tick(object sender, EventArgs e)
         {
-            Thread listen_thread = new Thread(RecvMessage);
-            Thread process_thread1 = new Thread(ProcessMessage);
-            //Thread Process_therad2 = new Thread(ProcessMessage);
-            listen_thread.Start();
-            process_thread1.Start();
-
-            //开启时间戳
-            string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 1;
-            Conupdate.Settings = ConSet;
-            string putData = JsonConvert.SerializeObject(Conupdate);
-            string putReturnJson = op.Put(url, putData);
-
-            starttime = DateTime.Now;
-        }
-
-        private void stopGF_Click(object sender, EventArgs e)
-        {
-            quit_flag = true;
-            write(SCAData);
-            socket.Close();
-            conditional_variable.Set();
-            conditional_variable.Set();
-
-            DateTime endtime = starttime.AddSeconds(lifetime);
-
-            string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 0;
-            Conupdate.Settings = ConSet;
-            string putData = JsonConvert.SerializeObject(Conupdate);
-            string putReturnJson = op.Put(url, putData);
-
-            MessageBox.Show(endtime.ToString());
-        }
-
-        private void RecvMessage()
-        {
-            while (!quit_flag)
+            // 发送当前时间点的时间戳
+            TimeSpan stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            Data_Set data = new Data_Set();
+            data.check_num = 1;     // 此时数据包为检验数据包，进行时间同步
+            data.start_time = (Int64)stamp.TotalMilliseconds;
+            int num = SendData(data);
+            if (num == 23)
             {
-                byte[] buf = new byte[10000];
-                if (buf == null)
-                    throw new Exception();
-                int read = 0;
-                try
-                {
-                    read = socket.Receive(buf);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    if (quit_flag)
-                        return;
-                }
-                Msg msg;
-                msg.bytes = buf;
-                msg.length = read;
-                msg.getTime = DateTime.Now.TimeOfDay.ToString();
-                lock (locker)
-                {
-                    msg_queue.Enqueue(msg);
-                }
-                conditional_variable.Set();
+                CardNum1.Text = "Successfully AutoCheckTime!";
             }
-        }
-
-        private void ProcessMessage()
-        {
-            while (!quit_flag)
-            {
-                while (msg_queue.Count == 0)
-                {
-                    conditional_variable.WaitOne();
-                    if (quit_flag)
-                        return;
-                }
-                Msg msg;
-                lock (locker)
-                {
-                    msg = msg_queue.Dequeue();
-                }
-                //string s = Encoding.UTF8.GetString(msg.bytes, 0, msg.length);
-                string s = bytetohexstr(msg.bytes, msg.length);
-                string rawdata = s.Replace(" ", "");     //视情况可删减
-                dataProcess dp = new dataProcess();
-                int index = 0;
-                CycleCount++;
-                while (index < rawdata.Length - 6)
-                {
-                    int SectionLen = 0;
-                    int SectionType = 0;
-
-                    SectionLen = dp.GetN(rawdata, ref index, 2);
-                    SectionType = dp.GetN(rawdata, ref index, 1);
-
-                    switch (SectionType)
-                    {
-                        case 1:
-                            chnldx = dp.ChannelMetaSection(ref index, SectionLen, rawdata);
-                            break;
-                        case 2:
-                            lifetime = dp.SpectralMetaSection(ref index, SectionLen, rawdata);
-                            break;
-                        case 3:
-                            dp.SpectrumSection(ref index, SectionLen, rawdata);
-                            break;
-                        case 4:
-                            dp.DiagnosticDataSection(ref index, SectionLen, rawdata);
-                            break;
-                        case 5:
-                            dp.SCADataSection(ref index, SectionLen, rawdata);
-                            break;
-                        default:
-                            Console.WriteLine("Invalid Data!");
-                            break;
-                    }
-                }
-                if (chnldx >= 0 && chnldx < 11)
-                {
-                    //DataGetTime[CycleCount, chnldx - 1] = getTime;
-                    int j = 0;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
-                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCALength[i];
-                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCACount[i];
-                    }
-                    SCAData[CycleCount / 10, chnldx - 1, 9] = chnldx;
-                    DataGetTime[CycleCount / 10, chnldx - 1] = msg.getTime;
-
-                    /*SCAData[CycleCount, 1] = dp.SCALength;
-                    SCAData[CycleCount, 2] = dp.SCACount;
-                    DataGetTime[CycleCount] = msg.getTime; 
-                    */
-                }
-                else
-                {
-                    //MessageBox.Show("channel index error!");
-                }
-            }
-        }
-
-        public string bytetohexstr(byte[] bytes, int length)     //字节转化为二进制
-        {
-            string returnstr = "";
-            if (bytes != null)
-            {
-                for (int i = 0; i < length; i++)
-                {
-                    returnstr += bytes[i].ToString("X2");
-                }
-            }
-            return returnstr;
-        }
-
-        public void write(int[,,] arr)             //保存txt文本
-        {
-            string temppath = @"D:\422test\data";
-
-
-            for (int k = 0; k < CycleCount / 10; k++)
-            {
-                //int i = k / 10;
-                string txtname = temppath + k;
-                txtname = txtname + ".txt";
-                FileStream fs = new FileStream(txtname, FileMode.Create);
-                StreamWriter sw = new StreamWriter(fs);
-
-                for (int i = 0; i < 10; ++i)
-                {
-                    sw.WriteLine(i);
-                    sw.WriteLine(DataGetTime[k, i]);
-                    for (int j = 0; j < 10; ++j)
-                    {
-                        sw.Write(arr[k, i, j] + " ");
-                    }
-                    sw.WriteLine();
-                }
-
-
-                /*for(;i < i + 10; i++)
-               {
-                   sw.WriteLine(i);
-                   sw.WriteLine(DataGetTime[k]);
-                   for (int j = 0; j < 3; ++j)
-                   {
-                       sw.Write(arr[k, j] + " ");
-                   }
-                   sw.WriteLine();
-               }*/
-
-
-
-                //清空缓冲区
-                sw.Flush();
-                //关闭流
-                sw.Close();
-                fs.Close();
-            }
-            MessageBox.Show("write finish!");
-
-
         }
     }
-
-    class dataProcess          //功放处理数据
-    {
-
-        public int[] SData = new int[2048];
-        int processway = 1;
-
-        //数据一
-        public int Arridx, Chnidx, IfcVerMajor, IfcVerMinor;
-        public int DppAvailable, SpectralDataAvailabel, SnapshotStatisticDataValid, MxPowerSupplyState, MxPowerSupplyStable, SddTemperatureReady;
-        public int ChannelState, CntCommunicationReset, CntUdpPacket, CntUdpSendErr, CntMissedPacket, CntSyncErr, CntSnapshotStatInvalid;
-        public float DppTemperature, SddTemperature;
-
-        //数据二
-        public int SpectCtr, Events, BytesPerBin, NumberOfBins, StartBin;
-        public float DppTransferTime, Realtime, Lifetime, InputCountRate, OutputCountRate, DeadtimeRatio;
-
-        //数据三
-        public int TemperatureWarning, TemperatureFault, MxPowerUndervoltageLockout, MixedModeDetected;
-        public float MxCpuTemperature, MxCpuUpperSurfaceTemperature, MxCpuUnderSurfaceTemperature, MxCpuLoadCore1, MxCpuLoadCore2, MxPowerTemperature;
-
-        //数据五
-        //public int SCAStartBin ,SCALength ,SCACount;
-        public int[] SCAStartBin = new int[4];
-        public int[] SCALength = new int[4];
-        public int[] SCACount = new int[4];
-
-
-        public int GetN(string data, ref int index, int n)
-        {
-            int ret = 0; int j = 0;
-            for (int i = index + 2 * n - 1; i >= index; i--)
-            {
-                int temp = data[i];
-                if (temp > 47 && temp < 58)
-                {
-                    temp -= 48;
-                }
-                else if (temp > 64 && temp < 71)
-                {
-                    temp -= 55;
-                }
-                double powAns = Math.Pow(16, j);
-                ret = ret + temp * (int)powAns;
-                j++;
-            }
-            index += 2 * n;
-            return ret;
-        }
-
-        public float strToFloat(string data)
-        {
-            uint num = uint.Parse(data, System.Globalization.NumberStyles.AllowHexSpecifier);
-            byte[] floatVals = BitConverter.GetBytes(num);
-            float f = BitConverter.ToSingle(floatVals, 0);
-            return f;
-        }
-
-        public int ChannelMetaSection(ref int index, int SectionLen, string rawdata)
-        {
-            if (processway == 1)
-            {
-                index += 2;
-                Chnidx = GetN(rawdata, ref index, 1);
-                index += 50;
-            }
-            else
-            {
-                Arridx = GetN(rawdata, ref index, 1);
-                Chnidx = GetN(rawdata, ref index, 1);
-                IfcVerMajor = GetN(rawdata, ref index, 1);
-                IfcVerMinor = GetN(rawdata, ref index, 1);
-
-                string temp;
-                int convertAns;
-                temp = rawdata.Substring(index, 4);
-                string Ans = Convert.ToString(Convert.ToInt32(temp, 16), 2).PadLeft(16, '0');
-
-                DppAvailable = Ans[15] - 48;
-                SpectralDataAvailabel = Ans[14] - 48;
-                SnapshotStatisticDataValid = Ans[13] - 48;
-                MxPowerSupplyState = Ans[12] - 48;
-                MxPowerSupplyStable = Ans[11] - 48;
-                SddTemperatureReady = Ans[10] - 48;
-
-                index += 4;
-
-                ChannelState = GetN(rawdata, ref index, 1);
-                CntCommunicationReset = GetN(rawdata, ref index, 2);
-                CntUdpPacket = GetN(rawdata, ref index, 2);
-                CntUdpSendErr = GetN(rawdata, ref index, 2);
-                CntMissedPacket = GetN(rawdata, ref index, 2);
-                CntSyncErr = GetN(rawdata, ref index, 2);
-                CntSnapshotStatInvalid = GetN(rawdata, ref index, 2);
-
-                temp = rawdata.Substring(index, 8);
-                DppTemperature = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                SddTemperature = strToFloat(temp);
-                index += 8;
-            }
-
-
-            return Chnidx;
-
-        }
-
-        public void SCADataSection(ref int index, int SectionLen, string rawdata)
-        {
-            int tempstartbin, templength, tempcount;
-            for (int i = 0; i < 16; i++)
-            {
-                tempstartbin = GetN(rawdata, ref index, 2);
-                templength = GetN(rawdata, ref index, 2);
-                tempcount = GetN(rawdata, ref index, 4);
-                /*if(i == Chnidx - 1)
-                {
-                    SCAStartBin = tempstartbin;
-                    SCALength = templength;
-                    SCACount = tempcount;
-                }*/
-                if (i >= 0 && i < 3)
-                {
-                    SCAStartBin[i] = tempstartbin;
-                    SCALength[i] = templength;
-                    SCACount[i] = tempcount;
-                }
-
-            }
-
-        }
-
-        public double SpectralMetaSection(ref int index, int SectionLen, string rawdata)
-        {
-            if (processway == 1)
-            {
-                index += 70;
-            }
-            else
-            {
-                SpectCtr = GetN(rawdata, ref index, 2);
-
-                string temp;
-                temp = rawdata.Substring(index, 8);
-                DppTransferTime = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                Realtime = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                Lifetime = strToFloat(temp);
-                index += 8;
-
-                Events = GetN(rawdata, ref index, 4);
-
-                temp = rawdata.Substring(index, 8);
-                InputCountRate = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                OutputCountRate = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                DeadtimeRatio = strToFloat(temp);
-                index += 8;
-
-                BytesPerBin = GetN(rawdata, ref index, 1);
-                NumberOfBins = GetN(rawdata, ref index, 2);
-                StartBin = GetN(rawdata, ref index, 2);
-            }
-            return Lifetime;
-
-        }
-
-        public void SpectrumSection(ref int index, int SectionLen, string rawdata)
-        {
-            if (processway == 1)
-            {
-                index += (SectionLen - 1) * 2;
-            }
-            else
-            {
-                int start = index;
-                for (int i = 0; index < start + (SectionLen - 1) * 2; i++)
-                {
-                    SData[i] = GetN(rawdata, ref index, 2);
-                }
-            }
-
-
-        }
-
-        public void DiagnosticDataSection(ref int index, int SectionLen, string rawdata)
-        {
-            if (processway == 1)
-            {
-                index += 52;
-            }
-            else
-            {
-                string temp;
-                temp = rawdata.Substring(index, 4);
-                string Ans = Convert.ToString(Convert.ToInt32(temp, 16), 2).PadLeft(16, '0');
-                TemperatureWarning = Ans[15] - 48;
-                TemperatureFault = Ans[14] - 48;
-                MxPowerUndervoltageLockout = Ans[13] - 48;
-                MixedModeDetected = Ans[12] - 48;
-                index += 4;
-
-                temp = rawdata.Substring(index, 8);
-                MxCpuTemperature = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                MxCpuUpperSurfaceTemperature = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                MxCpuUnderSurfaceTemperature = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                MxCpuLoadCore1 = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                MxCpuLoadCore2 = strToFloat(temp);
-                index += 8;
-
-                temp = rawdata.Substring(index, 8);
-                MxPowerTemperature = strToFloat(temp);
-                index += 8;
-
-            }
-        }
-    } 
 }

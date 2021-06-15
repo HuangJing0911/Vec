@@ -13,7 +13,7 @@ namespace XEthernetDemo
         public byte syn_code = Convert.ToByte(0xA5);   // 同步码(1 btye)
         public string flow_num = "0000";               // 流水编号(4 byte)
         public byte typof_block = 2;                    // 物块类型：0：镁，1：铝，2：重金属(1 byte)
-        public bool blow = false;                      // 是否吹气(1 byte)
+        public byte blow = 0;                           // 是否吹气(1 byte)
         public Int64 start_time;                       // 开始吹气时间(8 byte)
         public Int16 blow_time = 0;                     // 吹气持续时间(2 byte)
         public Int16 start_num = 0;                    // 开始吹气阀号(2 byte)
@@ -28,7 +28,7 @@ namespace XEthernetDemo
 
         public void Init_Dataset(Rect boundRect, XImageW image)
         {
-            blow = true;
+            blow = 1;
         }
 
         public void Select_type(byte type)
