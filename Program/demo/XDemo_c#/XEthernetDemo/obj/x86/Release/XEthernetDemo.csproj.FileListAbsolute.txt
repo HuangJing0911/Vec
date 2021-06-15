@@ -7,3 +7,39 @@ C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEth
 C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.csproj.GenerateResource.Cache
 C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.exe
 C:\Zhang Xu\work\Developing\SVN-Arjak\X-LIB Release\X-LIB SDK\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XEthernetDemo.exe.config
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.exe
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\dll\x86\OpenCvSharpExtern.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\dll\x86\opencv_ffmpeg400.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\dll\x64\OpenCvSharpExtern.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\dll\x64\opencv_ffmpeg400_64.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XEthernetDemo.exe.manifest
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XEthernetDemo.application
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XEthernetDemo.exe
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XEthernetDemo.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\HslCommunication.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\Newtonsoft.Json.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.Blob.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.Extensions.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.UserInterface.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XLibWrapper.dll
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\HslCommunication.xml
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\Newtonsoft.Json.xml
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.xml
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.Blob.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.Blob.xml
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.Extensions.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.Extensions.xml
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.UserInterface.pdb
+F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\OpenCvSharp.UserInterface.xml
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.Form1.resources
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.Properties.Resources.resources
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.csproj.GenerateResource.Cache
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.exe.manifest
+F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.application
+C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Release\XEthernetDemo.exe.config
+C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.exe
+C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Release\XEthernetDemo.pdb
