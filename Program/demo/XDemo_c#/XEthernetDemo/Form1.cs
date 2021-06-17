@@ -63,6 +63,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
+        public float speed = 2.5f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -306,7 +307,7 @@ namespace XEthernetDemo
         int count_thread = 0;
         void threadCounters(Object obj)
         {
-            TimeSpan stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            DateTime stamp = DateTime.Now;
             XImageW image = (XImageW)obj;
             //XTifFormatW image_tif = new XTifFormatW(image,xdevice);
             pic_num++;
@@ -479,9 +480,12 @@ namespace XEthernetDemo
                 ntp_data[5] = data.typof_block;             // 物块类型
                 ntp_data[6] = Convert.ToByte(data.blow);    // 是否吹气
                 byte[] b = new byte[8];
-                for (int i = 0; i < 7; i++)
-                    ntp_data[i + 7] = (byte)(data.start_time >> (i * 8) & 0xff);    // 开始吹气时间
+                for (int i = 0; i < 6; i++)
+                    ntp_data[i + 7] = data.start_time[i];    // 开始吹气时间
                 byte[] c = new byte[2];
+                c = BitConverter.GetBytes(data.millionseconds);
+                ntp_data[13] = c[0];
+                ntp_data[14] = c[1];                        // 开始吹起的毫秒数
                 c = BitConverter.GetBytes(data.blow_time);
                 ntp_data[15] = c[0];
                 ntp_data[16] = c[1];                        // 吹气持续时间
@@ -524,9 +528,12 @@ namespace XEthernetDemo
                 ntp_data[5] = data.typof_block;             // 物块类型
                 ntp_data[6] = Convert.ToByte(data.blow);    // 是否吹气
                 byte[] b = new byte[8];
-                for (int i = 0; i < 7; i++)
-                    ntp_data[i + 7] = (byte)(data.start_time >> (i * 8) & 0xff);    // 开始吹气时间
+                for (int i = 0; i < 6; i++)
+                    ntp_data[i + 7] = data.start_time[i];    // 开始吹气时间
                 byte[] c = new byte[2];
+                c = BitConverter.GetBytes(data.millionseconds);
+                ntp_data[13] = c[0];
+                ntp_data[14] = c[1];                        // 开始吹起的毫秒数
                 c = BitConverter.GetBytes(data.blow_time);
                 ntp_data[15] = c[0];
                 ntp_data[16] = c[1];                        // 吹气持续时间
@@ -544,7 +551,29 @@ namespace XEthernetDemo
             }
         }
 
-        public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, TimeSpan stamp)
+        // 发送当前时间点的时间戳
+        public void timecheck()
+        {
+            DateTime stamp = DateTime.Now;
+            Data_Set data = new Data_Set();
+            data.check_num = 1;     // 此时数据包为检验数据包，进行时间同步
+            data.start_time[0] = (byte)(stamp.Year - 2000);
+            data.start_time[1] = (byte)(stamp.Month);
+            data.start_time[2] = (byte)(stamp.Day);
+            data.start_time[3] = (byte)(stamp.Hour);
+            data.start_time[4] = (byte)(stamp.Minute);
+            data.start_time[5] = (byte)(stamp.Second);
+            data.millionseconds = (Int16)stamp.Millisecond;
+            //data.start_time = (Int64)stamp.TotalMilliseconds;
+            int num = SendData(data);
+            if (num == 23)
+            {
+                //CardNum1.Text = "Successfully AutoCheckTime!";
+                Total_Block_Num.Text =  Convert.ToString(stamp) + ":" + Convert.ToString(stamp.Millisecond) + "ms";
+            }
+        }
+
+        public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
             //CardNum2.Text = Convert.ToString(row)+"row";
             //CardNum3.Text = Convert.ToString(col) + "col";
@@ -612,8 +641,24 @@ namespace XEthernetDemo
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
-                    // 设置开始喷吹时间
-                    data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond) + 780 - 120;
+                    // 设置开始喷吹时间+780-120
+                    int k = (boundRect[i].Y / line_num_persecond) + 650 - 120;
+                    data.start_time[0] = (byte)(stamp.Year - 2000);
+                    data.start_time[1] = (byte)(stamp.Month);
+                    data.start_time[2] = (byte)(stamp.Day);
+                    data.start_time[3] = (byte)(stamp.Hour);
+                    data.start_time[4] = (byte)(stamp.Minute);
+                    if (stamp.Millisecond + k > 999)
+                    {
+                        data.start_time[5] = (byte)(stamp.Second + k/1000);
+                        data.millionseconds = (byte)(stamp.Millisecond + k % 1000);
+                    }
+                    else
+                    {
+                        data.start_time[5] = (byte)(stamp.Second);
+                        data.millionseconds = (byte)(stamp.Millisecond + k);
+                    }    
+
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Height / line_num_persecond);
@@ -625,6 +670,9 @@ namespace XEthernetDemo
                     {
                         total_clock_num++;
                         CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
+                        CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
+                        CardNum3.Text = Convert.ToString(data.start_time[4]) + ":" + Convert.ToString(data.start_time[5]) + "s" + Convert.ToString(data.millionseconds) + "ms";
+                        CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
                     }
 
                 }
@@ -1198,7 +1246,9 @@ namespace XEthernetDemo
         {
             //GetTXT_as_mat(test_txt_filepath);
             //OnFrameReady_testimage();
-            //Total_Block_Num.Text = Convert.ToString("0000"+1);
+            //Total_Block_Num.Text = Convert.ToString((byte)(DateTime.Now.Year - 2000));
+            timecheck();
+            
         }
 
         
@@ -1234,18 +1284,10 @@ namespace XEthernetDemo
             }
         }
 
+
         private void AutoCheckTimer_Tick(object sender, EventArgs e)
         {
-            // 发送当前时间点的时间戳
-            TimeSpan stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            Data_Set data = new Data_Set();
-            data.check_num = 1;     // 此时数据包为检验数据包，进行时间同步
-            data.start_time = (Int64)stamp.TotalMilliseconds;
-            int num = SendData(data);
-            if (num == 23)
-            {
-                CardNum1.Text = "Successfully AutoCheckTime!";
-            }
+            timecheck();
         }
 
         private void startGF_Click(object sender, EventArgs e)
@@ -1272,12 +1314,20 @@ namespace XEthernetDemo
 
         private void stopGF_Click(object sender, EventArgs e)
         {
+            
             quit_flag = true;
+           
+                
+          
             write(SCAData);
             socket.Close();
             conditional_variable.Set();
             conditional_variable.Set();
 
+            while (msg_queue.Count != 0)
+            {
+                msg_queue.Clear();
+            }
             DateTime endtime = starttime.AddSeconds(lifetime);
 
             string url = "http://172.28.110.100:8000/Configuration/Controller";

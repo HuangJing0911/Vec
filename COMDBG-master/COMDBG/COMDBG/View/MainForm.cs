@@ -345,11 +345,12 @@ namespace COMDBG
             bool flag = false;
 
             // 把64位时间戳取前32位并转为4byte的字符串
-            TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            Int64 time = (Int64)time_stamp.TotalMilliseconds;
-            UInt32 time_32 = (UInt32)(time & 0xffffffff);
-            String b = Convert.ToString(time, 2);
-            receivetbx.Text = Convert.ToString(time_stamp.TotalMilliseconds);
+            //TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            //Int64 time = (Int64)time_stamp.TotalMilliseconds;
+            //UInt32 time_32 = (UInt32)(time & 0xffffffff);
+            //String b = Convert.ToString(time, 2);
+            receivetbx.Text = Convert.ToString(DateTime.Now ) +":" + Convert.ToString(DateTime.Now.Millisecond) + "ms";
+            /*
             String a;
             Byte[] bytes = new byte[4];
             String pre_time = Convert.ToString(time_32, 2);     // 转为二进制
@@ -365,7 +366,7 @@ namespace COMDBG
             flag = controller.SendDataToCom(bytes);
             sendbtn.Enabled = true;
             sendBytesCount += bytes.Length;
-
+            */
             /*
             if (sendText == null)
             {

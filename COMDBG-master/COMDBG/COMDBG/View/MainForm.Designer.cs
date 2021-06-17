@@ -348,6 +348,7 @@
             // 
             this.receivetbx.BackColor = System.Drawing.SystemColors.InfoText;
             this.receivetbx.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.receivetbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.receivetbx.ForeColor = System.Drawing.SystemColors.Info;
             this.receivetbx.Location = new System.Drawing.Point(7, 38);
             this.receivetbx.Multiline = true;
@@ -493,7 +494,7 @@
             this.statuslabel.ActiveLinkColor = System.Drawing.SystemColors.ButtonHighlight;
             this.statuslabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statuslabel.Name = "statuslabel";
-            this.statuslabel.Size = new System.Drawing.Size(147, 17);
+            this.statuslabel.Size = new System.Drawing.Size(157, 17);
             this.statuslabel.Spring = true;
             this.statuslabel.Text = "Not Connected";
             this.statuslabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -507,7 +508,7 @@
             // 
             this.toolStripStatusRx.ActiveLinkColor = System.Drawing.SystemColors.Info;
             this.toolStripStatusRx.Name = "toolStripStatusRx";
-            this.toolStripStatusRx.Size = new System.Drawing.Size(147, 17);
+            this.toolStripStatusRx.Size = new System.Drawing.Size(157, 17);
             this.toolStripStatusRx.Spring = true;
             this.toolStripStatusRx.Text = "Received:";
             this.toolStripStatusRx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -515,7 +516,7 @@
             // toolStripStatusTx
             // 
             this.toolStripStatusTx.Name = "toolStripStatusTx";
-            this.toolStripStatusTx.Size = new System.Drawing.Size(147, 17);
+            this.toolStripStatusTx.Size = new System.Drawing.Size(157, 17);
             this.toolStripStatusTx.Spring = true;
             this.toolStripStatusTx.Text = "Sent:";
             this.toolStripStatusTx.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

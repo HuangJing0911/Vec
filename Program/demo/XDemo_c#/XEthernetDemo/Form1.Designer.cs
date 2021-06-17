@@ -1533,10 +1533,11 @@
             // 
             // Total_Block_Num
             // 
-            this.Total_Block_Num.Location = new System.Drawing.Point(331, 33);
+            this.Total_Block_Num.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Total_Block_Num.Location = new System.Drawing.Point(315, 34);
             this.Total_Block_Num.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Total_Block_Num.Name = "Total_Block_Num";
-            this.Total_Block_Num.Size = new System.Drawing.Size(148, 21);
+            this.Total_Block_Num.Size = new System.Drawing.Size(230, 21);
             this.Total_Block_Num.TabIndex = 13;
             this.Total_Block_Num.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -1564,7 +1565,6 @@
             // 
             // AutoCheckTimer
             // 
-            this.AutoCheckTimer.Enabled = true;
             this.AutoCheckTimer.Interval = 10000;
             this.AutoCheckTimer.Tick += new System.EventHandler(this.AutoCheckTimer_Tick);
             // 
