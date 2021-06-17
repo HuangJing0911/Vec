@@ -1250,15 +1250,19 @@ namespace XEthernetDemo
 
         private void startGF_Click(object sender, EventArgs e)
         {
-            Thread listen_thread = new Thread(RecvMessage);
+            Thread listen_thread1 = new Thread(RecvMessage);
+            Thread listen_thread2 = new Thread(RecvMessage);
             Thread process_thread1 = new Thread(ProcessMessage);
-            //Thread Process_therad2 = new Thread(ProcessMessage);
-            listen_thread.Start();
+            Thread process_thread2 = new Thread(ProcessMessage);
+            listen_thread1.Start();
+            listen_thread2.Start();
             process_thread1.Start();
+            process_thread2.Start();
 
             //开启时间戳
             string url = "http://172.28.110.100:8000/Configuration/Controller";
             ConSet.SyncMode = 1;
+            ConSet.CycleTime = 25000;
             Conupdate.Settings = ConSet;
             string putData = JsonConvert.SerializeObject(Conupdate);
             string putReturnJson = op.Put(url, putData);
@@ -1448,7 +1452,7 @@ namespace XEthernetDemo
                 sw.Close();
                 fs.Close();
             }
-            MessageBox.Show("write finish!");
+            //MessageBox.Show("write finish!");
 
 
         }

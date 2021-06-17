@@ -414,3 +414,7 @@ F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
 F:\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
 F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
 F:\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
+C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.manifest
+C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.application
+C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
+C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
