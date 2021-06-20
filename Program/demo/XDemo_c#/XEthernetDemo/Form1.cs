@@ -32,6 +32,13 @@ namespace XEthernetDemo
         internal string getTime;
     }
 
+    struct GFinfo
+    {
+        internal int channelindexl;
+        internal string time;
+        internal int peak;
+    }
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -43,6 +50,7 @@ namespace XEthernetDemo
         }
 
         //功放变量
+        static Queue<GFinfo> info_queue;
         static Queue<Msg> msg_queue;
         static Socket socket;
         static AutoResetEvent conditional_variable;
@@ -58,7 +66,7 @@ namespace XEthernetDemo
         private int firstProcessFlag = 0;
         public int CycleCount = 0;
         public int chnldx;
-        public double lifetime = 0;
+        public float lifetime = 0;
         public string getTime = "";
         public string currenTime = "";
         public int count = 0;
@@ -1231,7 +1239,7 @@ namespace XEthernetDemo
             IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse("172.28.110.110"), 27001);          //172.28.110.110   27001
             udpRecv.Bind(endpoint);*/
             string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 0;
+            ConSet.SyncMode = 1;
             Conupdate.Settings = ConSet;
             string putData = JsonConvert.SerializeObject(Conupdate);
             string putReturnJson = op.Put(url, putData);
@@ -1303,7 +1311,7 @@ namespace XEthernetDemo
 
             //开启时间戳
             string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 1;
+            ConSet.SyncMode = 0;
             ConSet.CycleTime = 25000;
             Conupdate.Settings = ConSet;
             string putData = JsonConvert.SerializeObject(Conupdate);
@@ -1314,7 +1322,12 @@ namespace XEthernetDemo
 
         private void stopGF_Click(object sender, EventArgs e)
         {
-            
+            /*
+            lock (locker)
+            {
+                msg_queue.Clear();
+            }
+            */
             quit_flag = true;
            
                 
@@ -1324,14 +1337,11 @@ namespace XEthernetDemo
             conditional_variable.Set();
             conditional_variable.Set();
 
-            while (msg_queue.Count != 0)
-            {
-                msg_queue.Clear();
-            }
+          
             DateTime endtime = starttime.AddSeconds(lifetime);
 
             string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 0;
+            ConSet.SyncMode = 1;
             Conupdate.Settings = ConSet;
             string putData = JsonConvert.SerializeObject(Conupdate);
             string putReturnJson = op.Put(url, putData);
@@ -1513,7 +1523,7 @@ namespace XEthernetDemo
     {
 
         public int[] SData = new int[2048];
-        int processway = 1;
+        int processway = 2;   //1:仅仅处理SCA
 
         //数据一
         public int Arridx, Chnidx, IfcVerMajor, IfcVerMinor;
@@ -1642,11 +1652,18 @@ namespace XEthernetDemo
 
         }
 
-        public double SpectralMetaSection(ref int index, int SectionLen, string rawdata)
+        public float SpectralMetaSection(ref int index, int SectionLen, string rawdata)
         {
             if (processway == 1)
             {
                 index += 70;
+                /*
+                index += 20;
+                string temp;
+                temp = rawdata.Substring(index, 8);
+                Lifetime = strToFloat(temp);
+                index += 50;
+                */
             }
             else
             {
