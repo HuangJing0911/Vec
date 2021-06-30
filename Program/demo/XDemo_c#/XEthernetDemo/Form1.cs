@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 2.5f;                     // 传送带速度
+        public float speed = 3.0f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -624,11 +624,17 @@ namespace XEthernetDemo
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
 
                 // 画出检测的轮廓
+                int flag = 0;
                 for (int i = 0; i < contours.Length; i++)
                 {
+                    if (contours.Length > 20)
+                    {
+                        break;
+                    }
+                        
                     double area = Cv2.ContourArea(contours[i]);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3)
+                    if (area == 0 || boundRect[i].Height > row / 2)
                         continue;
                     Scalar color = new Scalar(0, 0, 255);
                     Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
@@ -637,11 +643,13 @@ namespace XEthernetDemo
                         new Scalar(0, 255, 0), 2, LineTypes.Link8);
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
-                int flag = 0;
+                
 
                 // 求出时间戳并发送物块信息
                 for (int i = 0; i < contours.Length; i++)
                 {
+                    if (contours.Length > 20)
+                        break;
                     double area = Cv2.ContourArea(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3)
                         continue;
@@ -650,7 +658,7 @@ namespace XEthernetDemo
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间+780-120
-                    int k = (boundRect[i].Y / line_num_persecond) + 650 - 120;
+                    int k = (boundRect[i].Y / line_num_persecond) + Convert.ToInt32(310*speed) - 120;
                     data.start_time[0] = (byte)(stamp.Year - 2000);
                     data.start_time[1] = (byte)(stamp.Month);
                     data.start_time[2] = (byte)(stamp.Day);
@@ -665,7 +673,22 @@ namespace XEthernetDemo
                     {
                         data.start_time[5] = (byte)(stamp.Second);
                         data.millionseconds = (byte)(stamp.Millisecond + k);
-                    }    
+                    }
+                    if (stamp.Second >= 60)
+                    {
+                        data.start_time[5] = (byte)(stamp.Second % 60);
+                        data.start_time[4] = (byte)(stamp.Minute + 1);
+                    }
+                    if (stamp.Minute >= 60)
+                    {
+                        data.start_time[4] = (byte)(stamp.Minute % 60);
+                        data.start_time[3] = (byte)(stamp.Hour + 1);
+                    }
+                    if (stamp.Hour >= 24)
+                    {
+                        data.start_time[3] = (byte)(stamp.Minute % 24);
+                        data.start_time[2] = (byte)(stamp.Hour + 1);
+                    }
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
@@ -686,7 +709,11 @@ namespace XEthernetDemo
                 }
                 // 画出原始图像和处理后图像
                 if (flag == 1)
+                {
+                    ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
                     Cv2.ImWrite(result_pic, connImage);
+                }
+                    
 
             }
 
@@ -1322,12 +1349,12 @@ namespace XEthernetDemo
 
         private void stopGF_Click(object sender, EventArgs e)
         {
-            /*
+            
             lock (locker)
             {
                 msg_queue.Clear();
             }
-            */
+            
             quit_flag = true;
            
                 
