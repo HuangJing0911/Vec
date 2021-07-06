@@ -106,8 +106,10 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        int line_num_persecond = 5;     // 5lines/ms
+        float integral_time = 3;     // 默认扫描积分时间3ms
         int num_of_mouth = 198;
+        float SDD = 970;
+        float SOD = 790;
         string result_pic;
         string init_pic;
         Socket client = null;
@@ -115,6 +117,9 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
+        string result_data = "C:/Users/weike/Desktop/0413_data/result-data.txt";
+        FileStream fs;
+        StreamWriter wr;
         const string ntpServer = "192.168.250.1";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         // 测试代码
@@ -579,6 +584,8 @@ namespace XEthernetDemo
                 //CardNum1.Text = "Successfully AutoCheckTime!";
                 Total_Block_Num.Text =  Convert.ToString(stamp) + ":" + Convert.ToString(stamp.Millisecond) + "ms";
             }
+            wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + "20" + data.start_time[0] + "-" + data.start_time[1]+ "-" + data.start_time[2] + " " + data.start_time[3] +":" + data.start_time[4] + ":" + data.start_time[5] + ":" + data.millionseconds + "ms" +  '\t' + data.blow_time + "ms");
+            wr.Flush();
         }
 
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
@@ -592,7 +599,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            //Cv2.ImWrite(init_pic, image);
+            Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -643,7 +650,6 @@ namespace XEthernetDemo
                         new Scalar(0, 255, 0), 2, LineTypes.Link8);
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
-                
 
                 // 求出时间戳并发送物块信息
                 for (int i = 0; i < contours.Length; i++)
@@ -658,7 +664,7 @@ namespace XEthernetDemo
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间+780-120
-                    int k = (boundRect[i].Y / line_num_persecond) + Convert.ToInt32(310*speed) - 120;
+                    int k = (int)((boundRect[i].Y * integral_time) + Convert.ToInt32(310*speed) - 120);
                     data.start_time[0] = (byte)(stamp.Year - 2000);
                     data.start_time[1] = (byte)(stamp.Month);
                     data.start_time[2] = (byte)(stamp.Day);
@@ -692,10 +698,14 @@ namespace XEthernetDemo
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height / line_num_persecond);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time);
                     // 设置开始吹气阀号和停止吹气阀号
                     data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    if (data.start_num < 1)
+                        data.start_num = 1;
                     data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth + 1);
+                    if (data.end_num > num_of_mouth)
+                        data.end_num = (short)num_of_mouth;
                     int num = SendData(data);
                     if (num == 23)
                     {
@@ -706,12 +716,17 @@ namespace XEthernetDemo
                         CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
                     }
 
+                    
+                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + "20" + data.start_time[0] +"-" + data.start_time[1] + "-" + data.start_time[2] + " " + data.start_time[3] + ":" + data.start_time[4] + ":" + data.start_time[5] + ":" + data.millionseconds + "ms" + '\t' + data.blow_time + "ms");
+                    
                 }
+                wr.Flush();
                 // 画出原始图像和处理后图像
                 if (flag == 1)
                 {
                     ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
                     Cv2.ImWrite(result_pic, connImage);
+                    
                 }
                     
 
@@ -862,6 +877,22 @@ namespace XEthernetDemo
             xsystem.RecoverDevice();
         }
 
+        void SetIntegralTime()
+        {
+            ulong pixel_size;
+            float integral; 
+            unsafe
+            {
+                ulong data;
+                xcommand.GetPara(36, &data, 0);
+                pixel_size = data;
+            }
+            integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
+            MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");  
+            ulong integral_time = (ulong)(integral * 1000);
+            xcommand.SetPara(3, integral_time, 0);
+        }
+
         private void Open_Click(object sender, EventArgs e)
         {
             xdevice = xsystem.GetDevice(0);
@@ -951,6 +982,9 @@ namespace XEthernetDemo
                 Connect_to_PLC();
                 if (client.Connected)
                     MessageBox.Show("Successfully Connect to PLC!");
+                SetIntegralTime();
+                fs = new FileStream(result_data, FileMode.Append);
+                wr = new StreamWriter(fs);
             }
             
         }
@@ -1008,6 +1042,11 @@ namespace XEthernetDemo
         {
             frame_count = 0;
             lost_line = 0;
+            wr.WriteLine("\n*************************************************************************");
+            DateTime dt = DateTime.Now;
+            wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + "blow_time");
+            wr.Flush();
             LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
             xacquisition.Grab(0);
             Console.WriteLine("start grab!!!");
@@ -1015,6 +1054,7 @@ namespace XEthernetDemo
 
         private void Stop_Click(object sender, EventArgs e)
         {
+            //wr.Close();
             xacquisition.Stop();
         }
 
