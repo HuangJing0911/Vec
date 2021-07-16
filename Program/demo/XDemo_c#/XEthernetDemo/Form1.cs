@@ -106,8 +106,10 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        float integral_time = 3;     // 默认扫描积分时间3ms
-        int num_of_mouth = 198;
+        float integral_time = 3;        // 默认扫描积分时间3ms
+        int num_of_mouth = 198;         // 喷嘴数量
+        int length_belt = 1000;         // 皮带长度为1000mm
+        int length_linearray = 1200;    // 线阵长度为1200mm
         float SDD = 970;
         float SOD = 790;
         string result_pic;
@@ -664,46 +666,49 @@ namespace XEthernetDemo
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间+780-120
-                    int k = (int)((boundRect[i].Y * integral_time) + Convert.ToInt32(310*speed) - 120);
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * row);
                     data.start_time[0] = (byte)(stamp.Year - 2000);
                     data.start_time[1] = (byte)(stamp.Month);
                     data.start_time[2] = (byte)(stamp.Day);
                     data.start_time[3] = (byte)(stamp.Hour);
                     data.start_time[4] = (byte)(stamp.Minute);
-                    if (stamp.Millisecond + k > 999)
+                    if (stamp.Millisecond + k < 0)
                     {
-                        data.start_time[5] = (byte)(stamp.Second + k/1000);
-                        data.millionseconds = (byte)(stamp.Millisecond + k % 1000);
+                        data.start_time[5] = (byte)(stamp.Second + k/1000 - 1);
+                        data.millionseconds = (byte)(stamp.Millisecond + 1000 + k % 1000);
                     }
                     else
                     {
                         data.start_time[5] = (byte)(stamp.Second);
                         data.millionseconds = (byte)(stamp.Millisecond + k);
                     }
-                    if (stamp.Second >= 60)
+                    if (data.start_time[5] < 0)
                     {
-                        data.start_time[5] = (byte)(stamp.Second % 60);
-                        data.start_time[4] = (byte)(stamp.Minute + 1);
+                        data.start_time[5] = (byte)(60 + stamp.Second);
+                        data.start_time[4] = (byte)(stamp.Minute - 1);
                     }
-                    if (stamp.Minute >= 60)
+                    if (data.start_time[4] < 0)
                     {
-                        data.start_time[4] = (byte)(stamp.Minute % 60);
-                        data.start_time[3] = (byte)(stamp.Hour + 1);
+                        data.start_time[4] = (byte)(60 + stamp.Minute);
+                        data.start_time[3] = (byte)(stamp.Hour - 1);
                     }
-                    if (stamp.Hour >= 24)
+                    if (data.start_time[3] < 0)
                     {
-                        data.start_time[3] = (byte)(stamp.Minute % 24);
-                        data.start_time[2] = (byte)(stamp.Hour + 1);
+                        data.start_time[3] = (byte)(24 + stamp.Hour);
+                        data.start_time[2] = (byte)(stamp.Hour - 1);
                     }
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Height * integral_time);
                     // 设置开始吹气阀号和停止吹气阀号
-                    data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    if ((float)boundRect[i].X / col > 0.5)
+                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_belt / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                    else
+                        data.start_num = (Int16)(((length_belt / 2) - ((length_belt / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
                     if (data.start_num < 1)
                         data.start_num = 1;
-                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth + 1);
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
                     int num = SendData(data);
@@ -879,14 +884,14 @@ namespace XEthernetDemo
 
         void SetIntegralTime()
         {
-            ulong pixel_size;
-            float integral; 
+            ulong pixel_size; 
             unsafe
             {
                 ulong data;
                 xcommand.GetPara(36, &data, 0);
                 pixel_size = data;
             }
+            float integral = 0;
             integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
             MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");  
             ulong integral_time = (ulong)(integral * 1000);
