@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 3.0f;                     // 传送带速度
+        public float speed = 2.0f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -604,7 +604,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            Cv2.ImWrite(init_pic, image);
+            //Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -671,7 +671,7 @@ namespace XEthernetDemo
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间+780-120
-                    int k = (int)((boundRect[i].Y * integral_time) + (2.4 / speed * 1000) - integral_time * 512);
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);
                     data.start_time[0] = (byte)(stamp.Year - 2000);
                     data.start_time[1] = (byte)(stamp.Month);
                     data.start_time[2] = (byte)(stamp.Day);
@@ -705,15 +705,22 @@ namespace XEthernetDemo
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 100);
+                    //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
                     if ((float)boundRect[i].X / col > 0.5)
                         data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_belt / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
                     else
                         data.start_num = (Int16)(((length_belt / 2) - ((length_belt / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    data.start_num = (Int16)(data.start_num - 10);
+                    //data.start_num = (short)1;
                     if (data.start_num < 1)
-                        data.start_num = 1;
+                        data.start_num = (short)1;
                     data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
+                    data.end_num = (Int16)(data.end_num + 10);
+                    //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
                     int num = SendData(data);
