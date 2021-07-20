@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 2.0f;                     // 传送带速度
+        public float speed = 3.0f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
