@@ -120,8 +120,11 @@ namespace XEthernetDemo
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
         string result_data = "C:/Users/weike/Desktop/0413_data/result-data.txt";
+        string time_data = "C:/Users/weike/Desktop/0413_data/frame-time-data.txt";
         FileStream fs;
         StreamWriter wr;
+        FileStream fs2;
+        StreamWriter wr2;
         const string ntpServer = "192.168.250.1";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         // 测试代码
@@ -623,6 +626,9 @@ namespace XEthernetDemo
             //Console.WriteLine("=====================");
             time_finish = DateTime.Now.Millisecond;
             Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
+            wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length);
+            //341 347 348 346
+            wr2.Flush();
 
             if (contours.Length != 0)
             {
@@ -631,7 +637,6 @@ namespace XEthernetDemo
                 Console.WriteLine("==================================\n\n");
                 total_card_num += contours.Length;
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
-
                 // 画出检测的轮廓
                 int flag = 0;
                 for (int i = 0; i < contours.Length; i++)
@@ -659,14 +664,14 @@ namespace XEthernetDemo
                     if (contours.Length > 20)
                         break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3)
+                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10)
                         continue;
                     flag = 1;
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
                     // 设置开始喷吹时间+780-120
-                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * row);
+                    int k = (int)((boundRect[i].Y * integral_time) + (2.4 / speed * 1000) - integral_time * 512);
                     data.start_time[0] = (byte)(stamp.Year - 2000);
                     data.start_time[1] = (byte)(stamp.Month);
                     data.start_time[2] = (byte)(stamp.Day);
@@ -729,9 +734,9 @@ namespace XEthernetDemo
                 // 画出原始图像和处理后图像
                 if (flag == 1)
                 {
+                    //Cv2.ImWrite(init_pic, image);
                     ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
                     Cv2.ImWrite(result_pic, connImage);
-                    
                 }
                     
 
@@ -894,8 +899,9 @@ namespace XEthernetDemo
             float integral = 0;
             integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
             MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");  
-            ulong integral_time = (ulong)(integral * 1000);
-            xcommand.SetPara(3, integral_time, 0);
+            ulong integral_times = (ulong)(integral * 1000);
+            xcommand.SetPara(3, integral_times, 0);
+            integral_time = integral;
         }
 
         private void Open_Click(object sender, EventArgs e)
@@ -990,6 +996,8 @@ namespace XEthernetDemo
                 SetIntegralTime();
                 fs = new FileStream(result_data, FileMode.Append);
                 wr = new StreamWriter(fs);
+                fs2 = new FileStream(time_data, FileMode.Append);
+                wr2 = new StreamWriter(fs2);
             }
             
         }
@@ -1050,8 +1058,12 @@ namespace XEthernetDemo
             wr.WriteLine("\n*************************************************************************");
             DateTime dt = DateTime.Now;
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
+            wr2.WriteLine("\n*************************************************************************");
+            wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + "blow_time");
             wr.Flush();
+            wr2.WriteLine("frame_count\tcontour_length");
+            wr2.Flush();
             LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
             xacquisition.Grab(0);
             Console.WriteLine("start grab!!!");
