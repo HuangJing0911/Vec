@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 3.0f;                     // 传送带速度
+        public float speed = 1.5f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -604,7 +604,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            //Cv2.ImWrite(init_pic, image);
+            Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -705,7 +705,7 @@ namespace XEthernetDemo
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 100);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 20);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
                     if ((float)boundRect[i].X / col > 0.5)
@@ -723,6 +723,9 @@ namespace XEthernetDemo
                     //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
+                    
+                    // 让延迟一段时间发送物块信息 
+                    Thread.Sleep((int)(2400/speed) - );
                     int num = SendData(data);
                     if (num == 23)
                     {

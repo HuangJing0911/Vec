@@ -1565,7 +1565,6 @@
             // 
             // AutoCheckTimer
             // 
-            this.AutoCheckTimer.Enabled = true;
             this.AutoCheckTimer.Interval = 10000;
             this.AutoCheckTimer.Tick += new System.EventHandler(this.AutoCheckTimer_Tick);
             // 
