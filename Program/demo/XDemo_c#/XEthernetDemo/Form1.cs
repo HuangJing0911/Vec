@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 1.5f;                     // 传送带速度
+        public float speed = 2.5f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -626,9 +626,8 @@ namespace XEthernetDemo
             //Console.WriteLine("=====================");
             time_finish = DateTime.Now.Millisecond;
             Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
-            wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length);
-            //341 347 348 346
-            wr2.Flush();
+            
+            
 
             if (contours.Length != 0)
             {
@@ -666,6 +665,11 @@ namespace XEthernetDemo
                     double area = Cv2.ContourArea(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10)
                         continue;
+
+                    wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
+                    //341 347 348 346
+                    wr2.Flush();
+
                     flag = 1;
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
@@ -725,7 +729,7 @@ namespace XEthernetDemo
                         data.end_num = (short)num_of_mouth;
                     
                     // 让延迟一段时间发送物块信息 
-                    Thread.Sleep((int)(2400/speed) - );
+                    //Thread.Sleep((int)(2400/speed) - );
                     int num = SendData(data);
                     if (num == 23)
                     {
@@ -1072,7 +1076,7 @@ namespace XEthernetDemo
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + "blow_time");
             wr.Flush();
-            wr2.WriteLine("frame_count\tcontour_length");
+            wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
             LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
             xacquisition.Grab(0);
