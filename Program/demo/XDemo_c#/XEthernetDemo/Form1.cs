@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 2.5f;                     // 传送带速度
+        public float speed = 1.5f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -593,6 +593,48 @@ namespace XEthernetDemo
             wr.Flush();
         }
 
+        // 线程处理函数
+        public void thread_for_sending(object obj)
+        {
+            wr.WriteLine(Thread.CurrentThread.ManagedThreadId + " thread start!");
+            Data_Set data = (Data_Set)obj;
+            DateTime stamp = DateTime.Now;
+            
+            // 计算休眠时间
+            int sleepfor = 0;   // 当前时间到检测到物块时间的差值
+            if (stamp.Second > data.start_time[5])
+            {
+                sleepfor = 1000 - data.start_time[5] + stamp.Millisecond;
+            }
+            else if (stamp.Second == data.start_time[5])
+            {
+                sleepfor = stamp.Millisecond - data.start_time[5];
+            }
+            else
+            {
+                sleepfor = 0;
+            }
+            wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + "20" + data.start_time[0] + "-" + data.start_time[1] + "-" + data.start_time[2] + " " + data.start_time[3] + ":" + data.start_time[4] + ":" + data.start_time[5] + ":" + data.millionseconds + "ms" + '\t' + data.blow_time + "ms\t" + sleepfor);
+
+
+            // 线程休眠
+            int delay_time = (int)(2400 / speed - sleepfor);    // 需要延迟的时间
+            int check = 50;
+            if (delay_time - check > 0 && sleepfor != 0)
+                Thread.Sleep(delay_time - check); // 线程休眠一段时间
+
+            int num = SendData(data);
+            if (num == 23)
+            {
+                total_clock_num++;
+                CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
+                CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
+                CardNum3.Text = Convert.ToString(data.start_time[4]) + ":" + Convert.ToString(data.start_time[5]) + "s" + Convert.ToString(data.millionseconds) + "ms";
+                CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
+            }
+
+        }
+
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
             //CardNum2.Text = Convert.ToString(row)+"row";
@@ -604,7 +646,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            Cv2.ImWrite(init_pic, image);
+            //Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -727,21 +769,12 @@ namespace XEthernetDemo
                     //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
-                    
+
                     // 让延迟一段时间发送物块信息 
                     //Thread.Sleep((int)(2400/speed) - );
-                    int num = SendData(data);
-                    if (num == 23)
-                    {
-                        total_clock_num++;
-                        CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
-                        CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
-                        CardNum3.Text = Convert.ToString(data.start_time[4]) + ":" + Convert.ToString(data.start_time[5]) + "s" + Convert.ToString(data.millionseconds) + "ms";
-                        CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
-                    }
-
-                    
-                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + "20" + data.start_time[0] +"-" + data.start_time[1] + "-" + data.start_time[2] + " " + data.start_time[3] + ":" + data.start_time[4] + ":" + data.start_time[5] + ":" + data.millionseconds + "ms" + '\t' + data.blow_time + "ms");
+                    Thread t = new Thread(new ParameterizedThreadStart(thread_for_sending));
+                    //wr.WriteLine(t.ManagedThreadId + " thread start!");
+                    t.Start();
                     
                 }
                 wr.Flush();
@@ -1074,7 +1107,7 @@ namespace XEthernetDemo
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr2.WriteLine("\n*************************************************************************");
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + "blow_time");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "sleepfor");
             wr.Flush();
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
