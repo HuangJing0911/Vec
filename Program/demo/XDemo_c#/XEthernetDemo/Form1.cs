@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 1.5f;                     // 传送带速度
+        public float speed = 3f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -106,11 +106,12 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
+        int check_time_num = 0;
         float integral_time = 3;        // 默认扫描积分时间3ms
         int num_of_mouth = 198;         // 喷嘴数量
         int length_belt = 1000;         // 皮带长度为1000mm
         int length_linearray = 1200;    // 线阵长度为1200mm
-        float SDD = 970;
+        float SDD = 980;
         float SOD = 790;
         string result_pic;
         string init_pic;
@@ -563,6 +564,7 @@ namespace XEthernetDemo
                 c = BitConverter.GetBytes(data.blow_time);
                 ntp_data[15] = c[0];
                 ntp_data[16] = c[1];                        // 吹气持续时间
+                Console.WriteLine("blow time is:" + ntp_data[15] + "  "+ ntp_data[16]); 
                 c = BitConverter.GetBytes(data.start_num);
                 ntp_data[17] = c[0];
                 ntp_data[18] = c[1];                        // 开始吹气阀号
@@ -583,6 +585,7 @@ namespace XEthernetDemo
             DateTime stamp = DateTime.Now;
             Data_Set data = new Data_Set();
             data.check_num = 1;     // 此时数据包为检验数据包，进行时间同步
+            check_time_num++;
 
             /*
             data.start_time[0] = (byte)(stamp.Year - 2000);
@@ -602,7 +605,8 @@ namespace XEthernetDemo
             {
                 //CardNum1.Text = "Successfully AutoCheckTime!";
                 //Total_Block_Num.Text =  Convert.ToString(stamp) + ":" + Convert.ToString(stamp.Millisecond) + "ms";
-                Total_Block_Num.Text = Convert.ToString(data.start_time_int) + "ms";
+                //Total_Block_Num.Text = Convert.ToString(data.start_time_int) + "ms";
+                Total_Block_Num.Text = "check_time_num is " + Convert.ToString(check_time_num);
             }
             if (data.start_time_int % 10000 == 0)
             {
@@ -776,7 +780,7 @@ namespace XEthernetDemo
                     int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
-                    data.start_time_int = data.start_time_int + k + (int)(2400 / speed);                                  // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int = data.start_time_int + k + (int)(2400 / speed) + 6;                                  // 计算出物块到达喷嘴的格林威治毫秒时间
                     
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
@@ -784,21 +788,34 @@ namespace XEthernetDemo
                     data.blow_time = (Int16)(boundRect[i].Height * integral_time + 20);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
+                    /*
                     if ((float)boundRect[i].X / col > 0.5)
-                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_belt / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                    {
+                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                    }
                     else
-                        data.start_num = (Int16)(((length_belt / 2) - ((length_belt / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
-                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
-                    data.start_num = (Int16)(data.start_num - 10);
+                    {
+                        data.start_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                        if ((float)boundRect[i].X + boundRect[i].Width > col / 2)
+                            data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        else
+                            data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                    }
+                    */
+                    
+                    data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    data.start_num = (Int16)(data.start_num - 5);
                     //data.start_num = (short)1;
                     if (data.start_num < 1)
                         data.start_num = (short)1;
-                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
-                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
-                    data.end_num = (Int16)(data.end_num + 10);
+                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
+                    data.end_num = (Int16)(data.end_num + 5);
                     //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
+                    
 
                     // 让延迟一段时间发送物块信息 
                     // Thread.Sleep((int)(2400/speed) - );
@@ -812,7 +829,7 @@ namespace XEthernetDemo
                         total_clock_num++;
                         CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
                         CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
-                        CardNum3.Text = Convert.ToString(data.start_time[4]) + ":" + Convert.ToString(data.start_time[5]) + "s" + Convert.ToString(data.millionseconds) + "ms " + k;
+                        CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
                         CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
                         CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
                     }
@@ -1089,6 +1106,7 @@ namespace XEthernetDemo
                 wr = new StreamWriter(fs);
                 fs2 = new FileStream(time_data, FileMode.Append);
                 wr2 = new StreamWriter(fs2);
+                AutoCheckTimer.Enabled = true;
             }
             
         }
