@@ -14,7 +14,8 @@ namespace XEthernetDemo
         public string flow_num = "0000";               // 流水编号(4 byte)
         public byte typof_block = 2;                    // 物块类型：0：镁，1：铝，2：重金属(1 byte)
         public byte blow = 0;                           // 是否吹气(1 byte)
-        public byte[] start_time = new byte[6];         // 开始吹气时间(6 byte)
+        public byte[] start_time = new byte[6];         // 开始吹气时间(8 byte)
+        public Int64 start_time_int = 0;                    // 开始吹气时间
         public Int16 millionseconds = 0;                    // 开始吹气的毫秒数
         public Int16 blow_time = 0;                     // 吹气持续时间(2 byte)
         public Int16 start_num = 0;                    // 开始吹气阀号(2 byte)
