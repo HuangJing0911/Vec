@@ -71,7 +71,7 @@ namespace XEthernetDemo
         public string currenTime = "";
         public int count = 0;
         public int gapsum = 0;
-        public float speed = 3f;                     // 传送带速度
+        public float speed = 3.0f;                     // 传送带速度
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
@@ -106,12 +106,14 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        int check_time_num = 0;
+        int check_time_num = 0;         // 定时器1的计数器
+        int check_time_num2 = 0;        // 定时器2的计数器
         float integral_time = 3;        // 默认扫描积分时间3ms
         int num_of_mouth = 198;         // 喷嘴数量
         int length_belt = 1000;         // 皮带长度为1000mm
         int length_linearray = 1200;    // 线阵长度为1200mm
-        float SDD = 980;
+        uint time_interval = 5;         // 定时器定时时间为5ms
+        float SDD = 914;
         float SOD = 790;
         string result_pic;
         string init_pic;
@@ -128,6 +130,7 @@ namespace XEthernetDemo
         StreamWriter wr2;
         const string ntpServer = "192.168.250.1";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
+        //System.Timers.Timer t = new System.Timers.Timer(5);
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
         {
@@ -601,12 +604,15 @@ namespace XEthernetDemo
             data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
 
             int num = SendData(data);
+            //if (num == 23 && check_time_num % 50 == 0)
             if (num == 23)
             {
                 //CardNum1.Text = "Successfully AutoCheckTime!";
                 //Total_Block_Num.Text =  Convert.ToString(stamp) + ":" + Convert.ToString(stamp.Millisecond) + "ms";
                 //Total_Block_Num.Text = Convert.ToString(data.start_time_int) + "ms";
                 Total_Block_Num.Text = "check_time_num is " + Convert.ToString(check_time_num);
+                //Total_Block_Num.Text = "Unsuccessfully send check info!The check_time_num is: " + Convert.ToString(check_time_num);
+                //timeBox1.Text = Convert.ToString(DateTime.Now) + Convert.ToString(DateTime.Now.Millisecond);
             }
             if (data.start_time_int % 10000 == 0)
             {
@@ -615,6 +621,31 @@ namespace XEthernetDemo
             }
             // wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + "20" + data.start_time[0] + "-" + data.start_time[1]+ "-" + data.start_time[2] + " " + data.start_time[3] +":" + data.start_time[4] + ":" + data.start_time[5] + ":" + data.millionseconds + "ms" +  '\t' + data.blow_time + "ms");
             // wr.Flush();
+            // DateTime stamp2 = DateTime.Now;
+            // CardNum5.Text = Convert.ToString(stamp2.Millisecond - stamp.Millisecond);
+        }
+
+        // 获得格林威治时间函数
+        private uint timeGetTime()
+        {
+            TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return (uint)time_stamp.TotalMilliseconds;
+        }
+
+        // 定时器功能实现函数
+        private void timer()
+        {
+            uint timestart = timeGetTime();
+            while(true)
+            {
+                uint i = 0;
+                while(i < time_interval)
+                {
+                    i = timeGetTime() - timestart;
+                }
+                timestart = timeGetTime();
+                timecheck();
+            }
         }
 
         // 线程处理函数
@@ -732,6 +763,10 @@ namespace XEthernetDemo
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10)
                         continue;
 
+                    // 每个物块休眠2ms时间让PLC来得及处理物块信息
+                    if (i != 0)
+                        Thread.Sleep(2);
+
                     wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
                     wr2.Flush();
@@ -780,12 +815,12 @@ namespace XEthernetDemo
                     int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
-                    data.start_time_int = data.start_time_int + k + (int)(2400 / speed) + 6;                                  // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int = data.start_time_int + k + (int)(2400 / speed) - 10;                                  // 计算出物块到达喷嘴的格林威治毫秒时间
                     
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 20);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
                     /*
@@ -1106,7 +1141,17 @@ namespace XEthernetDemo
                 wr = new StreamWriter(fs);
                 fs2 = new FileStream(time_data, FileMode.Append);
                 wr2 = new StreamWriter(fs2);
-                AutoCheckTimer.Enabled = true;
+
+                // 设定定时器
+
+                //AutoCheckTimer.Enabled = true;
+                //AutoCheckTimer2.Enabled = true;
+                //AutoCheckTimer2.Interval = AutoCheckTimer.Interval;
+                //t.Elapsed += new System.Timers.ElapsedEventHandler(timecheck);
+                //t.AutoReset = true;
+                //t.Enabled = true;
+                Thread timerthread = new Thread(timer);
+                timerthread.Start();
             }
             
         }
@@ -1176,11 +1221,21 @@ namespace XEthernetDemo
             LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
             xacquisition.Grab(0);
             Console.WriteLine("start grab!!!");
+            if (check_time_num != 0)
+            {
+                //AutoCheckTimer.Enabled = true;
+                //AutoCheckTimer2.Enabled = true;
+                //t.Enabled = true;
+            }
         }
 
         private void Stop_Click(object sender, EventArgs e)
         {
             //wr.Close();
+            //AutoCheckTimer.Enabled = false;
+            //AutoCheckTimer2.Enabled = false;
+            //t.Enabled = false;
+
             xacquisition.Stop();
         }
 
@@ -1448,7 +1503,7 @@ namespace XEthernetDemo
             //GetTXT_as_mat(test_txt_filepath);
             //OnFrameReady_testimage();
             //Total_Block_Num.Text = Convert.ToString((byte)(DateTime.Now.Year - 2000));
-            timecheck();
+            //timecheck();
             
         }
 
@@ -1488,7 +1543,7 @@ namespace XEthernetDemo
 
         private void AutoCheckTimer_Tick(object sender, EventArgs e)
         {
-            timecheck();
+            //timecheck();
         }
 
         private void startGF_Click(object sender, EventArgs e)
@@ -1710,6 +1765,15 @@ namespace XEthernetDemo
 
         }
 
+        private void AutoCheckTimer2_Tick(object sender, EventArgs e)
+        {
+            check_time_num2++;
+            //if (check_time_num2 % 100 == 0)
+            //timeBox1.Text = Convert.ToString(DateTime.Now) + ":" + Convert.ToString(DateTime.Now.Millisecond);
+            //timeBox1.Text = "The machine has worked for " + Convert.ToString(check_time_num2) + " ms";
+            //if (check_time_num == check_time_num2)
+                timeBox1.Text = "num1: " + Convert.ToString(check_time_num) + "; num2: " + Convert.ToString(check_time_num2);
+        }
     }
 
     class dataProcess          //功放处理数据
