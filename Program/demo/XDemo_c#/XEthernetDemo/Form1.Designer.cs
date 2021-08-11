@@ -147,7 +147,6 @@
             this.AutoCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.startGF = new System.Windows.Forms.Button();
             this.stopGF = new System.Windows.Forms.Button();
-            this.timeBox1 = new System.Windows.Forms.TextBox();
             this.AutoCheckTimer2 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.Configure.SuspendLayout();
@@ -721,6 +720,7 @@
             this.LocalAdapter.Name = "LocalAdapter";
             this.LocalAdapter.Size = new System.Drawing.Size(148, 21);
             this.LocalAdapter.TabIndex = 1;
+            this.LocalAdapter.Text = "169.254.84.167";
             this.LocalAdapter.TextChanged += new System.EventHandler(this.LocalAdapter_TextChanged);
             // 
             // label1
@@ -1590,21 +1590,6 @@
             this.stopGF.UseVisualStyleBackColor = true;
             this.stopGF.Click += new System.EventHandler(this.stopGF_Click);
             // 
-            // timeBox1
-            // 
-            this.timeBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.timeBox1.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.timeBox1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.timeBox1.Location = new System.Drawing.Point(707, 5);
-            this.timeBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.timeBox1.Multiline = true;
-            this.timeBox1.Name = "timeBox1";
-            this.timeBox1.Size = new System.Drawing.Size(78, 21);
-            this.timeBox1.TabIndex = 18;
-            this.timeBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // AutoCheckTimer2
             // 
             this.AutoCheckTimer2.Interval = 1;
@@ -1615,7 +1600,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 714);
-            this.Controls.Add(this.timeBox1);
             this.Controls.Add(this.stopGF);
             this.Controls.Add(this.startGF);
             this.Controls.Add(this.TestPLC);
@@ -1785,7 +1769,6 @@
         private System.Windows.Forms.Button startGF;
         private System.Windows.Forms.Button stopGF;
         public System.Windows.Forms.Timer AutoCheckTimer;
-        private System.Windows.Forms.TextBox timeBox1;
         public System.Windows.Forms.Timer AutoCheckTimer2;
     }
 }

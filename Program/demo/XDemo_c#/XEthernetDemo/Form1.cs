@@ -110,18 +110,18 @@ namespace XEthernetDemo
         int check_time_num2 = 0;        // 定时器2的计数器
         float integral_time = 3;        // 默认扫描积分时间3ms
         int num_of_mouth = 198;         // 喷嘴数量
-        int length_belt = 1000;         // 皮带长度为1000mm
-        int length_linearray = 1200;    // 线阵长度为1200mm
-        uint time_interval = 5;         // 定时器定时时间为5ms
+        int length_belt = 1016;         // 皮带长度为1000mm
+        int length_linearray = 1120;    // 线阵长度为1200mm
+        uint time_interval = 4;         // 定时器定时时间为5ms
         float SDD = 914;
-        float SOD = 790;
+        float SOD = 815;
         string result_pic;
         string init_pic;
         Socket client = null;
         public byte[] Rcvbuffer;    //接收字节组数
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
-        string test_txt_filepath = "C:/Users/96342/Desktop/TEST19.txt";
+        string test_txt_filepath = "C:/Users/weike/Desktop/TEST17.txt";
         string result_data = "C:/Users/weike/Desktop/0413_data/result-data.txt";
         string time_data = "C:/Users/weike/Desktop/0413_data/frame-time-data.txt";
         FileStream fs;
@@ -131,6 +131,24 @@ namespace XEthernetDemo
         const string ntpServer = "192.168.250.1";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
+        Thread timerthread;
+
+        // 定时器功能实现函数
+        private void timer()
+        {
+            uint timestart = timeGetTime();
+            while (true)
+            {
+                uint i = 0;
+                while (i < time_interval)
+                {
+                    i = timeGetTime() - timestart;
+                }
+                timestart = timeGetTime();
+                timecheck();
+            }
+        }
+
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
         {
@@ -146,7 +164,7 @@ namespace XEthernetDemo
             string[] ss = str[0].Split('\t');
             int row = str.Length;       //行数
             int col = ss.Length - 1;    //列数
-            col = col / 2;
+            col = col / 2 - 2;
 
             int[,] p1 = new int[row, col]; //数组
             int maxp = 0;
@@ -158,7 +176,7 @@ namespace XEthernetDemo
                 string[] data = line.Split('\t');
                 for (int j = 0; j < col; j++)
                 {
-                    p1[i, j] = int.Parse(data[j]);
+                    p1[i, j] = int.Parse(data[j + 2]);
                     if (p1[i, j] > maxp)
                         maxp = p1[i, j];
                     else if (p1[i, j] < minp)
@@ -191,7 +209,7 @@ namespace XEthernetDemo
             image.ConvertTo(image, MatType.CV_8UC3);
             CardNum1.Text = "Height = " + Convert.ToString(image.Height);
             CardNum2.Text = "Width = " + Convert.ToString(image.Width);
-            Cv2.ImWrite("C:/Users/96342/Desktop/TEST_PRE.png", image);
+            Cv2.ImWrite("C:/Users/weike/Desktop/TEST_PRE.png", image);
             return image;
         }
 
@@ -298,7 +316,7 @@ namespace XEthernetDemo
                     new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                     new Scalar(0, 255, 0), 1, LineTypes.Link8);
             }
-            Cv2.ImWrite("C:/Users/96342/Desktop/TEST_result.bmp", connImage);
+            Cv2.ImWrite("C:/Users/weike/Desktop/TEST_result.bmp", connImage);
             /*
             XImageW imageW ;
             int[,] matrix = new int[row, col];
@@ -350,18 +368,18 @@ namespace XEthernetDemo
                 uint minp = 65536;
                 int m, n, row, col;
                 row = (int)image.Height;
-                col = (int)image.Width - 1;
-                col = col / 2;
+                col = (int)image.Width;
+                col = col / 2 - 2;
                 for (uint i = 0; i < row; i++)
                     for (uint j = 0; j < col; j++)
                     {
-                        pixelval[i, j] = (uint)image.GetPixelVal(i, j);
+                        pixelval[i, j] = (uint)image.GetPixelVal(i, j + 2);
                         if (pixelval[i, j] > maxp)
                             maxp = pixelval[i, j];
                         else if (pixelval[i, j] < minp)
                             minp = pixelval[i, j];
                     }
-                
+
                 Mat image_mat = new Mat(row, col, MatType.CV_8UC1);
                 for (m = 0; m < row; m++)
                 {
@@ -632,21 +650,6 @@ namespace XEthernetDemo
             return (uint)time_stamp.TotalMilliseconds;
         }
 
-        // 定时器功能实现函数
-        private void timer()
-        {
-            uint timestart = timeGetTime();
-            while(true)
-            {
-                uint i = 0;
-                while(i < time_interval)
-                {
-                    i = timeGetTime() - timestart;
-                }
-                timestart = timeGetTime();
-                timecheck();
-            }
-        }
 
         // 线程处理函数
         public void thread_for_sending(object obj)
@@ -737,14 +740,14 @@ namespace XEthernetDemo
                 int flag = 0;
                 for (int i = 0; i < contours.Length; i++)
                 {
-                    if (contours.Length > 20)
+                    if (contours.Length > 50)
                     {
                         break;
                     }
                         
                     double area = Cv2.ContourArea(contours[i]);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 2)
+                    if (area == 0 || boundRect[i].Height > row / 3)
                         continue;
                     Scalar color = new Scalar(0, 0, 255);
                     Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
@@ -755,17 +758,14 @@ namespace XEthernetDemo
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
 
                 // 求出时间戳并发送物块信息
-                for (int i = 0; i < contours.Length; i++)
+                for (int j = 0; j < contours.Length; j++)
                 {
-                    if (contours.Length > 20)
+                    int i = contours.Length - j - 1;
+                    if (contours.Length > 50)
                         break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10)
+                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10 || boundRect[i].Width > num_of_mouth / 2)
                         continue;
-
-                    // 每个物块休眠2ms时间让PLC来得及处理物块信息
-                    if (i != 0)
-                        Thread.Sleep(2);
 
                     wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
@@ -840,17 +840,17 @@ namespace XEthernetDemo
                     */
                     
                     data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
-                    data.start_num = (Int16)(data.start_num - 5);
+                    data.start_num = (Int16)(data.start_num - 2);
                     //data.start_num = (short)1;
                     if (data.start_num < 1)
                         data.start_num = (short)1;
                     //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
                     data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
-                    data.end_num = (Int16)(data.end_num + 5);
+                    data.end_num = (Int16)(data.end_num + 2);
                     //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
-                    
+
 
                     // 让延迟一段时间发送物块信息 
                     // Thread.Sleep((int)(2400/speed) - );
@@ -858,6 +858,9 @@ namespace XEthernetDemo
                     // wr.WriteLine(t.ManagedThreadId + " thread start!");
                     // t.Start();
 
+                    // 每个物块休眠2ms时间让PLC来得及处理物块信息
+                    if (i != 0)
+                        Thread.Sleep(2);
                     int num = SendData(data);
                     if (num == 23)
                     {
@@ -870,7 +873,7 @@ namespace XEthernetDemo
                     }
 
 
-                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + data.start_time_int + '\t' + data.blow_time + "ms");
+                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + data.start_time_int + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds));
 
                 }
                 wr.Flush();
@@ -1150,7 +1153,8 @@ namespace XEthernetDemo
                 //t.Elapsed += new System.Timers.ElapsedEventHandler(timecheck);
                 //t.AutoReset = true;
                 //t.Enabled = true;
-                Thread timerthread = new Thread(timer);
+                timerthread = new Thread(timer);
+                timerthread.IsBackground = true;
                 timerthread.Start();
             }
             
@@ -1214,7 +1218,7 @@ namespace XEthernetDemo
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr2.WriteLine("\n*************************************************************************");
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "sleepfor");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time");
             wr.Flush();
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
@@ -1235,7 +1239,7 @@ namespace XEthernetDemo
             //AutoCheckTimer.Enabled = false;
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
-
+            timerthread.Abort();
             xacquisition.Stop();
         }
 
@@ -1480,7 +1484,7 @@ namespace XEthernetDemo
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             conditional_variable = new AutoResetEvent(false);
             locker = new object();
-            ep = new IPEndPoint(IPAddress.Parse("172.28.110.50"), 27001);
+            ep = new IPEndPoint(IPAddress.Parse("172.28.110.50"), 27002);
             socket.Bind(ep);
 
             /*udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -1501,7 +1505,7 @@ namespace XEthernetDemo
         private void button1_Click(object sender, EventArgs e)
         {
             //GetTXT_as_mat(test_txt_filepath);
-            //OnFrameReady_testimage();
+            OnFrameReady_testimage();
             //Total_Block_Num.Text = Convert.ToString((byte)(DateTime.Now.Year - 2000));
             //timecheck();
             
@@ -1772,7 +1776,7 @@ namespace XEthernetDemo
             //timeBox1.Text = Convert.ToString(DateTime.Now) + ":" + Convert.ToString(DateTime.Now.Millisecond);
             //timeBox1.Text = "The machine has worked for " + Convert.ToString(check_time_num2) + " ms";
             //if (check_time_num == check_time_num2)
-                timeBox1.Text = "num1: " + Convert.ToString(check_time_num) + "; num2: " + Convert.ToString(check_time_num2);
+            //timeBox1.Text = "num1: " + Convert.ToString(check_time_num) + "; num2: " + Convert.ToString(check_time_num2);
         }
     }
 
@@ -2021,6 +2025,13 @@ namespace XEthernetDemo
                 index += 8;
 
             }
+        }
+
+        // 退出窗口
+        private void Form1_FormClosing(object sender, CancelEventArgs e)
+        {
+            if (MessageBox.Show("是否要关闭", "退出", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                e.Cancel = true;    // 这里表示退出
         }
     }
 }
