@@ -34,9 +34,9 @@ namespace XEthernetDemo
 
     struct GFinfo
     {
-        internal int channelindexl;
+        internal int channelindex;
         internal string time;
-        internal int peak;
+        internal int flag;
     }
 
     public partial class Form1 : Form
@@ -75,17 +75,21 @@ namespace XEthernetDemo
         DateTime lastBeginRecive;
         DateTime endRecive;
         public int DataLen = 0;
+
+        //功放线阵交互
+        public int opFlag = 0;      //是否正在对队列进行操作
+
         // url
-        public Controller Conupdate = new Controller();
-        public ConSettings ConSet = new ConSettings();
-        public ConInformation ConInfo = new ConInformation();
-        public Channel Channelupdate = new Channel();
-        public ChannelInformation channInfo = new ChannelInformation();
-        public ChannelSettings channSet = new ChannelSettings();
-        public Parset parsetinfo = new Parset();
-        public List<SingleChannelAnalyzerConfigItem> Singleset = new List<SingleChannelAnalyzerConfigItem>();
-        public List<double> peaktime = new List<double>();
-        public DateTime starttime;
+        //public Controller Conupdate = new Controller();
+        //public ConSettings ConSet = new ConSettings();
+        //public ConInformation ConInfo = new ConInformation();
+        //public Channel Channelupdate = new Channel();
+        //public ChannelInformation channInfo = new ChannelInformation();
+        //public ChannelSettings channSet = new ChannelSettings();
+        //public Parset parsetinfo = new Parset();
+        //public List<SingleChannelAnalyzerConfigItem> Singleset = new List<SingleChannelAnalyzerConfigItem>();
+        //public List<double> peaktime = new List<double>();
+        //public DateTime starttime;
 
         //线阵变量
         XSystemW        xsystem;
@@ -1243,7 +1247,7 @@ namespace XEthernetDemo
             xacquisition.Stop();
         }
 
-          private void GamaPlus_Click(object sender, EventArgs e)
+        private void GamaPlus_Click(object sender, EventArgs e)
         {
             xdisplay.Gama += 0.2f;
         }
@@ -1481,20 +1485,25 @@ namespace XEthernetDemo
         private void Form1_Load(object sender, EventArgs e)
         {
             msg_queue = new Queue<Msg>();
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            info_queue = new Queue<GFinfo>();
+
+            
             conditional_variable = new AutoResetEvent(false);
             locker = new object();
-            ep = new IPEndPoint(IPAddress.Parse("172.28.110.50"), 27002);
+
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            ep = new IPEndPoint(IPAddress.Parse("172.28.110.50"), 27001);
             socket.Bind(ep);
 
             /*udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse("172.28.110.110"), 27001);          //172.28.110.110   27001
             udpRecv.Bind(endpoint);*/
-            string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 1;
-            Conupdate.Settings = ConSet;
-            string putData = JsonConvert.SerializeObject(Conupdate);
-            string putReturnJson = op.Put(url, putData);
+
+            //string url = "http://172.28.110.100:8000/Configuration/Controller";
+            //ConSet.SyncMode = 1;
+            //Conupdate.Settings = ConSet;
+            //string putData = JsonConvert.SerializeObject(Conupdate);
+            //string putReturnJson = op.Put(url, putData);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -1510,8 +1519,6 @@ namespace XEthernetDemo
             //timecheck();
             
         }
-
-        
 
         private void TestPLC_Click(object sender, EventArgs e)
         {
@@ -1544,7 +1551,6 @@ namespace XEthernetDemo
             }
         }
 
-
         private void AutoCheckTimer_Tick(object sender, EventArgs e)
         {
             //timecheck();
@@ -1553,52 +1559,42 @@ namespace XEthernetDemo
         private void startGF_Click(object sender, EventArgs e)
         {
             Thread listen_thread1 = new Thread(RecvMessage);
-            Thread listen_thread2 = new Thread(RecvMessage);
+            //Thread listen_thread2 = new Thread(RecvMessage);
             Thread process_thread1 = new Thread(ProcessMessage);
-            Thread process_thread2 = new Thread(ProcessMessage);
+            //Thread process_thread2 = new Thread(ProcessMessage);
             listen_thread1.Start();
-            listen_thread2.Start();
+            //listen_thread2.Start();
             process_thread1.Start();
-            process_thread2.Start();
+            //process_thread2.Start();
 
             //开启时间戳
-            string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 0;
-            ConSet.CycleTime = 25000;
-            Conupdate.Settings = ConSet;
-            string putData = JsonConvert.SerializeObject(Conupdate);
-            string putReturnJson = op.Put(url, putData);
-
-            starttime = DateTime.Now;
+            //string url = "http://172.28.110.100:8000/Configuration/Controller";
+            //ConSet.SyncMode = 0;
+            //ConSet.CycleTime = 25000;
+            //Conupdate.Settings = ConSet;
+            //string putData = JsonConvert.SerializeObject(Conupdate);
+            //string putReturnJson = op.Put(url, putData);
+            //starttime = DateTime.Now;
         }
 
         private void stopGF_Click(object sender, EventArgs e)
         {
             
-            lock (locker)
-            {
-                msg_queue.Clear();
-            }
-            
             quit_flag = true;
-           
-                
-          
-            write(SCAData);
+            //write(SCAData);
             socket.Close();
             conditional_variable.Set();
             conditional_variable.Set();
 
-          
-            DateTime endtime = starttime.AddSeconds(lifetime);
-
-            string url = "http://172.28.110.100:8000/Configuration/Controller";
-            ConSet.SyncMode = 1;
-            Conupdate.Settings = ConSet;
-            string putData = JsonConvert.SerializeObject(Conupdate);
-            string putReturnJson = op.Put(url, putData);
-
-            MessageBox.Show(endtime.ToString());
+            
+            //时间戳
+            //DateTime endtime = starttime.AddSeconds(lifetime);
+            //string url = "http://172.28.110.100:8000/Configuration/Controller";
+            //ConSet.SyncMode = 1;
+            //Conupdate.Settings = ConSet;
+            //string putData = JsonConvert.SerializeObject(Conupdate);
+            //string putReturnJson = op.Put(url, putData);
+            //MessageBox.Show(endtime.ToString());
         }
 
         private void RecvMessage()
@@ -1684,21 +1680,45 @@ namespace XEthernetDemo
                 }
                 if (chnldx >= 0 && chnldx < 11)
                 {
+                    //写入txt代码 
                     //DataGetTime[CycleCount, chnldx - 1] = getTime;
-                    int j = 0;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
-                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCALength[i];
-                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCACount[i];
-                    }
-                    SCAData[CycleCount / 10, chnldx - 1, 9] = chnldx;
-                    DataGetTime[CycleCount / 10, chnldx - 1] = msg.getTime;
-
+                    //int j = 0;
+                    //for (int i = 0; i < 3; i++)
+                    //{
+                    //    SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
+                    //    SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCALength[i];
+                    //    SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCACount[i];
+                    //}
+                    //SCAData[CycleCount / 10, chnldx - 1, 9] = chnldx;
+                    //DataGetTime[CycleCount / 10, chnldx - 1] = msg.getTime;
                     /*SCAData[CycleCount, 1] = dp.SCALength;
                     SCAData[CycleCount, 2] = dp.SCACount;
                     DataGetTime[CycleCount] = msg.getTime; 
                     */
+
+                    //8.16test
+                    for (int i = 0; i < 3; i++)    //选一个即可
+                    {
+                        if (dp.SCACount[i] > 15) {
+
+                            while (opFlag == 1){
+                                Thread.Sleep(1);
+                            }
+                            if(opFlag == 0)
+                            {
+                                opFlag = 1;
+                                GFinfo info;
+                                info.channelindex = chnldx;
+                                info.flag = 1;
+                                info.time = msg.getTime;
+                                info_queue.Enqueue(info);
+                                opFlag = 0;
+                            }
+
+                        }
+
+                    }
+
                 }
                 else
                 {
@@ -1777,6 +1797,13 @@ namespace XEthernetDemo
             //timeBox1.Text = "The machine has worked for " + Convert.ToString(check_time_num2) + " ms";
             //if (check_time_num == check_time_num2)
             //timeBox1.Text = "num1: " + Convert.ToString(check_time_num) + "; num2: " + Convert.ToString(check_time_num2);
+        }
+        
+        // 退出窗口
+        private void Form1_FormClosing(object sender, CancelEventArgs e)
+        {
+            if (MessageBox.Show("是否要关闭", "退出", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                e.Cancel = true;    // 这里表示退出
         }
     }
 
@@ -1891,7 +1918,7 @@ namespace XEthernetDemo
         public void SCADataSection(ref int index, int SectionLen, string rawdata)
         {
             int tempstartbin, templength, tempcount;
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)             
             {
                 tempstartbin = GetN(rawdata, ref index, 2);
                 templength = GetN(rawdata, ref index, 2);
@@ -1902,7 +1929,7 @@ namespace XEthernetDemo
                     SCALength = templength;
                     SCACount = tempcount;
                 }*/
-                if (i >= 0 && i < 3)
+                if (i >= 0 && i < 3)             //根据SCA个数要进行修改
                 {
                     SCAStartBin[i] = tempstartbin;
                     SCALength[i] = templength;
@@ -2025,13 +2052,6 @@ namespace XEthernetDemo
                 index += 8;
 
             }
-        }
-
-        // 退出窗口
-        private void Form1_FormClosing(object sender, CancelEventArgs e)
-        {
-            if (MessageBox.Show("是否要关闭", "退出", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
-                e.Cancel = true;    // 这里表示退出
         }
     }
 }

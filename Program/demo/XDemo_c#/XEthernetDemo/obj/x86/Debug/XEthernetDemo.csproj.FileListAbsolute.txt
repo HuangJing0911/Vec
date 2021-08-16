@@ -418,3 +418,6 @@ C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthern
 C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.application
 C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
 C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
+I:\vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
+I:\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+I:\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
