@@ -29,14 +29,14 @@ namespace XEthernetDemo
     {
         internal byte[] bytes;
         internal int length;
-        internal string getTime;
+        internal TimeSpan getTime;
     }
 
     struct GFinfo
     {
-        internal int channelindex;
-        internal string time;
-        internal int flag;
+        internal int channelindex;          // 物块在第几通道
+        internal TimeSpan time;             // 物块到达的时间
+        internal int flag;                  // 物块的类型
     }
 
     public partial class Form1 : Form
@@ -819,7 +819,36 @@ namespace XEthernetDemo
                     int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
-                    data.start_time_int = data.start_time_int + k + (int)(2400 / speed) - 10;                                  // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
+
+                    // 对物块的种类进行判断
+                    while (opFlag != 0)                     // 循环到没有对线阵进行操作
+                    { }
+                    opFlag = 2;                             // 将当前队列可读写状态设置为2
+                    Queue<GFinfo> gfinfo = info_queue;
+                    int queen_flag = 0;                     // 标志当前队列第一个是否与物块信息符合
+                    GFinfo first_info = gfinfo.Dequeue();
+                    Int64 a = data.start_time_int - (Int64)first_info.time.TotalMilliseconds;
+                    if (Math.Abs(a) <= 25)
+                    {
+                        if (Math.Floor((float)boundRect[i].X / col * 10) == first_info.channelindex)
+                        {
+                            queen_flag = 1;
+                            data.typof_block = (byte)first_info.flag;
+                        }    
+                    }
+                    else if (a > 25)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+                    {
+                        queen_flag = 1;
+                    }
+                    if (queen_flag == 1)        // 如果队列信息已经被读取或已经过了时间，需要对队列首个物块进行剔除
+                    {
+                        info_queue.Dequeue();
+                    }
+                    opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
+
+                    // 确定物块最终喷吹的时间
+                    data.start_time_int += (int)(2400 / speed) - 10;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
                     
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
@@ -877,7 +906,7 @@ namespace XEthernetDemo
                     }
 
 
-                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + data.start_time_int + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds));
+                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + data.start_time_int + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + data.typof_block);
 
                 }
                 wr.Flush();
@@ -1009,6 +1038,7 @@ namespace XEthernetDemo
 
                 }
             }
+            Power_Amplifier_Load();
         }
 
         private void Reset_Click(object sender, EventArgs e)
@@ -1222,7 +1252,7 @@ namespace XEthernetDemo
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr2.WriteLine("\n*************************************************************************");
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttypof_block");
             wr.Flush();
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
@@ -1484,6 +1514,11 @@ namespace XEthernetDemo
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+        }
+
+        private void Power_Amplifier_Load()
+        {
             msg_queue = new Queue<Msg>();
             info_queue = new Queue<GFinfo>();
 
@@ -1615,10 +1650,12 @@ namespace XEthernetDemo
                     if (quit_flag)
                         return;
                 }
+
                 Msg msg;
                 msg.bytes = buf;
                 msg.length = read;
-                msg.getTime = DateTime.Now.TimeOfDay.ToString();
+                msg.getTime = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                
                 lock (locker)
                 {
                     msg_queue.Enqueue(msg);
