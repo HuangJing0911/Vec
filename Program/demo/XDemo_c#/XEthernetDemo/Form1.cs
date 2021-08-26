@@ -78,6 +78,7 @@ namespace XEthernetDemo
 
         //功放线阵交互
         public int opFlag = 0;      //是否正在对队列进行操作
+        public bool recv = false;   //是否开始接受功放程序数据
 
         // url
         //public Controller Conupdate = new Controller();
@@ -121,7 +122,8 @@ namespace XEthernetDemo
         float SOD = 815;
         string result_pic;
         string init_pic;
-        Socket client = null;
+        Socket client = null;       //与PLC连接的socket
+        Socket client2 = null;      //与功放程序连接的socket
         public byte[] Rcvbuffer;    //接收字节组数
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
@@ -136,6 +138,7 @@ namespace XEthernetDemo
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
+        Thread recv_thread;
 
         // 定时器功能实现函数
         private void timer()
@@ -152,6 +155,51 @@ namespace XEthernetDemo
                 timecheck();
             }
         }
+
+        // 接收功放数据函数
+        private void open_recv()
+        {
+            if (client2 == null)
+            {
+                client2 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            }
+            if (!client2.Connected)
+            {
+                // OperateResult connect = omronFinisNet.ConnectServer();
+                // Data_Set syn_data = new Data_Set
+
+                IPAddress ip = IPAddress.Parse(ntpServer);
+                IPEndPoint remoteep = new IPEndPoint(ip, 6000);
+                // AsyncCallback callback = new AsyncCallback(ConnectCallback);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                client.Bind(remoteep);
+                if (client.Connected)
+                    Total_Block_Num.Text = "Successfully Connect!";
+                else
+                    Total_Block_Num.Text = "Unsuccessfully Connect!";
+                client2.ReceiveTimeout = 3000;
+            }
+        }
+
+        // 启动接受功放程序数据函数
+        private void recv_data()
+        {
+            byte[] data = new byte[2];
+            while (recv)
+            {
+                EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                int length = client.ReceiveFrom(data, ref remoteEndPoint);
+                //string message = Encoding.UTF8.GetString(data, 0, length); 
+                Total_Block_Num.Text = "Receive: " + data[0].ToString() + data[1].ToString();
+            }
+            if (!recv)
+            {
+                Thread.CurrentThread.Abort();
+                Total_Block_Num.Text = "Stop Receive!";
+            }
+
+        }
+
 
         // 测试代码
         Mat GetTif_as_mat(string filepath)  //将tif转为mat
@@ -822,9 +870,9 @@ namespace XEthernetDemo
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
 
                     // 对物块的种类进行判断
-                    while (opFlag != 0)                     // 循环到没有对线阵进行操作
-                    { }
-                    opFlag = 2;                             // 将当前队列可读写状态设置为2
+                    // while (opFlag != 0)                     // 循环到没有对线阵进行操作
+                    // { }
+                    // opFlag = 2;                             // 将当前队列可读写状态设置为2
                     Queue<GFinfo> gfinfo = info_queue;
                     int queen_flag = 0;                     // 标志当前队列第一个是否与物块信息符合
                     GFinfo first_info = gfinfo.Dequeue();
@@ -1038,7 +1086,8 @@ namespace XEthernetDemo
 
                 }
             }
-            Power_Amplifier_Load();
+            // Power_Amplifier_Load();
+            open_recv();
         }
 
         private void Reset_Click(object sender, EventArgs e)
@@ -1187,8 +1236,10 @@ namespace XEthernetDemo
                 //t.Elapsed += new System.Timers.ElapsedEventHandler(timecheck);
                 //t.AutoReset = true;
                 //t.Enabled = true;
+
                 timerthread = new Thread(timer);
                 timerthread.IsBackground = true;
+
                 timerthread.Start();
             }
             
@@ -1265,6 +1316,17 @@ namespace XEthernetDemo
                 //AutoCheckTimer2.Enabled = true;
                 //t.Enabled = true;
             }
+
+            // 启动接收功放数据线程
+            recv = true;
+            if (recv)
+            {
+                Total_Block_Num.Text = "Start Receive!";
+                recv_thread = new Thread(recv_data);
+                recv_thread.IsBackground = true;
+                recv_thread.Start();
+            }
+
         }
 
         private void Stop_Click(object sender, EventArgs e)
@@ -1274,6 +1336,7 @@ namespace XEthernetDemo
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
             timerthread.Abort();
+            recv_thread.Abort();
             xacquisition.Stop();
         }
 
