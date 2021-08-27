@@ -35,7 +35,7 @@ namespace XEthernetDemo
     struct GFinfo
     {
         internal int channelindex;          // 物块在第几通道
-        internal TimeSpan time;             // 物块到达的时间
+        internal Int64 time;             // 物块到达的时间
         internal int flag;                  // 物块的类型
     }
 
@@ -184,18 +184,35 @@ namespace XEthernetDemo
         // 启动接受功放程序数据函数
         private void recv_data()
         {
-            byte[] data = new byte[2];
+            byte[] data = new byte[10];
             while (recv)
             {
                 EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 int length = client.ReceiveFrom(data, ref remoteEndPoint);
-                //string message = Encoding.UTF8.GetString(data, 0, length); 
-                Total_Block_Num.Text = "Receive: " + data[0].ToString() + data[1].ToString();
+                if (length != 10)
+                {
+                    Total_Block_Num.Text = "Receive the Wrong Message!";
+                    continue;
+                }
+                // 解析时间和通道数
+                GFinfo info = new GFinfo();
+                Int64 time = Convert.ToInt64("0",2);
+                int index = Convert.ToInt32("0", 2);
+                for(int i = 7; i >= 0; i++)
+                {
+                    time = time << 8 & data[i];
+                }
+                info.time = Convert.ToInt64(Convert.ToString(time),2);
+                index = index << 8 & data[8];
+                index = index << 8 & data[9];
+                info.channelindex = Convert.ToInt32(Convert.ToString(index), 2);
+                Total_Block_Num.Text = "Receive time: " + time.ToString() + ",index: " + index.ToString();
+                info_queue.Enqueue(info);
             }
             if (!recv)
             {
-                Thread.CurrentThread.Abort();
                 Total_Block_Num.Text = "Stop Receive!";
+                Thread.CurrentThread.Abort();   
             }
 
         }
@@ -579,7 +596,7 @@ namespace XEthernetDemo
                 ntp_data[13] = c[0];
                 ntp_data[14] = c[1];                        // 开始吹起的毫秒数
                 */
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 8; i++)
                     ntp_data[i + 7] = (byte)(data.start_time_int >> (i * 8) & 0xff);    // 开始吹气时间
                 byte[] c = new byte[2];
                 c = BitConverter.GetBytes(data.blow_time);
@@ -876,7 +893,7 @@ namespace XEthernetDemo
                     Queue<GFinfo> gfinfo = info_queue;
                     int queen_flag = 0;                     // 标志当前队列第一个是否与物块信息符合
                     GFinfo first_info = gfinfo.Dequeue();
-                    Int64 a = data.start_time_int - (Int64)first_info.time.TotalMilliseconds;
+                    Int64 a = data.start_time_int - first_info.time;
                     if (Math.Abs(a) <= 25)
                     {
                         if (Math.Floor((float)boundRect[i].X / col * 10) == first_info.channelindex)
@@ -1336,7 +1353,8 @@ namespace XEthernetDemo
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
             timerthread.Abort();
-            recv_thread.Abort();
+            recv = false;
+            //recv_thread.Abort();
             xacquisition.Stop();
         }
 
@@ -1810,7 +1828,7 @@ namespace XEthernetDemo
                                 GFinfo info;
                                 info.channelindex = chnldx;
                                 info.flag = 1;
-                                info.time = msg.getTime;
+                                info.time = (Int64)msg.getTime.TotalMilliseconds;
                                 info_queue.Enqueue(info);
                                 opFlag = 0;
                             }
