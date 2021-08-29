@@ -93,16 +93,16 @@ namespace XEthernetDemo
         //public DateTime starttime;
 
         //线阵变量
-        XSystemW        xsystem;
-        XDeviceW        xdevice;
-        XGigFactoryW    xfactory;
-        XCommandW       xcommand;
+        XSystemW xsystem;
+        XDeviceW xdevice;
+        XGigFactoryW xfactory;
+        XCommandW xcommand;
         XFrameTransferW xtransfer;
-        XAcquisitionW   xacquisition;
-        XDisplayW       xdisplay;
-        XOffCorrectW    xcorrect;
-        XTifFormatW     xtifform;
-        
+        XAcquisitionW xacquisition;
+        XDisplayW xdisplay;
+        XOffCorrectW xcorrect;
+        XTifFormatW xtifform;
+
         int frame_count = 0;
         int lost_line = 0;
         int total_card_num = 0;
@@ -135,6 +135,7 @@ namespace XEthernetDemo
         FileStream fs2;
         StreamWriter wr2;
         const string ntpServer = "192.168.250.1";
+        const string ntpServer2 = "127.0.0.1";
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
@@ -168,51 +169,61 @@ namespace XEthernetDemo
                 // OperateResult connect = omronFinisNet.ConnectServer();
                 // Data_Set syn_data = new Data_Set
 
-                IPAddress ip = IPAddress.Parse(ntpServer);
-                IPEndPoint remoteep = new IPEndPoint(ip, 6000);
+                IPAddress ip = IPAddress.Parse(ntpServer2);
+                IPEndPoint remoteep = new IPEndPoint(ip, 1130);
                 // AsyncCallback callback = new AsyncCallback(ConnectCallback);
-                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                client.Bind(remoteep);
-                if (client.Connected)
+                client2 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                client2.Bind(remoteep);
+                if (client2.Connected)
                     Total_Block_Num.Text = "Successfully Connect!";
                 else
                     Total_Block_Num.Text = "Unsuccessfully Connect!";
-                client2.ReceiveTimeout = 3000;
+                //client2.ReceiveTimeout = 3000;
             }
         }
 
         // 启动接受功放程序数据函数
         private void recv_data()
         {
-            byte[] data = new byte[10];
+            byte[] data = new byte[100];
             while (recv)
             {
-                EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
-                int length = client.ReceiveFrom(data, ref remoteEndPoint);
-                if (length != 10)
+                //EndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                try
+                {
+                    int length = client2.Receive(data);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    continue;
+                }
+                //int length = client2.ReceiveFrom(data, ref remoteEndPoint);
+                /*if (length != 10)
                 {
                     Total_Block_Num.Text = "Receive the Wrong Message!";
                     continue;
-                }
+                }*/
                 // 解析时间和通道数
                 GFinfo info = new GFinfo();
-                Int64 time = Convert.ToInt64("0",2);
-                int index = Convert.ToInt32("0", 2);
-                for(int i = 7; i >= 0; i++)
+                Int64 time = Convert.ToInt64("0", 2);
+                string a = "";
+                for (int i = 7; i >= 0; i--)
                 {
-                    time = time << 8 & data[i];
+                    a = a + data[i].ToString("X2");
                 }
-                info.time = Convert.ToInt64(Convert.ToString(time),2);
-                index = index << 8 & data[8];
-                index = index << 8 & data[9];
-                info.channelindex = Convert.ToInt32(Convert.ToString(index), 2);
-                Total_Block_Num.Text = "Receive time: " + time.ToString() + ",index: " + index.ToString();
+                time = Convert.ToInt64(a, 16);
+                info.time = Convert.ToInt64(time.ToString());
+                //index = index << 8 & data[9];
+                info.channelindex = Convert.ToInt32(data[8].ToString("X2"), 16);
+                wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
+                wr.Flush();
                 info_queue.Enqueue(info);
             }
             if (!recv)
             {
                 Total_Block_Num.Text = "Stop Receive!";
-                Thread.CurrentThread.Abort();   
+                Thread.CurrentThread.Abort();
             }
 
         }
@@ -254,17 +265,17 @@ namespace XEthernetDemo
             }
 
             // 把图像归一化
-                //读入数据并赋予数组
+            //读入数据并赋予数组
             int m, n;
             Mat image = new Mat(row, col, MatType.CV_8UC1);
-            for(m = 0; m < row; m++)
+            for (m = 0; m < row; m++)
             {
                 for (n = 0; n < col; n++)
                 {
                     float k = ((float)(p1[m, n] - minp)) / (maxp - minp);
                     k = k * 255;
                     p1[m, n] = (int)k;
-                    image.Set(m, n,p1[m,n]);
+                    image.Set(m, n, p1[m, n]);
                 }
             }
             //image.ConvertTo(image, MatType.CV_32F);
@@ -298,11 +309,11 @@ namespace XEthernetDemo
                 // AsyncCallback callback = new AsyncCallback(ConnectCallback);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 client.Connect(remoteep);
-                if (client.Connected)
+                /*if (client.Connected)
                     Total_Block_Num.Text = "Successfully Connect!";
                 else
                     Total_Block_Num.Text = "Unsuccessfully Connect!";
-                client.ReceiveTimeout = 3000;
+                client.ReceiveTimeout = 3000;*/
                 // client.Send(ntp_testdata);
             }
         }
@@ -412,7 +423,7 @@ namespace XEthernetDemo
             threadCounters(image);
             xdisplay.Display(image);
         }
-        
+
         int count_thread = 0;
         void threadCounters(Object obj)
         {
@@ -462,7 +473,7 @@ namespace XEthernetDemo
                 //Console.WriteLine("successfully get array");
                 time_finish = DateTime.Now.Millisecond;
                 Console.WriteLine("==================================");
-                Console.WriteLine("read pixel value spend {0} millisecond",time_finish-time_now);
+                Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
                 getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);
                 //Thread.Sleep(1000);
                 //Console.WriteLine("thread" + (count_thread++) + " done");
@@ -471,7 +482,7 @@ namespace XEthernetDemo
             {
                 MessageBox.Show(e.Message);
             }
-            
+
         }
 
         // 时间戳对比测试函数
@@ -480,7 +491,7 @@ namespace XEthernetDemo
             string filename = "C:/Users/weike/Desktop/0413_data/test.txt";
             string sign = "\t";
             StreamWriter sw = new StreamWriter(filename, true);
-            for(int i = 0; i < 512; i++)
+            for (int i = 0; i < 512; i++)
             {
                 for (int j = 0; j < 896; j++)
                     sw.Write(stamp[i, j] + sign); //如果不是string数组，可使用.Tostring()转换在进行连接
@@ -496,7 +507,7 @@ namespace XEthernetDemo
         {
             ushort[,] line_info = new ushort[(int)image.Height, (int)image.Width];
             uint dep = image.PixelDepth;
-            
+
             if (dep == 16)
             {
                 uint stride = image.Width + image.DataOffset;
@@ -509,12 +520,12 @@ namespace XEthernetDemo
                         for (int wi = 0; wi < image.Width; wi++)
                         {
                             // *(pLineAddr + wi) = (ushort)(wi);
-                            line_info[hi,wi] = *(pLineAddr + wi);
+                            line_info[hi, wi] = *(pLineAddr + wi);
                             // Console.WriteLine(*(pLineAddr + wi));
                         }
                     }
                 }
-                
+
             }
             /*
             byte[,] line_info = new byte[(int)image.Height, (int)image.DataOffset];
@@ -539,12 +550,12 @@ namespace XEthernetDemo
             }*/
             write_stamp(line_info);
             return line_info;
-        } 
+        }
 
 
         public ushort[,] get_timestamp_test(XImageW image)
         {
-            ushort[,] line_info = new ushort[(int)image.Height, (int)(image.Width + image.DataOffset/2)];
+            ushort[,] line_info = new ushort[(int)image.Height, (int)(image.Width + image.DataOffset / 2)];
             uint dep = image.PixelDepth;
             if (dep == 16)
             {
@@ -556,7 +567,7 @@ namespace XEthernetDemo
                     for (int hi = 0; hi < image.Height; hi++)
                     {
                         byte* time_info = (byte*)pLineAddr;
-                        for (int wi = 0; wi < (image.Width + image.DataOffset/2); wi++)
+                        for (int wi = 0; wi < (image.Width + image.DataOffset / 2); wi++)
                         {
                             line_info[hi, wi] = *(pLineAddr + wi);
                         }
@@ -654,7 +665,7 @@ namespace XEthernetDemo
                 c = BitConverter.GetBytes(data.blow_time);
                 ntp_data[15] = c[0];
                 ntp_data[16] = c[1];                        // 吹气持续时间
-                Console.WriteLine("blow time is:" + ntp_data[15] + "  "+ ntp_data[16]); 
+                Console.WriteLine("blow time is:" + ntp_data[15] + "  " + ntp_data[16]);
                 c = BitConverter.GetBytes(data.start_num);
                 ntp_data[17] = c[0];
                 ntp_data[18] = c[1];                        // 开始吹气阀号
@@ -697,7 +708,7 @@ namespace XEthernetDemo
                 //CardNum1.Text = "Successfully AutoCheckTime!";
                 //Total_Block_Num.Text =  Convert.ToString(stamp) + ":" + Convert.ToString(stamp.Millisecond) + "ms";
                 //Total_Block_Num.Text = Convert.ToString(data.start_time_int) + "ms";
-                Total_Block_Num.Text = "check_time_num is " + Convert.ToString(check_time_num);
+                //Total_Block_Num.Text = "check_time_num is " + Convert.ToString(check_time_num);
                 //Total_Block_Num.Text = "Unsuccessfully send check info!The check_time_num is: " + Convert.ToString(check_time_num);
                 //timeBox1.Text = Convert.ToString(DateTime.Now) + Convert.ToString(DateTime.Now.Millisecond);
             }
@@ -726,7 +737,7 @@ namespace XEthernetDemo
             wr.WriteLine(Thread.CurrentThread.ManagedThreadId + " thread start!");
             Data_Set data = (Data_Set)obj;
             DateTime stamp = DateTime.Now;
-            
+
             // 计算休眠时间
             int sleepfor = 0;   // 当前时间到检测到物块时间的差值
             if (stamp.Second > data.start_time[5])
@@ -779,7 +790,7 @@ namespace XEthernetDemo
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
             Cv2.Canny(image, image, 10, 80, 3, false); // 输入图像虚为单通道8位图像
-            
+
 
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchy;
@@ -789,14 +800,14 @@ namespace XEthernetDemo
             RotatedRect[] box = new RotatedRect[contours.Length];
             //List<OpenCvSharp.Point[]> Resultcontours = new List<OpenCvSharp.Point[]>();
 
-                
+
             //Console.WriteLine("=====================");
             //Console.WriteLine(contours.Length);
             //Console.WriteLine("=====================");
             time_finish = DateTime.Now.Millisecond;
             Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
-            
-            
+
+
 
             if (contours.Length != 0)
             {
@@ -813,7 +824,7 @@ namespace XEthernetDemo
                     {
                         break;
                     }
-                        
+
                     double area = Cv2.ContourArea(contours[i]);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3)
@@ -886,35 +897,40 @@ namespace XEthernetDemo
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
 
+
                     // 对物块的种类进行判断
                     // while (opFlag != 0)                     // 循环到没有对线阵进行操作
                     // { }
                     // opFlag = 2;                             // 将当前队列可读写状态设置为2
                     Queue<GFinfo> gfinfo = info_queue;
                     int queen_flag = 0;                     // 标志当前队列第一个是否与物块信息符合
-                    GFinfo first_info = gfinfo.Dequeue();
-                    Int64 a = data.start_time_int - first_info.time;
-                    if (Math.Abs(a) <= 25)
+                    if (gfinfo.Count != 0)
                     {
-                        if (Math.Floor((float)boundRect[i].X / col * 10) == first_info.channelindex)
+                        GFinfo first_info = gfinfo.Dequeue();
+                        Int64 a = data.start_time_int - first_info.time;
+                        if (Math.Abs(a) <= 25)
+                        {
+                            if (Math.Floor((float)boundRect[i].X / col * 10) == first_info.channelindex)
+                            {
+                                queen_flag = 1;
+                                data.typof_block = (byte)first_info.flag;
+                            }
+                        }
+                        else if (a > 25)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                         {
                             queen_flag = 1;
-                            data.typof_block = (byte)first_info.flag;
-                        }    
+                        }
+                        if (queen_flag == 1)        // 如果队列信息已经被读取或已经过了时间，需要对队列首个物块进行剔除
+                        {
+                            info_queue.Dequeue();
+                        }
+                        // opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
                     }
-                    else if (a > 25)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
-                    {
-                        queen_flag = 1;
-                    }
-                    if (queen_flag == 1)        // 如果队列信息已经被读取或已经过了时间，需要对队列首个物块进行剔除
-                    {
-                        info_queue.Dequeue();
-                    }
-                    opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
+
 
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 10;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
-                    
+
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
@@ -936,7 +952,7 @@ namespace XEthernetDemo
                             data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
                     }
                     */
-                    
+
                     data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
                     data.start_num = (Int16)(data.start_num - 2);
                     //data.start_num = (short)1;
@@ -982,7 +998,7 @@ namespace XEthernetDemo
                     ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
                     Cv2.ImWrite(result_pic, connImage);
                 }
-                    
+
 
             }
 
@@ -990,23 +1006,23 @@ namespace XEthernetDemo
             Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
-            
+
         }
         public void getCounters(IntPtr p, int row, int col, MatType type)
         {
             Mat image = new Mat(row, col, type, p);
             Console.WriteLine(p);
-            Console.WriteLine(image.At<int>(0,0));
+            Console.WriteLine(image.At<int>(0, 0));
             IntPtr data = image.Ptr(0);
-          /*
-            for (int i = 0; i < 10; i++)
-            {
-                int k = (int)data;
-                Console.WriteLine(k);
-                data = data + 1;
-            }*/
-          
-                
+            /*
+              for (int i = 0; i < 10; i++)
+              {
+                  int k = (int)data;
+                  Console.WriteLine(k);
+                  data = data + 1;
+              }*/
+
+
             //Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
 
             //Console.WriteLine("=====================");
@@ -1063,7 +1079,7 @@ namespace XEthernetDemo
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             switch (event_id)
-            { 
+            {
                 case 50:
                 case 53:
                     lost_line += data;
@@ -1075,7 +1091,7 @@ namespace XEthernetDemo
         {
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             switch (event_id)
-            { 
+            {
                 case 56:
                     Temperature.Text = "Temperature: " + Convert.ToString(data);
                     break;
@@ -1091,7 +1107,7 @@ namespace XEthernetDemo
             xsystem.LocalIP = LocalAdapter.Text;
             xsystem.OnXError += new XSystemW.DelOnXError(OnError);
 
-            if (xsystem.Open()>0)
+            if (xsystem.Open() > 0)
             {
                 int dev_num = xsystem.FindDevice();
                 if (dev_num > 0)
@@ -1103,7 +1119,7 @@ namespace XEthernetDemo
 
                 }
             }
-            // Power_Amplifier_Load();
+            Power_Amplifier_Load();
             open_recv();
         }
 
@@ -1135,7 +1151,7 @@ namespace XEthernetDemo
 
         void SetIntegralTime()
         {
-            ulong pixel_size; 
+            ulong pixel_size;
             unsafe
             {
                 ulong data;
@@ -1144,7 +1160,7 @@ namespace XEthernetDemo
             }
             float integral = 0;
             integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
-            MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");  
+            MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
             ulong integral_times = (ulong)(integral * 1000);
             xcommand.SetPara(3, integral_times, 0);
             integral_time = integral;
@@ -1185,7 +1201,7 @@ namespace XEthernetDemo
                 //Get serial number of X-GCU
                 string sn = xcommand.GetPara(51, 0);
                 SN.Text = "SN: " + sn;
-                
+
                 UInt64 para_data;
                 unsafe
                 {
@@ -1197,7 +1213,7 @@ namespace XEthernetDemo
                     OPMode.SelectedIndex = Convert.ToInt32(para_data);
                     xcommand.GetPara(37, &para_data, 0);
                     switch (para_data)
-                    { 
+                    {
                         case 16:
                             PixelDepth.SelectedIndex = 0;
                             break;
@@ -1206,15 +1222,15 @@ namespace XEthernetDemo
                             break;
                     }
                     xcommand.GetPara(43, &para_data, 0);
-                    DMPixNum.SelectedIndex = Convert.ToInt32(para_data)-5;
+                    DMPixNum.SelectedIndex = Convert.ToInt32(para_data) - 5;
                     xcommand.GetPara(20, &para_data, 0);
                     BinMode.SelectedIndex = Convert.ToInt32(para_data);
 
                     xcommand.GetPara(8, &para_data, 0);
-                    CardNum1.Text = ((para_data & 0x000000FF00000000)>>32).ToString();
-                    CardNum2.Text = ((para_data & 0x00000000FF000000)>>24).ToString();
-                    CardNum3.Text = ((para_data & 0x0000000000FF0000)>>16).ToString();
-                    CardNum4.Text = ((para_data & 0x000000000000FF00)>>8).ToString();
+                    CardNum1.Text = ((para_data & 0x000000FF00000000) >> 32).ToString();
+                    CardNum2.Text = ((para_data & 0x00000000FF000000) >> 24).ToString();
+                    CardNum3.Text = ((para_data & 0x0000000000FF0000) >> 16).ToString();
+                    CardNum4.Text = ((para_data & 0x000000000000FF00) >> 8).ToString();
                     CardNum5.Text = (para_data & 0x00000000000000FF).ToString();
 
                     total_card_num = Convert.ToInt32(CardNum1.Text) + Convert.ToInt32(CardNum2.Text) + Convert.ToInt32(CardNum3.Text) + Convert.ToInt32(CardNum4.Text) + Convert.ToInt32(CardNum5.Text);
@@ -1225,7 +1241,7 @@ namespace XEthernetDemo
                     }
                 }
 
-                
+
                 // 设置初始化参数
                 // xcommand.ExecutePara(56, 0);     // 恢复设备的初始化参数
                 // MessageBox.Show("Finished Init the X-GCU");
@@ -1259,7 +1275,7 @@ namespace XEthernetDemo
 
                 timerthread.Start();
             }
-            
+
         }
 
         private void Close_Click(object sender, EventArgs e)
@@ -1284,7 +1300,7 @@ namespace XEthernetDemo
                 xcommand.Close();
             if (xsystem != null)
                 xsystem.Close();
-         }
+        }
 
         private void ResetConf_Click(object sender, EventArgs e)
         {
@@ -1338,7 +1354,7 @@ namespace XEthernetDemo
             recv = true;
             if (recv)
             {
-                Total_Block_Num.Text = "Start Receive!";
+                CardNum1.Text = "Start Receive!";
                 recv_thread = new Thread(recv_data);
                 recv_thread.IsBackground = true;
                 recv_thread.Start();
@@ -1431,7 +1447,7 @@ namespace XEthernetDemo
                         EnableExFrame.Checked = Convert.ToBoolean(1);
                     else
                         EnableExFrame.Checked = Convert.ToBoolean(0);
-                    xcommand.GetPara(29, &para_data,0);
+                    xcommand.GetPara(29, &para_data, 0);
                     FrameTriggerMode.SelectedIndex = Convert.ToInt32(para_data);
                     xcommand.GetPara(31, &para_data, 0);
                     FrameD.Text = Convert.ToString(para_data);
@@ -1447,12 +1463,12 @@ namespace XEthernetDemo
         private void DMIndex_SelectedIndexChanged(object sender, EventArgs e)
         {
             UInt64 para_data;
-            cur_dm_index = Convert.ToUInt32( DMIndex.SelectedIndex + 1);
+            cur_dm_index = Convert.ToUInt32(DMIndex.SelectedIndex + 1);
             unsafe
             {
                 xcommand.GetPara(6, &para_data, cur_dm_index);
                 LowGain.Text = (para_data & 0x00000000000000FF).ToString();
-                HighGain.Text =((para_data & 0x000000000000FF00)>>8).ToString();
+                HighGain.Text = ((para_data & 0x000000000000FF00) >> 8).ToString();
 
                 xcommand.GetPara(42, &para_data, cur_dm_index);
                 DMTestPattern.SelectedIndex = Convert.ToInt32(para_data);
@@ -1603,7 +1619,7 @@ namespace XEthernetDemo
             msg_queue = new Queue<Msg>();
             info_queue = new Queue<GFinfo>();
 
-            
+            /*
             conditional_variable = new AutoResetEvent(false);
             locker = new object();
 
@@ -1620,6 +1636,8 @@ namespace XEthernetDemo
             //Conupdate.Settings = ConSet;
             //string putData = JsonConvert.SerializeObject(Conupdate);
             //string putReturnJson = op.Put(url, putData);
+
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -1633,7 +1651,7 @@ namespace XEthernetDemo
             OnFrameReady_testimage();
             //Total_Block_Num.Text = Convert.ToString((byte)(DateTime.Now.Year - 2000));
             //timecheck();
-            
+
         }
 
         private void TestPLC_Click(object sender, EventArgs e)
@@ -1642,7 +1660,7 @@ namespace XEthernetDemo
             {
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             }
-            if (!client.Connected)   
+            if (!client.Connected)
             {
                 // OperateResult connect = omronFinisNet.ConnectServer();
                 byte[] ntp_testdata = new byte[48];
@@ -1695,14 +1713,14 @@ namespace XEthernetDemo
 
         private void stopGF_Click(object sender, EventArgs e)
         {
-            
+
             quit_flag = true;
             //write(SCAData);
             socket.Close();
             conditional_variable.Set();
             conditional_variable.Set();
 
-            
+
             //时间戳
             //DateTime endtime = starttime.AddSeconds(lifetime);
             //string url = "http://172.28.110.100:8000/Configuration/Controller";
@@ -1736,7 +1754,7 @@ namespace XEthernetDemo
                 msg.bytes = buf;
                 msg.length = read;
                 msg.getTime = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                
+
                 lock (locker)
                 {
                     msg_queue.Enqueue(msg);
@@ -1817,12 +1835,14 @@ namespace XEthernetDemo
                     //8.16test
                     for (int i = 0; i < 3; i++)    //选一个即可
                     {
-                        if (dp.SCACount[i] > 15) {
+                        if (dp.SCACount[i] > 15)
+                        {
 
-                            while (opFlag == 1){
+                            while (opFlag == 1)
+                            {
                                 Thread.Sleep(1);
                             }
-                            if(opFlag == 0)
+                            if (opFlag == 0)
                             {
                                 opFlag = 1;
                                 GFinfo info;
@@ -1916,7 +1936,7 @@ namespace XEthernetDemo
             //if (check_time_num == check_time_num2)
             //timeBox1.Text = "num1: " + Convert.ToString(check_time_num) + "; num2: " + Convert.ToString(check_time_num2);
         }
-        
+
         // 退出窗口
         private void Form1_FormClosing(object sender, CancelEventArgs e)
         {
@@ -2036,7 +2056,7 @@ namespace XEthernetDemo
         public void SCADataSection(ref int index, int SectionLen, string rawdata)
         {
             int tempstartbin, templength, tempcount;
-            for (int i = 0; i < 16; i++)             
+            for (int i = 0; i < 16; i++)
             {
                 tempstartbin = GetN(rawdata, ref index, 2);
                 templength = GetN(rawdata, ref index, 2);
