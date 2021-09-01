@@ -39,6 +39,8 @@ namespace XEthernetDemo
         internal int flag;                  // 物块的类型
     }
 
+
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -46,15 +48,23 @@ namespace XEthernetDemo
             InitializeComponent();
             LocalAdapter.Text = "169.254.84.167";
             PsColor.SelectedIndex = 0;
-
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandleException);
         }
+
+        private static void CurrentDomain_UnhandleException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine(e.ExceptionObject.ToString());
+            MessageBox.Show(e.ExceptionObject.ToString());
+        }
+
+
 
         //功放变量
         static Queue<GFinfo> info_queue;
         static Queue<Msg> msg_queue;
         static Socket socket;
         static AutoResetEvent conditional_variable;
-        static Object locker;
+        //static Object locker;
         static volatile bool quit_flag = false;
         static IPEndPoint ep;
         public int[,,] SCAData = new int[10000, 10, 10];    //40为一秒轮次，可存储25秒数据
@@ -140,6 +150,8 @@ namespace XEthernetDemo
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
         Thread recv_thread;
+        static Object locker;
+        GFinfo first_info = new GFinfo();
 
         // 定时器功能实现函数
         private void timer()
@@ -216,9 +228,14 @@ namespace XEthernetDemo
                 info.time = Convert.ToInt64(time.ToString());
                 //index = index << 8 & data[9];
                 info.channelindex = Convert.ToInt32(data[8].ToString("X2"), 16);
+                info.flag = 1;      // 入队列的为铜的信息
                 wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
                 wr.Flush();
+                //lock(locker)
+                //{
                 info_queue.Enqueue(info);
+                //}
+
             }
             if (!recv)
             {
@@ -844,7 +861,7 @@ namespace XEthernetDemo
                     if (contours.Length > 50)
                         break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10 || boundRect[i].Width > num_of_mouth / 2)
+                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
                         continue;
 
                     wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
@@ -896,35 +913,75 @@ namespace XEthernetDemo
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
+                    long start_detect_time = data.start_time_int;
 
 
                     // 对物块的种类进行判断
-                    // while (opFlag != 0)                     // 循环到没有对线阵进行操作
+                    // while (opFlag != 0)                      // 循环到没有对线阵进行操作
                     // { }
-                    // opFlag = 2;                             // 将当前队列可读写状态设置为2
-                    Queue<GFinfo> gfinfo = info_queue;
-                    int queen_flag = 0;                     // 标志当前队列第一个是否与物块信息符合
-                    if (gfinfo.Count != 0)
+                    //opFlag = 2;                                 // 将当前队列可读写状态设置为2
+                    //Queue<GFinfo> gfinfo = info_queue;
+                    int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
+                    int start_num = boundRect[i].X * 10 / col;
+                    int end_num = (boundRect[i].X + Width) * 10 / col;
+                    while (info_queue.Count != 0 || first_info.flag != 0)
                     {
-                        GFinfo first_info = gfinfo.Dequeue();
+                        //gfinfo = info_queue;
+                        //GFinfo first_info = gfinfo.Dequeue();
+                        if (first_info.flag == 0)
+                            first_info = info_queue.Dequeue();
                         Int64 a = data.start_time_int - first_info.time;
                         if (Math.Abs(a) <= 25)
                         {
-                            if (Math.Floor((float)boundRect[i].X / col * 10) == first_info.channelindex)
+                            if (first_info.channelindex >= start_num && first_info.channelindex <= end_num)
                             {
-                                queen_flag = 1;
+                                queue_flag = 1;
                                 data.typof_block = (byte)first_info.flag;
                             }
+                            else
+                                queue_flag = 3;
                         }
                         else if (a > 25)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                         {
-                            queen_flag = 1;
+                            queue_flag = 2;
                         }
-                        if (queen_flag == 1)        // 如果队列信息已经被读取或已经过了时间，需要对队列首个物块进行剔除
+                        if (queue_flag == 1)        // 如果队列信息已经被读取，需要对队列首个物块进行剔除
                         {
-                            info_queue.Dequeue();
+                            lock (locker)
+                            {
+                                wr.WriteLine("Out Flag=1: queue_count = " + info_queue.Count);
+                                wr.Flush();
+                                first_info.flag = 0;
+                            }
+                            break;
                         }
-                        // opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
+                        else if (queue_flag == 2)
+                        {
+                            lock (locker)
+                            {
+                                wr.WriteLine("Out Flag = 2: queue_count = " + info_queue.Count);
+                                wr.Flush();
+                                first_info.flag = 0;        // 如果队列信息已经过期，剔除队列首个物体，然后继续寻找在队列中对下一个金属信息进行核验
+                            }
+                            //info_queue.Dequeue();   
+                            continue;
+                        }
+                        else if (queue_flag == 3)       // 如果队列由于通道数信息不符合，可以继续寻找队列内的下一个金属信息
+                        {
+                            lock (locker)
+                            {
+                                wr.WriteLine("Out Flag = 3: queue_count = " + info_queue.Count);
+                                wr.Flush();
+                                first_info.flag = 0;        // 如果队列信息已经过期，剔除队列首个物体，然后继续寻找在队列中对下一个金属信息进行核验
+                            }
+                            continue;
+                        }
+                        else
+                        {
+                            break;                      // 如果队列里时间最早的金属信息时间远大于当前物块时间或者通道数不符合，则跳出循环
+                        }
+
+                        //opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
                     }
 
 
@@ -934,7 +991,7 @@ namespace XEthernetDemo
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 5);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
                     /*
@@ -975,19 +1032,21 @@ namespace XEthernetDemo
                     // 每个物块休眠2ms时间让PLC来得及处理物块信息
                     if (i != 0)
                         Thread.Sleep(2);
-                    int num = SendData(data);
-                    if (num == 23)
-                    {
-                        total_clock_num++;
-                        CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
-                        CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
-                        CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
-                        CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
-                        CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
-                    }
+                    int num = 0;
+                    if (data.typof_block == 1)
+                        num = SendData(data);
+                    //if (num == 23)
+                    //{
+                    total_clock_num++;
+                    CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
+                    CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
+                    CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
+                    CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
+                    CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
+                    //}
 
 
-                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + data.start_time_int + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + data.typof_block);
+                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + data.typof_block + "\t" + queue_flag);
 
                 }
                 wr.Flush();
@@ -1120,7 +1179,9 @@ namespace XEthernetDemo
                 }
             }
             Power_Amplifier_Load();
+            locker = new object();
             open_recv();
+
         }
 
         private void Reset_Click(object sender, EventArgs e)
@@ -1336,7 +1397,7 @@ namespace XEthernetDemo
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr2.WriteLine("\n*************************************************************************");
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttypof_block");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttypof_block\tqueue_flag");
             wr.Flush();
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
@@ -1359,6 +1420,10 @@ namespace XEthernetDemo
                 recv_thread.IsBackground = true;
                 recv_thread.Start();
             }
+
+            first_info.flag = 0;
+            first_info.channelindex = 0;
+            first_info.time = 0;
 
         }
 
@@ -1648,9 +1713,9 @@ namespace XEthernetDemo
         private void button1_Click(object sender, EventArgs e)
         {
             //GetTXT_as_mat(test_txt_filepath);
-            OnFrameReady_testimage();
+            //OnFrameReady_testimage();
             //Total_Block_Num.Text = Convert.ToString((byte)(DateTime.Now.Year - 2000));
-            //timecheck();
+            timecheck();
 
         }
 
