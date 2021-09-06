@@ -66,6 +66,7 @@ namespace XEthernetDemo
 
         //功放变量
         static Queue<Msg> msg_queue;
+        static Queue<GFinfo> info_queue;
         static Socket socket;
         static AutoResetEvent conditional_variable;
         static Object gflocker;
@@ -103,7 +104,7 @@ namespace XEthernetDemo
         public int sendflag = 1;  //是否发送udp数据
         public int intocount = 0;
         public int sendcount = 0;
-        public int gap = 15;        //阈值
+        public int gap = 4;        //阈值
 
         private Thread listen_thread;
         private Thread process_thread1, process_thread2, process_thread3, process_thread4;
@@ -119,6 +120,10 @@ namespace XEthernetDemo
         //public List<SingleChannelAnalyzerConfigItem> Singleset = new List<SingleChannelAnalyzerConfigItem>();
         //public List<double> peaktime = new List<double>();
         //public DateTime starttime;
+
+        //功放线阵交互
+        public int opFlag = 0;      //是否正在对队列进行操作
+        public bool recv = false;   //是否开始接受功放程序数据
 
         //线阵变量
         XSystemW xsystem;
@@ -146,6 +151,7 @@ namespace XEthernetDemo
         int length_belt = 1016;         // 皮带长度为1000mm
         int length_linearray = 1120;    // 线阵长度为1200mm
         uint time_interval = 4;         // 定时器定时时间为5ms
+        public float speed = 3.0f;      // 传送带速度
         float SDD = 914;
         float SOD = 815;
         string result_pic;
@@ -1700,6 +1706,7 @@ namespace XEthernetDemo
         private void Power_Amplifier_Load()
         {
             msg_queue = new Queue<Msg>();
+            info_queue = new Queue<GFinfo>();
             conditional_variable = new AutoResetEvent(false);
             gflocker = new object();
 
@@ -1712,7 +1719,7 @@ namespace XEthernetDemo
             //udpSend.Bind(sendpoint);
             udpSend.Connect(sendpoint);
 
-           
+
 
 
         }
@@ -1908,7 +1915,7 @@ namespace XEthernetDemo
                 Interlocked.Increment(ref intocount);
                 //label3.Text = intocount.ToString();
 
-
+                //调试用保存数据
                 int j = 0;
                 for (int i = 0; i < 3; i++)
                 {
@@ -1923,7 +1930,8 @@ namespace XEthernetDemo
                 pickTime[CycleCount / 10, chnldx - 1] = msg.pickTime.TimeOfDay.ToString();
                 beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
 
-                if (dp.SCACount[0] > gap)           //符合条件的数据报，发送给HJ
+
+                if (dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
@@ -1965,6 +1973,11 @@ namespace XEthernetDemo
             return ret;
         }
 
+        private void FindDevice_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
         public void write(int[,,] arr)             //保存txt文本
         {
             string temppath = @"D:\422test\data";
@@ -1974,7 +1987,8 @@ namespace XEthernetDemo
             {
                 for (int i = 0; i < 10; ++i)
                 {
-                    if (arr[k, i, 2] > gap || arr[k, i, 5] > gap || arr[k, i, 8] > gap)
+                    //if (arr[k, i, 2] > gap || arr[k, i, 5] > gap || arr[k, i, 8] > gap)
+                    if (arr[k, i, 5] > gap)
                     {
                         int temp = i + 1;
                         string txtname = temppath + k + "." + temp;
