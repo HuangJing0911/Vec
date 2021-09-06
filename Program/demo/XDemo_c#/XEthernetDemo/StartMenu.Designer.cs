@@ -92,7 +92,7 @@
             this.SettingButton.Size = new System.Drawing.Size(188, 61);
             this.SettingButton.TabIndex = 3;
             this.SettingButton.Tag = "0";
-            this.SettingButton.Text = "设置";
+            this.SettingButton.Text = "参数设置";
             this.SettingButton.UseVisualStyleBackColor = false;
             this.SettingButton.Click += new System.EventHandler(this.SettingButton_Click);
             // 
@@ -108,6 +108,7 @@
             this.TestButton.Tag = "0";
             this.TestButton.Text = "测试版本";
             this.TestButton.UseVisualStyleBackColor = false;
+            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
             // 
             // LocalAdapter
             // 
@@ -328,7 +329,7 @@
             this.ChangeSetiingButton.Size = new System.Drawing.Size(188, 61);
             this.ChangeSetiingButton.TabIndex = 21;
             this.ChangeSetiingButton.Tag = "1";
-            this.ChangeSetiingButton.Text = "更改设置";
+            this.ChangeSetiingButton.Text = "更改参数";
             this.ChangeSetiingButton.UseVisualStyleBackColor = false;
             this.ChangeSetiingButton.Click += new System.EventHandler(this.ChangeSetiingButton_Click);
             // 

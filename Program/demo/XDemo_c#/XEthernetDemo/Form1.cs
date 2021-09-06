@@ -51,9 +51,14 @@ namespace XEthernetDemo
         public Form1()
         {
             InitializeComponent();
-            LocalAdapter.Text = "169.254.84.167";
             PsColor.SelectedIndex = 0;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandleException);
+        }
+
+        public void SetSetting()
+        {
+            LocalAdapter.Text = this.ntpServer;
+            Total_Block_Num.Text = "Speed = " + speed;
         }
 
         private static void CurrentDomain_UnhandleException(object sender, UnhandledExceptionEventArgs e)
@@ -66,6 +71,7 @@ namespace XEthernetDemo
 
         //功放变量
         static Queue<Msg> msg_queue;
+        static Queue<GFinfo> info_queue;
         static Socket socket;
         static AutoResetEvent conditional_variable;
         static Object gflocker;
@@ -120,6 +126,10 @@ namespace XEthernetDemo
         //public List<double> peaktime = new List<double>();
         //public DateTime starttime;
 
+        //功放线阵交互
+        public int opFlag = 0;      //是否正在对队列进行操作
+        public bool recv = false;   //是否开始接受功放程序数据
+
         //线阵变量
         XSystemW xsystem;
         XDeviceW xdevice;
@@ -142,12 +152,13 @@ namespace XEthernetDemo
         int check_time_num = 0;         // 定时器1的计数器
         int check_time_num2 = 0;        // 定时器2的计数器
         float integral_time = 3;        // 默认扫描积分时间3ms
-        int num_of_mouth = 198;         // 喷嘴数量
-        int length_belt = 1016;         // 皮带长度为1000mm
-        int length_linearray = 1120;    // 线阵长度为1200mm
-        uint time_interval = 4;         // 定时器定时时间为5ms
-        float SDD = 914;
-        float SOD = 815;
+        public float speed = 3.0f;              // 皮带速度定为3.0
+        public int num_of_mouth = 198;          // 喷嘴数量
+        public int length_belt = 1016;          // 皮带长度为1000mm
+        public int length_linearray = 1120;     // 线阵长度为1200mm
+        uint time_interval = 4;                 // 定时器定时时间为5ms
+        public float SDD = 914;
+        public float SOD = 815;
         string result_pic;
         string init_pic;
         Socket client = null;       //与PLC连接的socket
@@ -162,8 +173,9 @@ namespace XEthernetDemo
         StreamWriter wr;
         FileStream fs2;
         StreamWriter wr2;
-        const string ntpServer = "192.168.250.1";
-        const string ntpServer2 = "127.0.0.1";
+        public string ntpServer;      // 线阵IP
+        public string ntpServer2 = "127.0.0.1";
+        public string PowerIP = "172.28.110.50";        // 功放IP
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
@@ -1239,7 +1251,7 @@ namespace XEthernetDemo
             }
             float integral = 0;
             integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
-            MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
+            //MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
             ulong integral_times = (ulong)(integral * 1000);
             xcommand.SetPara(3, integral_times, 0);
             integral_time = integral;
@@ -1332,8 +1344,8 @@ namespace XEthernetDemo
 
                 // 连接到PLC
                 Connect_to_PLC();
-                if (client.Connected)
-                    MessageBox.Show("Successfully Connect to PLC!");
+                //if (client.Connected)
+                    //MessageBox.Show("Successfully Connect to PLC!");
                 SetIntegralTime();
                 fs = new FileStream(result_data, FileMode.Append);
                 wr = new StreamWriter(fs);
@@ -1704,7 +1716,7 @@ namespace XEthernetDemo
             gflocker = new object();
 
             udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
-            endpoint = new IPEndPoint(IPAddress.Parse("172.28.110.50"), 27001);          //172.28.110.50   27001
+            endpoint = new IPEndPoint(IPAddress.Parse(PowerIP), 27001);          //172.28.110.50   27001
             udpRecv.Bind(endpoint);
 
             udpSend = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                    //给HJ负责设备发送数据报

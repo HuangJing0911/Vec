@@ -453,3 +453,4 @@ C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEt
 C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
 C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
 C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.StartMenu.resources
+C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.TestForm.resources

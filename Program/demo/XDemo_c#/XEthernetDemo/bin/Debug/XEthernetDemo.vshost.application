@@ -7,14 +7,14 @@
     <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="XEthernetDemo.exe.manifest" size="8062">
+    <dependentAssembly dependencyType="install" codebase="XEthernetDemo.exe.manifest" size="8063">
       <assemblyIdentity name="XEthernetDemo.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>MVCqTovpKlhXtuhZCDXag4l9eic=</dsig:DigestValue>
+        <dsig:DigestValue>RSoUJ+8Aam5+/cn2Qiz0ROVvm7Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
