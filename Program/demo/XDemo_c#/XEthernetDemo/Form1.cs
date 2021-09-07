@@ -51,13 +51,13 @@ namespace XEthernetDemo
         public Form1()
         {
             InitializeComponent();
+            //LocalAdapter.Text = "169.254.84.167";
             PsColor.SelectedIndex = 0;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandleException);
         }
-
         public void SetSetting()
         {
-            LocalAdapter.Text = this.ntpServer;
+            LocalAdapter.Text = this.arrayServer;
             Total_Block_Num.Text = "Speed = " + speed;
         }
 
@@ -149,21 +149,21 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        int check_time_num = 0;         // 定时器1的计数器
-        int check_time_num2 = 0;        // 定时器2的计数器
-        float integral_time = 3;        // 默认扫描积分时间3ms
-        public float speed = 3.0f;              // 皮带速度定为3.0
+        int check_time_num = 0;                 // 定时器1的计数器
+        int check_time_num2 = 0;                // 定时器2的计数器
+        float integral_time = 3;                // 默认扫描积分时间3ms
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
         uint time_interval = 4;                 // 定时器定时时间为5ms
+        public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
         public float SOD = 815;
         string result_pic;
         string init_pic;
-        Socket client = null;       //与PLC连接的socket
-        Socket client2 = null;      //与功放程序连接的socket
-        public byte[] Rcvbuffer;    //接收字节组数
+        Socket client = null;                   //与PLC连接的socket
+        Socket client2 = null;                  //与功放程序连接的socket
+        public byte[] Rcvbuffer;                //接收字节组数
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/weike/Desktop/TEST17.txt";
@@ -173,9 +173,10 @@ namespace XEthernetDemo
         StreamWriter wr;
         FileStream fs2;
         StreamWriter wr2;
-        public string ntpServer;      // 线阵IP
+        public string ntpServer = "192.168.250.1";          // PLC IP
+        public string arrayServer = "169.254.84.167";       // 线阵IP
+        public string powerServer = "172.28.110.50";        // 功放IP
         public string ntpServer2 = "127.0.0.1";
-        public string PowerIP = "172.28.110.50";        // 功放IP
         OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
@@ -891,7 +892,7 @@ namespace XEthernetDemo
                     if (contours.Length > 50)
                         break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
+                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 8 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
                         continue;
 
                     wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
@@ -1024,7 +1025,7 @@ namespace XEthernetDemo
                     data.blow_time = (Int16)(boundRect[i].Height * integral_time + 5);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
-                    /*
+
                     if ((float)boundRect[i].X / col > 0.5)
                     {
                         data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
@@ -1038,16 +1039,16 @@ namespace XEthernetDemo
                         else
                             data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
                     }
-                    */
 
-                    data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
-                    data.start_num = (Int16)(data.start_num - 2);
+
+                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    data.start_num = (Int16)(data.start_num);
                     //data.start_num = (short)1;
                     if (data.start_num < 1)
                         data.start_num = (short)1;
-                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
-                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
-                    data.end_num = (Int16)(data.end_num + 2);
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
+                    data.end_num = (Int16)(data.end_num);
                     //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
@@ -1063,8 +1064,8 @@ namespace XEthernetDemo
                     if (i != 0)
                         Thread.Sleep(2);
                     int num = 0;
-                    if (data.typof_block == 1)
-                        num = SendData(data);
+                    //if (data.typof_block == 1)
+                    num = SendData(data);
                     //if (num == 23)
                     //{
                     total_clock_num++;
@@ -1712,11 +1713,12 @@ namespace XEthernetDemo
         private void Power_Amplifier_Load()
         {
             msg_queue = new Queue<Msg>();
+            info_queue = new Queue<GFinfo>();
             conditional_variable = new AutoResetEvent(false);
             gflocker = new object();
 
             udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
-            endpoint = new IPEndPoint(IPAddress.Parse(PowerIP), 27001);          //172.28.110.50   27001
+            endpoint = new IPEndPoint(IPAddress.Parse(powerServer), 27001);          //172.28.110.50   27001
             udpRecv.Bind(endpoint);
 
             udpSend = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                    //给HJ负责设备发送数据报
@@ -1724,7 +1726,7 @@ namespace XEthernetDemo
             //udpSend.Bind(sendpoint);
             udpSend.Connect(sendpoint);
 
-           
+
 
 
         }
@@ -1805,7 +1807,7 @@ namespace XEthernetDemo
             //process_thread2.Join();
             //process_thread3.Join();
             //process_thread4.Join();
-            //write(SCAData);
+            write(SCAData);
         }
 
         private void RecvMessage()
@@ -1920,7 +1922,7 @@ namespace XEthernetDemo
                 Interlocked.Increment(ref intocount);
                 //label3.Text = intocount.ToString();
 
-                /*
+                //调试用保存数据
                 int j = 0;
                 for (int i = 0; i < 3; i++)
                 {
@@ -1934,7 +1936,7 @@ namespace XEthernetDemo
                 saveTime[CycleCount / 10, chnldx - 1] = msg.saveTime.TimeOfDay.ToString();
                 pickTime[CycleCount / 10, chnldx - 1] = msg.pickTime.TimeOfDay.ToString();
                 beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
-                */
+
 
                 if (dp.SCACount[0] > gap)           //符合条件的数据报，发送给HJ
                 {
@@ -1953,7 +1955,7 @@ namespace XEthernetDemo
                     gfData[9] = c[1];
                     udpSend.Send(gfData);
                     msg.sendTime = DateTime.Now;
-                    //sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
+                    sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
                 }
             }
             else
@@ -1976,6 +1978,11 @@ namespace XEthernetDemo
             }
             string ret = new string(r);
             return ret;
+        }
+
+        private void FindDevice_Click_1(object sender, EventArgs e)
+        {
+
         }
 
         public void write(int[,,] arr)             //保存txt文本

@@ -139,6 +139,7 @@ namespace XEthernetDemo
         StreamWriter wr;
         FileStream fs2;
         StreamWriter wr2;
+        public string plc_server;       // PLC IP
         public string ntpServer;      // 线阵IP
         public string ntpServer2 = "127.0.0.1";
         public string PowerIP;        // 功放IP

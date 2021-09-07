@@ -1608,7 +1608,7 @@
             // startGF
             // 
             this.startGF.Location = new System.Drawing.Point(93, 850);
-            this.startGF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startGF.Margin = new System.Windows.Forms.Padding(4);
             this.startGF.Name = "startGF";
             this.startGF.Size = new System.Drawing.Size(147, 39);
             this.startGF.TabIndex = 16;
@@ -1619,7 +1619,7 @@
             // stopGF
             // 
             this.stopGF.Location = new System.Drawing.Point(293, 850);
-            this.stopGF.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.stopGF.Margin = new System.Windows.Forms.Padding(4);
             this.stopGF.Name = "stopGF";
             this.stopGF.Size = new System.Drawing.Size(147, 39);
             this.stopGF.TabIndex = 17;
@@ -1636,7 +1636,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1579, 892);
+            this.ClientSize = new System.Drawing.Size(1582, 953);
             this.Controls.Add(this.stopGF);
             this.Controls.Add(this.startGF);
             this.Controls.Add(this.TestPLC);

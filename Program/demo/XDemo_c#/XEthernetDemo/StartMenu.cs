@@ -11,6 +11,8 @@ namespace XEthernetDemo
 {
     public partial class StartMenu : Form
     {
+        bool setting_change = false;
+
         public StartMenu()
         {
             InitializeComponent();
@@ -22,7 +24,7 @@ namespace XEthernetDemo
 
             foreach (Control c in this.Controls)
             {
-                if (c.Tag.ToString() == "1")
+                if (c.Tag.ToString() == "1" || c.Tag.ToString() == "2")
                 {
                     c.Enabled = false;
                     c.Visible = false;
@@ -38,14 +40,6 @@ namespace XEthernetDemo
 
         private void SettingButton_Click(object sender, EventArgs e)
         {
-            /*
-            DebugButton.Visible = false;
-            DebugButton.Enabled = false;
-            TestButton.Visible = false;
-            TestButton.Enabled = false;
-            SettingButton.Visible = false;
-            SettingButton.Enabled = false;
-            */
             foreach(Control c in this.Controls)
             {
                 if (c.Tag.ToString() == "0")
@@ -55,6 +49,11 @@ namespace XEthernetDemo
                 }
                 else if (c.Tag.ToString() == "1")
                 {
+                    c.Enabled = false;
+                    c.Visible = true;
+                }
+                else if (c.Tag.ToString() == "2")
+                {
                     c.Enabled = true;
                     c.Visible = true;
                 }
@@ -63,14 +62,41 @@ namespace XEthernetDemo
 
         private void ChangeSetiingButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("参数修改成功！");
+            if (!setting_change)
+            {
+                setting_change = true;
+                foreach (Control c in this.Controls)
+                {
+                    if (c.Tag.ToString() == "1")
+                    {
+                        c.Enabled = true;
+                    }
+                    else if (c.Name.ToString() == "ReturnButton")
+                        c.Enabled = false;
+                }
+            }
+            else
+            {
+                setting_change = false;
+                foreach (Control c in this.Controls)
+                {
+                    if (c.Tag.ToString() == "1")
+                    {
+                        c.Enabled = false;
+                    }
+                    else if (c.Name.ToString() == "ReturnButton")
+                        c.Enabled = true;
+                }
+                MessageBox.Show("参数修改成功！");
+            }
+            
         }
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
             foreach (Control c in this.Controls)
             {
-                if (c.Tag.ToString() == "1")
+                if (c.Tag.ToString() == "1" || c.Tag.ToString() == "2")
                 {
                     c.Enabled = false;
                     c.Visible = false;
@@ -86,8 +112,9 @@ namespace XEthernetDemo
         private void DebugButton_Click(object sender, EventArgs e)
         {
             Form1 f1 = new Form1();
-            f1.ntpServer = LocalAdapter.Text;
-            f1.PowerIP = Power_Amplifier.Text;
+            f1.arrayServer = LocalAdapter.Text;
+            f1.ntpServer = PLC_IP.Text;
+            f1.powerServer = Power_Amplifier.Text;
             f1.speed = Convert.ToSingle(Speed.Text);
             f1.num_of_mouth = Convert.ToInt32(MouthNum.Text);
             f1.length_belt = Convert.ToInt32(BeltLength.Text);
@@ -101,7 +128,8 @@ namespace XEthernetDemo
         private void TestButton_Click(object sender, EventArgs e)
         {
             TestForm f1 = new TestForm();
-            f1.ntpServer = LocalAdapter.Text;
+            //f1.ntpServer = LocalAdapter.Text;
+            //f1.plc_server = PLC_IP.Text;
             f1.PowerIP = Power_Amplifier.Text;
             f1.speed = Convert.ToSingle(Speed.Text);
             f1.num_of_mouth = Convert.ToInt32(MouthNum.Text);

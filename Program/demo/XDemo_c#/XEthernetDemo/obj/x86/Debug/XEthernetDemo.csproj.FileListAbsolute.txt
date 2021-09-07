@@ -454,3 +454,11 @@ C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEt
 C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
 C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.StartMenu.resources
 C:\Users\96342\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.TestForm.resources
+D:\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.manifest
+D:\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.application
+D:\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.StartMenu.resources
+D:\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.TestForm.resources
+D:\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
+D:\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
+C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.StartMenu.resources
+C:\Users\weike\Desktop\vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.TestForm.resources
