@@ -202,7 +202,7 @@
             this.BeltLength.Size = new System.Drawing.Size(148, 21);
             this.BeltLength.TabIndex = 12;
             this.BeltLength.Tag = "1";
-            this.BeltLength.Text = "1016";
+            this.BeltLength.Text = "1000";
             // 
             // label4
             // 

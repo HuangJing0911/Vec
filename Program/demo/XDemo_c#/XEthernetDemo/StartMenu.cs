@@ -128,9 +128,9 @@ namespace XEthernetDemo
         private void TestButton_Click(object sender, EventArgs e)
         {
             TestForm f1 = new TestForm();
-            //f1.ntpServer = LocalAdapter.Text;
-            //f1.plc_server = PLC_IP.Text;
-            f1.PowerIP = Power_Amplifier.Text;
+            f1.arrayServer = LocalAdapter.Text;
+            f1.ntpServer = PLC_IP.Text;
+            f1.powerServer = Power_Amplifier.Text;
             f1.speed = Convert.ToSingle(Speed.Text);
             f1.num_of_mouth = Convert.ToInt32(MouthNum.Text);
             f1.length_belt = Convert.ToInt32(BeltLength.Text);

@@ -110,7 +110,6 @@ namespace XEthernetDemo
         XTifFormatW xtifform;
 
         int frame_count = 0;
-        int count_thread = 0;
         int lost_line = 0;
         int total_card_num = 0;
         uint cur_dm_index = 0;
@@ -118,31 +117,35 @@ namespace XEthernetDemo
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
-        int check_time_num = 0;         // 定时器1的计数器
-        int check_time_num2 = 0;        // 定时器2的计数器
-        float integral_time = 3;        // 默认扫描积分时间3ms
-        public float speed = 3.0f;              // 皮带速度定为3.0
+        int check_time_num = 0;                 // 定时器1的计数器
+        int check_time_num2 = 0;                // 定时器2的计数器
+        float integral_time = 3;                // 默认扫描积分时间3ms
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
         uint time_interval = 4;                 // 定时器定时时间为5ms
+        public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
         public float SOD = 815;
         string result_pic;
         string init_pic;
-        Socket client = null;       //与PLC连接的socket
-        Socket client2 = null;      //与功放程序连接的socket
-        public byte[] Rcvbuffer;    //接收字节组数
+        Socket client = null;                   //与PLC连接的socket
+        Socket client2 = null;                  //与功放程序连接的socket
+        public byte[] Rcvbuffer;                //接收字节组数
+        delegate void AppendDelegate(string str);
+        AppendDelegate AppendString;
+        string test_txt_filepath = "C:/Users/weike/Desktop/TEST17.txt";
         string result_data = "C:/Users/weike/Desktop/0413_data/result-data.txt";
         string time_data = "C:/Users/weike/Desktop/0413_data/frame-time-data.txt";
         FileStream fs;
         StreamWriter wr;
         FileStream fs2;
         StreamWriter wr2;
-        public string plc_server;       // PLC IP
-        public string ntpServer;      // 线阵IP
+        public string ntpServer = "192.168.250.1";          // PLC IP
+        public string arrayServer = "169.254.84.167";       // 线阵IP
+        public string powerServer = "172.28.110.50";        // 功放IP
         public string ntpServer2 = "127.0.0.1";
-        public string PowerIP;        // 功放IP
+        //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
         Thread recv_thread;
         static Object locker;
@@ -407,7 +410,7 @@ namespace XEthernetDemo
             gflocker = new object();
 
             udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
-            endpoint = new IPEndPoint(IPAddress.Parse(PowerIP), 27001);          //172.28.110.50   27001
+            endpoint = new IPEndPoint(IPAddress.Parse(powerServer), 27001);          //172.28.110.50   27001
             udpRecv.Bind(endpoint);
 
             udpSend = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                    //给HJ负责设备发送数据报
@@ -521,10 +524,10 @@ namespace XEthernetDemo
                 int flag = 0;
                 for (int i = 0; i < contours.Length; i++)
                 {
-                    if (contours.Length > 50)
+                    /*if (contours.Length > 50)
                     {
                         break;
-                    }
+                    }*/
 
                     double area = Cv2.ContourArea(contours[i]);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
@@ -542,8 +545,8 @@ namespace XEthernetDemo
                 for (int j = 0; j < contours.Length; j++)
                 {
                     int i = contours.Length - j - 1;
-                    if (contours.Length > 50)
-                        break;
+                    //if (contours.Length > 50)
+                        //break;
                     double area = Cv2.ContourArea(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 10 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
                         continue;
@@ -678,7 +681,7 @@ namespace XEthernetDemo
                     data.blow_time = (Int16)(boundRect[i].Height * integral_time + 5);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
-                    /*
+                    
                     if ((float)boundRect[i].X / col > 0.5)
                     {
                         data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
@@ -692,15 +695,15 @@ namespace XEthernetDemo
                         else
                             data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
                     }
-                    */
+                    
 
-                    data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
                     data.start_num = (Int16)(data.start_num - 2);
                     //data.start_num = (short)1;
                     if (data.start_num < 1)
                         data.start_num = (short)1;
-                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
-                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
                     data.end_num = (Int16)(data.end_num + 2);
                     //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)

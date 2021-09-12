@@ -80,13 +80,13 @@ namespace XEthernetDemo
 
         static char[] idx_to_hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
-        public int[,,] SCAData = new int[10000, 10, 10];    //40为一秒轮次，可存储25秒数据
-        string[,] DataGetTime = new string[10000, 10];
-        string[,] processTime = new string[10000, 10];
-        string[,] sendTime = new string[10000, 10];
-        string[,] saveTime = new string[10000, 10];
-        string[,] pickTime = new string[10000, 10];
-        string[,] beforeDeTime = new string[10000, 10];
+        public int[,,] SCAData = new int[1000000, 10, 10];    //40为一秒轮次，可存储25秒数据
+        string[,] DataGetTime = new string[1000000, 10];
+        string[,] processTime = new string[1000000, 10];
+        string[,] sendTime = new string[1000000, 10];
+        string[,] saveTime = new string[1000000, 10];
+        string[,] pickTime = new string[1000000, 10];
+        string[,] beforeDeTime = new string[1000000, 10];
 
         private int RunFlag = 0;                   //是否运行标志
         public int udpCnt = 1;
@@ -109,7 +109,7 @@ namespace XEthernetDemo
         public int sendflag = 1;  //是否发送udp数据
         public int intocount = 0;
         public int sendcount = 0;
-        public int gap = 15;        //阈值
+        public int gap = 5;        //阈值
 
         private Thread listen_thread;
         private Thread process_thread1, process_thread2, process_thread3, process_thread4;
@@ -832,7 +832,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            //Cv2.ImWrite(init_pic, image);
+            Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -855,8 +855,10 @@ namespace XEthernetDemo
             time_finish = DateTime.Now.Millisecond;
             Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
 
-
-
+            wr2.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
+            wr2.Flush();
+            //ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
+            
             if (contours.Length != 0)
             {
                 //Console.WriteLine("=====================");
@@ -868,10 +870,12 @@ namespace XEthernetDemo
                 int flag = 0;
                 for (int i = 0; i < contours.Length; i++)
                 {
+                    /*
                     if (contours.Length > 50)
                     {
                         break;
                     }
+                    */
 
                     double area = Cv2.ContourArea(contours[i]);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
@@ -889,13 +893,13 @@ namespace XEthernetDemo
                 for (int j = 0; j < contours.Length; j++)
                 {
                     int i = contours.Length - j - 1;
-                    if (contours.Length > 50)
-                        break;
+                    //if (contours.Length > 50)
+                        //break;
                     double area = Cv2.ContourArea(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 8 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
                         continue;
 
-                    wr2.WriteLine(Convert.ToString(stamp) + ':' + Convert.ToString(stamp.Millisecond) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
+                    wr2.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
                     wr2.Flush();
 
@@ -938,6 +942,7 @@ namespace XEthernetDemo
                         data.start_time[2] = (byte)(stamp.Hour - 1);
                     }
                     */
+                    
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
                     int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
@@ -980,7 +985,7 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Out Flag=1: queue_count = " + info_queue.Count);
+                                wr.WriteLine("Out Flag = 1: queue_count = " + info_queue.Count);
                                 wr.Flush();
                                 first_info.flag = 0;
                             }
@@ -1022,7 +1027,7 @@ namespace XEthernetDemo
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 5);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time);
                     //data.blow_time = (short)100;
                     // 设置开始吹气阀号和停止吹气阀号
 
@@ -1064,8 +1069,8 @@ namespace XEthernetDemo
                     if (i != 0)
                         Thread.Sleep(2);
                     int num = 0;
-                    //if (data.typof_block == 1)
-                    num = SendData(data);
+                    if (data.typof_block == 1)
+                        num = SendData(data);
                     //if (num == 23)
                     //{
                     total_clock_num++;
@@ -1091,7 +1096,7 @@ namespace XEthernetDemo
 
 
             }
-
+            
             // ushort[,] line_info = get_timestamp_test(ximagew);
             Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
@@ -1807,7 +1812,7 @@ namespace XEthernetDemo
             //process_thread2.Join();
             //process_thread3.Join();
             //process_thread4.Join();
-            write(SCAData);
+            //write(SCAData);
         }
 
         private void RecvMessage()
@@ -1923,7 +1928,7 @@ namespace XEthernetDemo
                 //label3.Text = intocount.ToString();
 
                 //调试用保存数据
-                int j = 0;
+                /*int j = 0;
                 for (int i = 0; i < 3; i++)
                 {
                     SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
@@ -1936,9 +1941,9 @@ namespace XEthernetDemo
                 saveTime[CycleCount / 10, chnldx - 1] = msg.saveTime.TimeOfDay.ToString();
                 pickTime[CycleCount / 10, chnldx - 1] = msg.pickTime.TimeOfDay.ToString();
                 beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
+                */
 
-
-                if (dp.SCACount[0] > gap)           //符合条件的数据报，发送给HJ
+                if (dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
@@ -1994,7 +1999,8 @@ namespace XEthernetDemo
             {
                 for (int i = 0; i < 10; ++i)
                 {
-                    if (arr[k, i, 2] > gap || arr[k, i, 5] > gap || arr[k, i, 8] > gap)
+                    //if (arr[k, i, 2] > gap || arr[k, i, 5] > gap || arr[k, i, 8] > gap)
+                    if (arr[k, i, 2] > gap)
                     {
                         int temp = i + 1;
                         string txtname = temppath + k + "." + temp;
