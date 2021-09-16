@@ -40,8 +40,18 @@ namespace XEthernetDemo
     struct GFinfo
     {
         internal int channelindex;          // 物块在第几通道
-        internal Int64 time;             // 物块到达的时间
+        internal Int64 time;                // 物块到达的时间
         internal int flag;                  // 物块的类型
+        internal bool next_same;            // 下一个信息与自己时间信息是否相同
+    }
+
+    struct GFList
+    {
+        internal GFinfo[] list;         // 所有时间相同的GFinfo元素
+        internal int length;            // 表示列表中有效元素的个数
+        internal bool is_active;        // 表示该列表是否是激活状态
+        internal int start_channel;     // 列表开始的通道
+        internal int end_channel;       // 列表结束的通道
     }
 
 
@@ -145,7 +155,8 @@ namespace XEthernetDemo
         int lost_line = 0;
         int total_card_num = 0;
         uint cur_dm_index = 0;
-        int total_clock_num = 0;
+        int total_clock_num = 0;                // 共检测到物块
+        int total_detect_num = 0;               // 共喷吹物块
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
@@ -167,8 +178,8 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/weike/Desktop/TEST17.txt";
-        string result_data = "C:/Users/weike/Desktop/0413_data/result-data.txt";
-        string time_data = "C:/Users/weike/Desktop/0413_data/frame-time-data.txt";
+        string result_data = "C:/Users/weike/Desktop/0413_data/result/";
+        string time_data = "C:/Users/weike/Desktop/0413_data/result/";
         FileStream fs;
         StreamWriter wr;
         FileStream fs2;
@@ -183,6 +194,49 @@ namespace XEthernetDemo
         Thread recv_thread;
         static Object locker;
         GFinfo first_info = new GFinfo();
+        GFList gflist = new GFList();
+
+        // 功放信息首列表清空并重置
+        private void gflist_Reset()
+        {
+            Array.Clear(gflist.list, 0, gflist.list.Length);    // 先清空列表
+            int i = 0;
+            gflist.start_channel = 0;
+            gflist.end_channel = 0;
+            if (info_queue.Count != 0)
+            {
+                gflist.is_active = true;
+                lock (locker)
+                {
+                    while (info_queue.Count != 0)
+                    {
+                        gflist.list[i] = info_queue.Dequeue();
+                        if (gflist.start_channel == 0 && gflist.end_channel == 0)
+                        {
+                            gflist.start_channel = gflist.list[i].channelindex;
+                            gflist.end_channel = gflist.list[i].channelindex;
+                        }   
+                        else if (gflist.list[i].channelindex < gflist.start_channel)
+                        {
+                            gflist.start_channel = gflist.list[i].channelindex;
+                        }
+                            
+                        else if (gflist.list[i].channelindex > gflist.end_channel)
+                        {
+                            gflist.end_channel = gflist.list[i].channelindex;
+                        }    
+                        if (!gflist.list[i].next_same)
+                            break;
+                        else
+                            i++;
+                    }
+                }
+                gflist.length = i + 1;
+            }
+            else
+                gflist.length = 0;
+            wr.WriteLine("Update the first time info list! The length of list is: " + (gflist.length) + "(" + gflist.start_channel + "," + gflist.end_channel + ")," + ",queue_count = " + info_queue.Count);
+        }
 
         // 定时器功能实现函数
         private void timer()
@@ -259,13 +313,25 @@ namespace XEthernetDemo
                 info.time = Convert.ToInt64(time.ToString());
                 //index = index << 8 & data[9];
                 info.channelindex = Convert.ToInt32(data[8].ToString("X2"), 16);
-                info.flag = 1;      // 入队列的为铜的信息
+                info.flag = 1;               // 入队列的为铜的信息
+                info.next_same = false;     // 初始化下一个物块时间信息与自己是不同的
+                // 检测当前进队列的物块时间信息和前一个物块是否相同
+                lock (locker)
+                {
+                    if (info_queue.Count != 0)
+                    {
+                        GFinfo[] list = info_queue.ToArray<GFinfo>();
+                        GFinfo last_info = list[list.Length-1];
+                        if (Math.Abs(last_info.time- info.time) <= 5)
+                        {
+                            list[list.Length - 1].next_same = true;
+                        }
+                        info_queue = new Queue<GFinfo>(list);
+                    }
+                    info_queue.Enqueue(info);
+                }
                 wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
                 wr.Flush();
-                //lock(locker)
-                //{
-                info_queue.Enqueue(info);
-                //}
 
             }
             if (!recv)
@@ -762,8 +828,8 @@ namespace XEthernetDemo
             }
             if (data.start_time_int % 10000 == 0)
             {
-                wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_time_int) + '\t');
-                wr.Flush();
+                //wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_time_int) + '\t');
+                //wr.Flush();
             }
             // wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + "20" + data.start_time[0] + "-" + data.start_time[1]+ "-" + data.start_time[2] + " " + data.start_time[3] +":" + data.start_time[4] + ":" + data.start_time[5] + ":" + data.millionseconds + "ms" +  '\t' + data.blow_time + "ms");
             // wr.Flush();
@@ -813,7 +879,7 @@ namespace XEthernetDemo
             if (num == 23)
             {
                 total_clock_num++;
-                CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
+                CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
                 CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
                 CardNum3.Text = Convert.ToString(data.start_time[4]) + ":" + Convert.ToString(data.start_time[5]) + "s" + Convert.ToString(data.millionseconds) + "ms";
                 CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
@@ -832,7 +898,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            Cv2.ImWrite(init_pic, image);
+            //Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -858,7 +924,7 @@ namespace XEthernetDemo
             wr2.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
             wr2.Flush();
             //ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
-            
+
             if (contours.Length != 0)
             {
                 //Console.WriteLine("=====================");
@@ -894,14 +960,14 @@ namespace XEthernetDemo
                 {
                     int i = contours.Length - j - 1;
                     //if (contours.Length > 50)
-                        //break;
+                    //break;
                     double area = Cv2.ContourArea(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 8 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
                         continue;
 
                     wr2.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
-                    wr2.Flush();
+
 
                     flag = 1;
                     Data_Set data = new Data_Set();                                 // 发送数据包
@@ -942,7 +1008,7 @@ namespace XEthernetDemo
                         data.start_time[2] = (byte)(stamp.Hour - 1);
                     }
                     */
-                    
+
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
                     int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
@@ -952,22 +1018,114 @@ namespace XEthernetDemo
                     long start_detect_time = data.start_time_int;
 
 
+                    DateTime time1 = DateTime.Now;
+
+
+                    // 设置开始吹气阀号和停止吹气阀号
+                    if ((float)boundRect[i].X / col > 0.5)
+                    {
+                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                    }
+                    else
+                    {
+                        data.start_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                        if ((float)boundRect[i].X + boundRect[i].Width > col / 2)
+                            data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        else
+                            data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                    }
+                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    //data.start_num = (Int16)(data.start_num);
+                    //data.start_num = (short)1;
+                    if (data.start_num < 1)
+                        data.start_num = (short)1;
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
+                    //data.end_num = (Int16)(data.end_num);
+                    //data.end_num = (short)50;
+                    if (data.end_num > num_of_mouth)
+                        data.end_num = (short)num_of_mouth;
+
+                    DateTime time2 = DateTime.Now;
+
+
                     // 对物块的种类进行判断
                     // while (opFlag != 0)                      // 循环到没有对线阵进行操作
                     // { }
                     //opFlag = 2;                                 // 将当前队列可读写状态设置为2
                     //Queue<GFinfo> gfinfo = info_queue;
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
-                    int start_num = boundRect[i].X * 10 / col;
-                    int end_num = (boundRect[i].X + Width) * 10 / col;
-                    while (info_queue.Count != 0 || first_info.flag != 0)
+                    int start_num = (int)Math.Ceiling((float)data.start_num * 10 / num_of_mouth);
+                    int end_num = (int)Math.Ceiling((float)data.end_num * 10 / num_of_mouth);
+                    //while (info_queue.Count != 0 || first_info.flag != 0)
+                    while (true)
                     {
                         //gfinfo = info_queue;
                         //GFinfo first_info = gfinfo.Dequeue();
-                        if (first_info.flag == 0)
-                            first_info = info_queue.Dequeue();
-                        Int64 a = data.start_time_int - first_info.time;
-                        if (Math.Abs(a) <= 25)
+                        //if (first_info.flag == 0)
+                        //first_info = info_queue.Dequeue();
+                        if (!gflist.is_active && info_queue.Count != 0)
+                        {
+                            gflist_Reset();
+                        }
+                        if (!gflist.is_active)
+                            break;
+                        for (int n = 0; n < gflist.length; n++)
+                        {
+                            first_info = gflist.list[n];
+                            Int64 a = data.start_time_int - first_info.time;
+                            if (Math.Abs(a) <= 18)
+                            {
+                                //if ((first_info.channelindex <= start_num && first_info.channelindex >= end_num) || (gflist.start_channel <= start_num && gflist.end_channel >= end_num))
+                                if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
+                                {
+                                    queue_flag = 1;
+                                    data.typof_block = (byte)first_info.flag;
+                                    break;
+                                }
+                                else
+                                {
+                                    queue_flag = 3;
+                                    continue;
+                                }
+                            }
+                            else if (a > 18)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+                            {
+                                queue_flag = 2;
+                                break;
+                            }
+                            else                // 如果当前物块时间远小于列表时间
+                            {
+                                break;
+                            }
+                        }
+                        if (queue_flag == 1)        // 如果队列信息已经被读取，需要对队列首个物块进行剔除
+                        {
+                            wr.WriteLine("Successfully Find: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                            break;
+                        }
+                        else if (queue_flag == 2)                   // 如果列表中金属信息时间远小于当前物块时间，需要更新列表信息
+                        {
+                            lock (locker)
+                            {
+                                wr.WriteLine("Message Exceed Time Limit: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                                gflist.is_active = false;        // 如果队列信息已经过期，将当前列表设为未激活状态，下一个循环会当前列表信息更新
+                            }
+                            //info_queue.Dequeue();   
+                        }
+                        else if (queue_flag == 3)               // 如果当前列表时间符合但通道数不符合，则说明当前物块不是需要喷吹的目标金属，跳出循环
+                        {
+                            wr.WriteLine("Channel not meet: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                            break;
+                        }
+                        else                                    // 当前物块时间远小于列表时间，则说明当前物块不是需要喷吹的目标金属，跳出循环
+                        {
+                            //wr.WriteLine("Queue identify error:queue_count = " + info_queue.Count);
+                            break;
+                        }
+                        /*
+                        if (Math.Abs(a) <= 18)
                         {
                             if (first_info.channelindex >= start_num && first_info.channelindex <= end_num)
                             {
@@ -985,8 +1143,8 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Out Flag = 1: queue_count = " + info_queue.Count);
-                                wr.Flush();
+                                wr.WriteLine("Successfully Find: queue_count = " + info_queue.Count);
+                                //wr.Flush();
                                 first_info.flag = 0;
                             }
                             break;
@@ -995,8 +1153,8 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Out Flag = 2: queue_count = " + info_queue.Count);
-                                wr.Flush();
+                                wr.WriteLine("Message Exceed Time Limit: queue_count = " + info_queue.Count);
+                                //wr.Flush();
                                 first_info.flag = 0;        // 如果队列信息已经过期，剔除队列首个物体，然后继续寻找在队列中对下一个金属信息进行核验
                             }
                             //info_queue.Dequeue();   
@@ -1006,16 +1164,17 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Out Flag = 3: queue_count = " + info_queue.Count);
-                                wr.Flush();
-                                first_info.flag = 0;        // 如果队列信息已经过期，剔除队列首个物体，然后继续寻找在队列中对下一个金属信息进行核验
+                                wr.WriteLine("Channel not meet: queue_count = " + info_queue.Count);
+                                //wr.Flush();
+                                //first_info.flag = 100;        // 如果通道数不符合，继续寻找在队列中对下一个金属信息进行核验
                             }
-                            continue;
+                            break;
                         }
                         else
                         {
                             break;                      // 如果队列里时间最早的金属信息时间远大于当前物块时间或者通道数不符合，则跳出循环
                         }
+                        */
 
                         //opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
                     }
@@ -1029,34 +1188,6 @@ namespace XEthernetDemo
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Height * integral_time);
                     //data.blow_time = (short)100;
-                    // 设置开始吹气阀号和停止吹气阀号
-
-                    if ((float)boundRect[i].X / col > 0.5)
-                    {
-                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
-                        data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
-                    }
-                    else
-                    {
-                        data.start_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
-                        if ((float)boundRect[i].X + boundRect[i].Width > col / 2)
-                            data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
-                        else
-                            data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
-                    }
-
-
-                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
-                    data.start_num = (Int16)(data.start_num);
-                    //data.start_num = (short)1;
-                    if (data.start_num < 1)
-                        data.start_num = (short)1;
-                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
-                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
-                    data.end_num = (Int16)(data.end_num);
-                    //data.end_num = (short)50;
-                    if (data.end_num > num_of_mouth)
-                        data.end_num = (short)num_of_mouth;
 
 
                     // 让延迟一段时间发送物块信息 
@@ -1066,26 +1197,28 @@ namespace XEthernetDemo
                     // t.Start();
 
                     // 每个物块休眠2ms时间让PLC来得及处理物块信息
-                    if (i != 0)
-                        Thread.Sleep(2);
+                    //if (i != 0)
+                    //Thread.Sleep(2);
                     int num = 0;
                     if (data.typof_block == 1)
                         num = SendData(data);
-                    //if (num == 23)
-                    //{
                     total_clock_num++;
-                    CardNum1.Text = Convert.ToString(total_clock_num) + " blocks is seccessfully send!";
-                    CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
-                    CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
-                    CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
-                    CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
-                    //}
+                    if (num == 23 && data.typof_block == 1)
+                    {
+                        total_detect_num ++;
+                        CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
+                        CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
+                        CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
+                        CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
+                        CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
+                    }
 
 
-                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + '\t' + Convert.ToString(data.end_num) + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + data.typof_block + "\t" + queue_flag);
+                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + ximagew.GetPixelVal((uint)(boundRect[i].Y + boundRect[i].Height / 2), (uint)(boundRect[i].X + boundRect[i].Width / 2)));
 
                 }
                 wr.Flush();
+                wr2.Flush();
                 // 画出原始图像和处理后图像
                 if (flag == 1)
                 {
@@ -1096,9 +1229,9 @@ namespace XEthernetDemo
 
 
             }
-            
+
             // ushort[,] line_info = get_timestamp_test(ximagew);
-            Console.WriteLine(ximagew.DataOffset);
+            //Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
 
@@ -1351,12 +1484,8 @@ namespace XEthernetDemo
                 // 连接到PLC
                 Connect_to_PLC();
                 //if (client.Connected)
-                    //MessageBox.Show("Successfully Connect to PLC!");
+                //MessageBox.Show("Successfully Connect to PLC!");
                 SetIntegralTime();
-                fs = new FileStream(result_data, FileMode.Append);
-                wr = new StreamWriter(fs);
-                fs2 = new FileStream(time_data, FileMode.Append);
-                wr2 = new StreamWriter(fs2);
 
                 // 设定定时器
 
@@ -1428,12 +1557,17 @@ namespace XEthernetDemo
         {
             frame_count = 0;
             lost_line = 0;
+            DateTime time = DateTime.Now;
+            fs = new FileStream(result_data + "result_data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            wr = new StreamWriter(fs);
+            fs2 = new FileStream(time_data + "frame-time-data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            wr2 = new StreamWriter(fs2);
             wr.WriteLine("\n*************************************************************************");
             DateTime dt = DateTime.Now;
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr2.WriteLine("\n*************************************************************************");
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttypof_block\tqueue_flag");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttime1\ttime2\ttypof_block\tqueue_flag");
             wr.Flush();
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
@@ -1461,11 +1595,15 @@ namespace XEthernetDemo
             first_info.channelindex = 0;
             first_info.time = 0;
 
+            gflist.is_active = false;       // 初始设置保存队列中最早时间功放信息列表激活值为false，表示列表暂时未启用或需要重新刷新列表值
+            gflist.list = new GFinfo[100];
+            gflist.length = 0;
+
         }
 
         private void Stop_Click(object sender, EventArgs e)
         {
-            //wr.Close();
+            wr.Close();
             //AutoCheckTimer.Enabled = false;
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
@@ -1793,6 +1931,8 @@ namespace XEthernetDemo
 
             listen_thread.Start();
             process_thread1.Start();
+
+            MessageBox.Show("成功启动功放！");
         }
 
         private void stopGF_Click(object sender, EventArgs e)
@@ -1813,6 +1953,7 @@ namespace XEthernetDemo
             //process_thread3.Join();
             //process_thread4.Join();
             //write(SCAData);
+            MessageBox.Show("功放模块停止运行！");
         }
 
         private void RecvMessage()
@@ -1986,6 +2127,11 @@ namespace XEthernetDemo
         }
 
         private void FindDevice_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DisWin_Click(object sender, EventArgs e)
         {
 
         }
