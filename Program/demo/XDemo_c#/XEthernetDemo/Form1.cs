@@ -177,7 +177,7 @@ namespace XEthernetDemo
         public byte[] Rcvbuffer;                //接收字节组数
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
-        string test_txt_filepath = "C:/Users/weike/Desktop/TEST17.txt";
+        string test_txt_filepath = "C:/Users/HJ/Desktop/TEST17.txt";
         string result_data = "C:/Users/weike/Desktop/0413_data/result/";
         string time_data = "C:/Users/weike/Desktop/0413_data/result/";
         FileStream fs;
@@ -213,18 +213,21 @@ namespace XEthernetDemo
                         gflist.list[i] = info_queue.Dequeue();
                         if (gflist.start_channel == 0 && gflist.end_channel == 0)
                         {
-                            gflist.start_channel = gflist.list[i].channelindex;
-                            gflist.end_channel = gflist.list[i].channelindex;
-                        }   
+                            gflist.start_channel = gflist.list[i].channelindex - 1;
+                            gflist.end_channel = gflist.list[i].channelindex + 1;
+                        }
                         else if (gflist.list[i].channelindex < gflist.start_channel)
                         {
-                            gflist.start_channel = gflist.list[i].channelindex;
+                            gflist.start_channel = gflist.list[i].channelindex - 1;
                         }
-                            
                         else if (gflist.list[i].channelindex > gflist.end_channel)
                         {
-                            gflist.end_channel = gflist.list[i].channelindex;
-                        }    
+                            gflist.end_channel = gflist.list[i].channelindex + 1;
+                        }
+                        if (gflist.start_channel < 1)
+                            gflist.start_channel = 1;
+                        if (gflist.end_channel > 10)
+                            gflist.end_channel = 10;
                         if (!gflist.list[i].next_same)
                             break;
                         else
@@ -321,8 +324,8 @@ namespace XEthernetDemo
                     if (info_queue.Count != 0)
                     {
                         GFinfo[] list = info_queue.ToArray<GFinfo>();
-                        GFinfo last_info = list[list.Length-1];
-                        if (Math.Abs(last_info.time- info.time) <= 5)
+                        GFinfo last_info = list[list.Length - 1];
+                        if (Math.Abs(last_info.time - info.time) <= 5)
                         {
                             list[list.Length - 1].next_same = true;
                         }
@@ -455,15 +458,14 @@ namespace XEthernetDemo
         {
             //测试数据
             time_now = DateTime.Now.Millisecond;
-            Mat image = GetTXT_as_mat(test_txt_filepath);
+            //Mat image = GetTXT_as_mat(test_txt_filepath);
+            Mat image = new Mat("C:/Users/HJ/Desktop/init20.png");
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
-            CardNum1.Text = Convert.ToString(image.Height);
-            CardNum2.Text = Convert.ToString(image.Width);
             image.CopyTo(connImage);
-
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
             Cv2.Canny(image, image, 10, 80, 3, false); // 输入图像虚为单通道8位图像
+
 
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchy;
@@ -898,7 +900,7 @@ namespace XEthernetDemo
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
-            //Cv2.ImWrite(init_pic, image);
+            Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
@@ -1090,6 +1092,12 @@ namespace XEthernetDemo
                                     continue;
                                 }
                             }
+                            else if (Math.Abs(a) <= 25 && gflist.start_channel <= end_num && gflist.end_channel >= start_num && ximagew.GetPixelVal((uint)(boundRect[i].Y + boundRect[i].Height / 2), (uint)(boundRect[i].X + boundRect[i].Width / 2)) < 4500)
+                            {
+                                queue_flag = 1;
+                                data.typof_block = (byte)first_info.flag;
+                                break;
+                            }
                             else if (a > 18)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                             {
                                 queue_flag = 2;
@@ -1097,6 +1105,7 @@ namespace XEthernetDemo
                             }
                             else                // 如果当前物块时间远小于列表时间
                             {
+                                queue_flag = 0;
                                 break;
                             }
                         }
@@ -1200,12 +1209,13 @@ namespace XEthernetDemo
                     //if (i != 0)
                     //Thread.Sleep(2);
                     int num = 0;
-                    if (data.typof_block == 1)
+                    if (data.typof_block == 1 && ximagew.GetPixelVal((uint)(boundRect[i].Y + boundRect[i].Height / 2), (uint)(boundRect[i].X + boundRect[i].Width / 2)) < 4500)
+                        //if (data.typof_block == 1)
                         num = SendData(data);
                     total_clock_num++;
                     if (num == 23 && data.typof_block == 1)
                     {
-                        total_detect_num ++;
+                        total_detect_num++;
                         CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
                         CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
                         CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
@@ -1882,9 +1892,9 @@ namespace XEthernetDemo
         private void button1_Click(object sender, EventArgs e)
         {
             //GetTXT_as_mat(test_txt_filepath);
-            //OnFrameReady_testimage();
+            OnFrameReady_testimage();
             //Total_Block_Num.Text = Convert.ToString((byte)(DateTime.Now.Year - 2000));
-            timecheck();
+            //timecheck();
 
         }
 
