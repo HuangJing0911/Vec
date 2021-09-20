@@ -460,16 +460,20 @@ namespace XEthernetDemo
             time_now = DateTime.Now.Millisecond;
             //Mat image = GetTXT_as_mat(test_txt_filepath);
             Mat image = new Mat("C:/Users/HJ/Desktop/init20.png");
+            Mat src_gray = new Mat();
+            Cv2.CvtColor(image, src_gray, ColorConversionCodes.RGB2GRAY);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
-            image.CopyTo(connImage);
-            Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
+            //image.CopyTo(connImage);
+            Cv2.Blur(src_gray, src_gray, new OpenCvSharp.Size(3, 3));//滤波
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
-            Cv2.Canny(image, image, 10, 80, 3, false); // 输入图像虚为单通道8位图像
+            Mat canny_image = new Mat();
+            //Canny边缘检测
+            Cv2.Canny(src_gray, canny_image, 100, 200); // 输入图像虚为单通道8位图像
 
 
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchy;
-            Cv2.FindContours(image, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+            Cv2.FindContours(canny_image, out contours, out hierarchy, RetrievalModes.Tree, ContourApproximationModes.ApproxSimple);
 
             Rect[] boundRect = new Rect[contours.Length];
             RotatedRect[] box = new RotatedRect[contours.Length];
@@ -508,11 +512,11 @@ namespace XEthernetDemo
                 Scalar color = new Scalar(0, 0, 255);
                 //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
                 boundRect[i] = Cv2.BoundingRect(contours[i]);
-                Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                     new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                     new Scalar(0, 255, 0), 1, LineTypes.Link8);
             }
-            Cv2.ImWrite("C:/Users/weike/Desktop/TEST_result.bmp", connImage);
+            Cv2.ImWrite("C:/Users/HJ/Desktop/TEST_result.png", image);
             /*
             XImageW imageW ;
             int[,] matrix = new int[row, col];
