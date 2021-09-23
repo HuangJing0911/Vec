@@ -177,7 +177,7 @@ namespace XEthernetDemo
         public byte[] Rcvbuffer;                //接收字节组数
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
-        string test_txt_filepath = "C:/Users/HJ/Desktop/TEST17.txt";
+        string test_txt_filepath = "C:/Users/96342/Desktop/TEST20.txt";
         string result_data = "C:/Users/weike/Desktop/0413_data/result/";
         string time_data = "C:/Users/weike/Desktop/0413_data/result/";
         FileStream fs;
@@ -454,21 +454,60 @@ namespace XEthernetDemo
             }
         }
 
+        private int Is_Material_test(Mat ximagew, int X, int Y, int Height, int Width, int value)
+        {
+            if (ximagew.At<int>((Y + Height / 4), (X + Width / 4)) < value)
+            {
+                return 1;
+            }
+            else if (ximagew.At<int>((Y + Height / 4), (X + Width * 3 / 4)) < value)
+            {
+                return 2;
+            }
+            else if (ximagew.At<int>((Y + Height / 2), (X + Width / 2)) < value)
+            {
+                return 3;
+            }
+            else if (ximagew.At<int>((Y + Height * 3 / 4), (X + Width / 4)) < value)
+            {
+                return 4;
+            }
+            else if (ximagew.At<int>((Y + Height * 3 / 4), (X + Width * 3 / 4)) < value)
+            {
+                return 5;
+            }
+            else
+                return 0;
+
+        }
+
         void OnFrameReady_testimage()
         {
             //测试数据
             time_now = DateTime.Now.Millisecond;
-            //Mat image = GetTXT_as_mat(test_txt_filepath);
-            Mat image = new Mat("C:/Users/HJ/Desktop/init20.png");
-            Mat src_gray = new Mat();
-            Cv2.CvtColor(image, src_gray, ColorConversionCodes.RGB2GRAY);
-            Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
-            //image.CopyTo(connImage);
-            Cv2.Blur(src_gray, src_gray, new OpenCvSharp.Size(3, 3));//滤波
+            Mat image = GetTXT_as_mat(test_txt_filepath);
+            //Cv2.ImShow("Init_pic", image);
+            //Cv2.WaitKey();
+            Mat image_test = image;
+            
+            image.ConvertTo(image, MatType.CV_32F);
+            Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
+            image = image * 255;
+            image.ConvertTo(image, MatType.CV_8UC1);
+            //Cv2.ImShow("Normalize_pic", image);
+            //Cv2.WaitKey();
+            /*
+            Mat imageEnhance = new Mat();
+            Mat kernel = new Mat(3, 3, MatType.CV_8UC1, new int[]{0, -1, 0, 0, 5, 0, 0, -1, 0});
+            Cv2.Filter2D(image, image, MatType.CV_8UC1, kernel);
+            Cv2.ImShow("增强版图像", image);
+            */
+
+            Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));//滤波
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
             Mat canny_image = new Mat();
             //Canny边缘检测
-            Cv2.Canny(src_gray, canny_image, 100, 200); // 输入图像虚为单通道8位图像
+            Cv2.Canny(image, canny_image, 100, 200); // 输入图像虚为单通道8位图像
 
 
             OpenCvSharp.Point[][] contours;
@@ -504,19 +543,29 @@ namespace XEthernetDemo
                 */
             }
             //Total_Block_Num.Text = Convert.ToString(total_card_num);
+            DateTime time = DateTime.Now;
+            fs = new FileStream("C:/Users/96342/Desktop/" + "result_data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            wr = new StreamWriter(fs);
+            wr.WriteLine("*******************" + Convert.ToString(time) + "********************");
+            wr.WriteLine("Contours_count\tContour_length\tStart_X\tStart_Y\tWidth\tHeight\tMaterial_location");
+            wr.Flush();
             // 矩形轮廓绘画
             for (int i = 0; i < contours.Length; i++)
             {
                 double area = Cv2.ContourArea(contours[i]);
-                if (area == 0) continue;
+                if(area == 0)
+                //if (area == 0 || boundRect[i].Height > 170 || boundRect[i].Width < 8 || boundRect[i].Height < 10)
+                    continue;
                 Scalar color = new Scalar(0, 0, 255);
                 //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
                 boundRect[i] = Cv2.BoundingRect(contours[i]);
                 Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                     new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                     new Scalar(0, 255, 0), 1, LineTypes.Link8);
+                wr.WriteLine(i + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height + '\t' + Is_Material_test(image_test, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 4500));
             }
-            Cv2.ImWrite("C:/Users/HJ/Desktop/TEST_result.png", image);
+            wr.Flush();
+            Cv2.ImWrite("C:/Users/96342/Desktop/TEST_result.png", image);
             /*
             XImageW imageW ;
             int[,] matrix = new int[row, col];
@@ -528,7 +577,7 @@ namespace XEthernetDemo
                     matrix[i, j] = image.Get<int>(i, j);
             */
             image.Dispose();
-            connImage.Dispose();
+            //connImage.Dispose();
         }
         void OnFrameReady(XImageW image)
         //void OnFrameReady(XTifFormatW image)
@@ -893,6 +942,34 @@ namespace XEthernetDemo
 
         }
 
+        // 物块是否是铜的判断函数(五个点任意一点满足就可以)
+        private int Is_Material(XImageW ximagew, int X, int Y, int Height, int Width, int value)
+        {
+            if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4)) < value)
+            {
+                return 1;
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width * 3 / 4)) < value)
+            {
+                return 2;
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 2)) < value)
+            {
+                return 3;
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 4)) < value)
+            {
+                return 4;
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width * 3 / 4)) < value)
+            {
+                return 5;
+            }
+            else
+                return 0;
+
+        }
+
         public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
             //CardNum2.Text = Convert.ToString(row)+"row";
@@ -954,10 +1031,11 @@ namespace XEthernetDemo
                     if (area == 0 || boundRect[i].Height > row / 3)
                         continue;
                     Scalar color = new Scalar(0, 0, 255);
-                    Cv2.DrawContours(connImage, contours, i, color, 2, LineTypes.Link8, hierarchy);
-                    Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                    //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
+                    boundRect[i] = Cv2.BoundingRect(contours[i]);
+                    Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                         new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
-                        new Scalar(0, 255, 0), 2, LineTypes.Link8);
+                        new Scalar(0, 255, 0), 1, LineTypes.Link8);
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
 
@@ -1096,7 +1174,7 @@ namespace XEthernetDemo
                                     continue;
                                 }
                             }
-                            else if (Math.Abs(a) <= 25 && gflist.start_channel <= end_num && gflist.end_channel >= start_num && ximagew.GetPixelVal((uint)(boundRect[i].Y + boundRect[i].Height / 2), (uint)(boundRect[i].X + boundRect[i].Width / 2)) < 4500)
+                            else if (Math.Abs(a) <= 25 && gflist.start_channel <= end_num && gflist.end_channel >= start_num && Is_Material(ximagew,boundRect[i].X,boundRect[i].Y,boundRect[i].Height,boundRect[i].Width,4500) > 0)
                             {
                                 queue_flag = 1;
                                 data.typof_block = (byte)first_info.flag;
@@ -1213,7 +1291,7 @@ namespace XEthernetDemo
                     //if (i != 0)
                     //Thread.Sleep(2);
                     int num = 0;
-                    if (data.typof_block == 1 && ximagew.GetPixelVal((uint)(boundRect[i].Y + boundRect[i].Height / 2), (uint)(boundRect[i].X + boundRect[i].Width / 2)) < 4500)
+                    if (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 4500) > 0)
                         //if (data.typof_block == 1)
                         num = SendData(data);
                     total_clock_num++;
@@ -1228,7 +1306,7 @@ namespace XEthernetDemo
                     }
 
 
-                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + ximagew.GetPixelVal((uint)(boundRect[i].Y + boundRect[i].Height / 2), (uint)(boundRect[i].X + boundRect[i].Width / 2)));
+                    wr.WriteLine(Convert.ToString(frame_count) + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 4500));
 
                 }
                 wr.Flush();
