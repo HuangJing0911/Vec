@@ -97,6 +97,7 @@ namespace XEthernetDemo
         string[,] saveTime = new string[1000000, 10];
         string[,] pickTime = new string[1000000, 10];
         string[,] beforeDeTime = new string[1000000, 10];
+        public Boolean writeFlag = false;
 
         private int RunFlag = 0;                   //是否运行标志
         public int udpCnt = 1;
@@ -2041,7 +2042,10 @@ namespace XEthernetDemo
             //process_thread2.Join();
             //process_thread3.Join();
             //process_thread4.Join();
-            //write(SCAData);
+            if (writeFlag)
+            {
+                write(SCAData);
+            }
             MessageBox.Show("功放模块停止运行！");
         }
 
@@ -2158,20 +2162,23 @@ namespace XEthernetDemo
                 //label3.Text = intocount.ToString();
 
                 //调试用保存数据
-                /*int j = 0;
-                for (int i = 0; i < 3; i++)
+                if (writeFlag)
                 {
-                    SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
-                    SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCALength[i];
-                    SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCACount[i];
+                    int j = 0;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
+                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCALength[i];
+                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCACount[i];
+                    }
+                    SCAData[CycleCount / 10, chnldx - 1, 9] = chnldx;
+                    DataGetTime[CycleCount / 10, chnldx - 1] = msg.getTime.TimeOfDay.ToString();
+                    processTime[CycleCount / 10, chnldx - 1] = msg.processTime.TimeOfDay.ToString();
+                    saveTime[CycleCount / 10, chnldx - 1] = msg.saveTime.TimeOfDay.ToString();
+                    pickTime[CycleCount / 10, chnldx - 1] = msg.pickTime.TimeOfDay.ToString();
+                    beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
+
                 }
-                SCAData[CycleCount / 10, chnldx - 1, 9] = chnldx;
-                DataGetTime[CycleCount / 10, chnldx - 1] = msg.getTime.TimeOfDay.ToString();
-                processTime[CycleCount / 10, chnldx - 1] = msg.processTime.TimeOfDay.ToString();
-                saveTime[CycleCount / 10, chnldx - 1] = msg.saveTime.TimeOfDay.ToString();
-                pickTime[CycleCount / 10, chnldx - 1] = msg.pickTime.TimeOfDay.ToString();
-                beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
-                */
 
                 if (dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
                 {
