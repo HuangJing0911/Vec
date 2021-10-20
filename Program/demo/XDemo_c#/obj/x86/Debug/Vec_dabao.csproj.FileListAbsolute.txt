@@ -1,0 +1,7 @@
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\bin\Debug\WindowsApplication.exe.config
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\obj\x86\Debug\Vec_dabao.csprojResolveAssemblyReference.cache
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\obj\x86\Debug\XEthernetDemo.Form1.resources
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\obj\x86\Debug\Vec_dabao.XEthernetDemo.Properties.Resources.resources
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\obj\x86\Debug\XEthernetDemo.StartMenu.resources
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\obj\x86\Debug\XEthernetDemo.TestForm.resources
+C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\obj\x86\Debug\Vec_dabao.csproj.GenerateResource.Cache

@@ -167,7 +167,7 @@ namespace XEthernetDemo
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
-        uint time_interval = 4;                 // 定时器定时时间为5ms
+        uint time_interval = 5;                 // 定时器定时时间为5ms
         public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
         public float SOD = 815;
@@ -1152,7 +1152,7 @@ namespace XEthernetDemo
                         {
                             first_info = gflist.list[n];
                             Int64 a = data.start_time_int - first_info.time;
-                            if (Math.Abs(a) <= 18)
+                            if (Math.Abs(a) <= 20)
                             {
                                 //if ((first_info.channelindex <= start_num && first_info.channelindex >= end_num) || (gflist.start_channel <= start_num && gflist.end_channel >= end_num))
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
@@ -1173,7 +1173,7 @@ namespace XEthernetDemo
                                 data.typof_block = (byte)first_info.flag;
                                 break;
                             }
-                            else if (a > 18)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+                            else if (a > 20)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                             {
                                 queue_flag = 2;
                                 break;
@@ -1265,7 +1265,7 @@ namespace XEthernetDemo
 
 
                     // 确定物块最终喷吹的时间
-                    data.start_time_int += (int)(2400 / speed) - 5;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int += (int)(2400 / speed) - 10;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
@@ -1687,11 +1687,27 @@ namespace XEthernetDemo
             gflist2.is_active = false;       // 初始设置保存队列中最早时间功放信息列表激活值为false，表示列表暂时未启用或需要重新刷新列表值
             gflist2.list = new GFinfo[100];
             gflist2.length = 0;
+
+            listen_thread = new Thread(RecvMessage);
+            process_thread1 = new Thread(ProcessMessage);
+
+            listen_thread.IsBackground = true;
+            process_thread1.IsBackground = true;
+            listen_thread.Start();
+            process_thread1.Start();
+
+            MessageBox.Show("成功启动线阵与功放！");
+            Grab.Enabled = false;
+            Stop.Enabled = true;
         }
 
         private void Stop_Click(object sender, EventArgs e)
         {
+            // 暂停线阵
             wr.Close();
+            fs.Close();
+            wr2.Close();
+            fs2.Close();
             //AutoCheckTimer.Enabled = false;
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
@@ -1699,6 +1715,38 @@ namespace XEthernetDemo
             recv = false;
             //recv_thread.Abort();
             xacquisition.Stop();
+
+            // 暂停功放
+            quit_flag = true;
+            udpRecv.Close();
+            listen_thread.Join();
+            lock (locker)
+            {
+                msg_queue.Clear();
+                conditional_variable.Set();
+                //conditional_variable.Set();
+                //conditional_variable.Set();
+                //conditional_variable.Set();
+            }
+            process_thread1.Join();
+            //process_thread2.Join();
+            //process_thread3.Join();
+            //process_thread4.Join();
+            if (writeFlag)
+            {
+                write(SCAData);
+            }
+
+            MessageBox.Show("线阵与功放停止运行！");
+            foreach (Control c in this.Controls)
+            {
+                if (c.Tag.ToString() == "start")
+                    c.Enabled = true;
+                else if (c.Tag.ToString() == "end")
+                    c.Enabled = false;
+            }
+            Grab.Enabled = true;
+            Stop.Enabled = false;
         }
 
         private void GamaPlus_Click(object sender, EventArgs e)
@@ -2010,43 +2058,6 @@ namespace XEthernetDemo
         private void AutoCheckTimer_Tick(object sender, EventArgs e)
         {
             //timecheck();
-        }
-
-        private void startGF_Click(object sender, EventArgs e)
-        {
-            listen_thread = new Thread(RecvMessage);
-            process_thread1 = new Thread(ProcessMessage);
-
-            listen_thread.IsBackground = true;
-            process_thread1.IsBackground = true;
-            listen_thread.Start();
-            process_thread1.Start();
-
-            MessageBox.Show("成功启动功放！");
-        }
-
-        private void stopGF_Click(object sender, EventArgs e)
-        {
-            quit_flag = true;
-            udpRecv.Close();
-            listen_thread.Join();
-            lock (locker)
-            {
-                msg_queue.Clear();
-                conditional_variable.Set();
-                //conditional_variable.Set();
-                //conditional_variable.Set();
-                //conditional_variable.Set();
-            }
-            process_thread1.Join();
-            //process_thread2.Join();
-            //process_thread3.Join();
-            //process_thread4.Join();
-            if (writeFlag)
-            {
-                write(SCAData);
-            }
-            MessageBox.Show("功放模块停止运行！");
         }
 
         private void RecvMessage()

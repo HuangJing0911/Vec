@@ -145,8 +145,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.TestPLC = new System.Windows.Forms.Button();
             this.AutoCheckTimer = new System.Windows.Forms.Timer(this.components);
-            this.startGF = new System.Windows.Forms.Button();
-            this.stopGF = new System.Windows.Forms.Button();
             this.AutoCheckTimer2 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.Configure.SuspendLayout();
@@ -293,6 +291,7 @@
             // 
             // RestoreConf
             // 
+            this.RestoreConf.Enabled = false;
             this.RestoreConf.ForeColor = System.Drawing.SystemColors.ControlText;
             this.RestoreConf.Location = new System.Drawing.Point(10, 365);
             this.RestoreConf.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -305,6 +304,7 @@
             // 
             // ResetConf
             // 
+            this.ResetConf.Enabled = false;
             this.ResetConf.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ResetConf.Location = new System.Drawing.Point(157, 365);
             this.ResetConf.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -1497,23 +1497,27 @@
             this.Grab.Name = "Grab";
             this.Grab.Size = new System.Drawing.Size(110, 22);
             this.Grab.TabIndex = 8;
+            this.Grab.Tag = "start";
             this.Grab.Text = "Grab";
             this.Grab.UseVisualStyleBackColor = true;
             this.Grab.Click += new System.EventHandler(this.Grab_Click);
             // 
             // Stop
             // 
+            this.Stop.Enabled = false;
             this.Stop.Location = new System.Drawing.Point(220, 653);
             this.Stop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Stop.Name = "Stop";
             this.Stop.Size = new System.Drawing.Size(110, 22);
             this.Stop.TabIndex = 9;
+            this.Stop.Tag = "end";
             this.Stop.Text = "Stop";
             this.Stop.UseVisualStyleBackColor = true;
             this.Stop.Click += new System.EventHandler(this.Stop_Click);
             // 
             // GamaPlus
             // 
+            this.GamaPlus.Enabled = false;
             this.GamaPlus.Location = new System.Drawing.Point(526, 653);
             this.GamaPlus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.GamaPlus.Name = "GamaPlus";
@@ -1525,6 +1529,7 @@
             // 
             // GamaSub
             // 
+            this.GamaSub.Enabled = false;
             this.GamaSub.Location = new System.Drawing.Point(675, 653);
             this.GamaSub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.GamaSub.Name = "GamaSub";
@@ -1546,8 +1551,9 @@
             // 
             // button1
             // 
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(563, 31);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 23);
             this.button1.TabIndex = 14;
@@ -1557,8 +1563,9 @@
             // 
             // TestPLC
             // 
+            this.TestPLC.Enabled = false;
             this.TestPLC.Location = new System.Drawing.Point(704, 30);
-            this.TestPLC.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TestPLC.Margin = new System.Windows.Forms.Padding(2);
             this.TestPLC.Name = "TestPLC";
             this.TestPLC.Size = new System.Drawing.Size(111, 22);
             this.TestPLC.TabIndex = 15;
@@ -1571,26 +1578,6 @@
             this.AutoCheckTimer.Interval = 5;
             this.AutoCheckTimer.Tick += new System.EventHandler(this.AutoCheckTimer_Tick);
             // 
-            // startGF
-            // 
-            this.startGF.Location = new System.Drawing.Point(70, 680);
-            this.startGF.Name = "startGF";
-            this.startGF.Size = new System.Drawing.Size(110, 31);
-            this.startGF.TabIndex = 16;
-            this.startGF.Text = "startGF";
-            this.startGF.UseVisualStyleBackColor = true;
-            this.startGF.Click += new System.EventHandler(this.startGF_Click);
-            // 
-            // stopGF
-            // 
-            this.stopGF.Location = new System.Drawing.Point(220, 680);
-            this.stopGF.Name = "stopGF";
-            this.stopGF.Size = new System.Drawing.Size(110, 31);
-            this.stopGF.TabIndex = 17;
-            this.stopGF.Text = "stopGF";
-            this.stopGF.UseVisualStyleBackColor = true;
-            this.stopGF.Click += new System.EventHandler(this.stopGF_Click);
-            // 
             // AutoCheckTimer2
             // 
             this.AutoCheckTimer2.Interval = 1;
@@ -1601,8 +1588,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1186, 762);
-            this.Controls.Add(this.stopGF);
-            this.Controls.Add(this.startGF);
             this.Controls.Add(this.TestPLC);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Total_Block_Num);
@@ -1767,8 +1752,6 @@
         private System.Windows.Forms.TextBox Total_Block_Num;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button TestPLC;
-        private System.Windows.Forms.Button startGF;
-        private System.Windows.Forms.Button stopGF;
         public System.Windows.Forms.Timer AutoCheckTimer;
         public System.Windows.Forms.Timer AutoCheckTimer2;
     }
