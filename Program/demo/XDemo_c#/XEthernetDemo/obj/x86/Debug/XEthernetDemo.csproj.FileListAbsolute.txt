@@ -468,13 +468,11 @@ C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEther
 C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.TestForm.resources
 C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
 C:\Users\HJ\Desktop\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
-C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
-C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
-C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\OpenCvSharpExtern.dll
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x86\opencv_ffmpeg400.dll
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\OpenCvSharpExtern.dll
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\dll\x64\opencv_ffmpeg400_64.dll
+C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.config
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe.manifest
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.application
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XEthernetDemo.exe
@@ -504,3 +502,6 @@ C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
+C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
+C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
+C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\IrisSkin4.dll

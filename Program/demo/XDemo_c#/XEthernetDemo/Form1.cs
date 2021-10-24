@@ -90,13 +90,13 @@ namespace XEthernetDemo
 
         static char[] idx_to_hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
-        public int[,,] SCAData = new int[1000000, 10, 10];    //40为一秒轮次，可存储25秒数据
-        string[,] DataGetTime = new string[1000000, 10];
-        string[,] processTime = new string[1000000, 10];
-        string[,] sendTime = new string[1000000, 10];
-        string[,] saveTime = new string[1000000, 10];
-        string[,] pickTime = new string[1000000, 10];
-        string[,] beforeDeTime = new string[1000000, 10];
+        public int[,,] SCAData = new int[1000, 10, 10];    //40为一秒轮次，可存储25秒数据
+        string[,] DataGetTime = new string[1000, 10];
+        string[,] processTime = new string[1000, 10];
+        string[,] sendTime = new string[1000, 10];
+        string[,] saveTime = new string[1000, 10];
+        string[,] pickTime = new string[1000, 10];
+        string[,] beforeDeTime = new string[1000, 10];
         public Boolean writeFlag = false;
 
         private int RunFlag = 0;                   //是否运行标志
@@ -964,23 +964,23 @@ namespace XEthernetDemo
         {
             if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4)) < value)
             {
-                return 1;
+                return 100000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width * 3 / 4)) < value)
             {
-                return 2;
+                return 200000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width * 3 / 4));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 2)) < value)
             {
-                return 3;
+                return 300000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 2));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 4)) < value)
             {
-                return 4;
+                return 400000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 4));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width * 3 / 4)) < value)
             {
-                return 5;
+                return 500000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width * 3 / 4));
             }
             else
                 return 0;
@@ -1050,7 +1050,7 @@ namespace XEthernetDemo
                     Scalar color = new Scalar(0, 0, 255);
                     //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
-                    Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                    Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                         new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                         new Scalar(0, 255, 0), 1, LineTypes.Link8);
                     //Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
@@ -1059,6 +1059,7 @@ namespace XEthernetDemo
                     HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0));
                 }
                 result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
+                //Cv2.ImWrite(result_pic, connImage);
 
                 // 求出时间戳并发送物块信息
                 for (int j = 0; j < contours.Length; j++)
@@ -1067,7 +1068,7 @@ namespace XEthernetDemo
                     //if (contours.Length > 50)
                     //break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 8 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 10)
+                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 5 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 4)
                         continue;
 
                     wr2.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
@@ -1080,10 +1081,10 @@ namespace XEthernetDemo
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
 
                     bool is_small = false;
-                    if (area < 280)
+                    if (area < 200)
                     {
                         is_small = true;
-                        data.typof_block = 1;
+                        data.typof_block = 10;
                     }
 
 
@@ -1167,7 +1168,7 @@ namespace XEthernetDemo
                                     continue;
                                 }
                             }
-                            else if (Math.Abs(a) <= 25 && gflist.start_channel <= end_num && gflist.end_channel >= start_num && Is_Material(ximagew,boundRect[i].X,boundRect[i].Y,boundRect[i].Height,boundRect[i].Width,5000) > 0)
+                            else if (Math.Abs(a) <= 25 && gflist.start_channel <= end_num && gflist.end_channel >= start_num && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 7000) > 0)
                             {
                                 queue_flag = 4;
                                 data.typof_block = (byte)first_info.flag;
@@ -1284,11 +1285,11 @@ namespace XEthernetDemo
                     //if (i != 0)
                     //Thread.Sleep(2);
                     int num = 0;
-                    if (data.typof_block == 1 || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6000) > 0))
+                    if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
                         //if (data.typof_block == 1)
                         num = SendData(data);
                     total_clock_num++;
-                    if (num == 23 && data.typof_block == 1)
+                    if (num == 23)
                     {
                         total_detect_num++;
                         CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
@@ -1300,7 +1301,7 @@ namespace XEthernetDemo
 
                     if (num == 23 && is_small)
                         queue_flag = 4;
-                    wr.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 4500));
+                    wr.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000));
 
                 }
                 wr.Flush();
@@ -1653,7 +1654,7 @@ namespace XEthernetDemo
             wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
             wr2.WriteLine("\n*************************************************************************");
             wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttime1\ttime2\ttypof_block\tqueue_flag\tblack_location");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttime1\ttime2\ttypof_block\tqueue_flag\tarea\tblack_location");
             wr.Flush();
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
@@ -1738,13 +1739,6 @@ namespace XEthernetDemo
             }
 
             MessageBox.Show("线阵与功放停止运行！");
-            foreach (Control c in this.Controls)
-            {
-                if (c.Tag.ToString() == "start")
-                    c.Enabled = true;
-                else if (c.Tag.ToString() == "end")
-                    c.Enabled = false;
-            }
             Grab.Enabled = true;
             Stop.Enabled = false;
         }
@@ -2191,7 +2185,7 @@ namespace XEthernetDemo
 
                 }
 
-                if (dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
+                if (dp.SCACount[0] > gap || dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();

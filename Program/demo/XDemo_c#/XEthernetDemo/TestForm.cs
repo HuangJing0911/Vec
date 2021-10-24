@@ -48,13 +48,14 @@ namespace XEthernetDemo
 
         static char[] idx_to_hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
-        public int[,,] SCAData = new int[10000, 10, 10];    //40为一秒轮次，可存储25秒数据
-        string[,] DataGetTime = new string[10000, 10];
-        string[,] processTime = new string[10000, 10];
-        string[,] sendTime = new string[10000, 10];
-        string[,] saveTime = new string[10000, 10];
-        string[,] pickTime = new string[10000, 10];
-        string[,] beforeDeTime = new string[10000, 10];
+        public int[,,] SCAData = new int[1000, 10, 10];    //40为一秒轮次，可存储25秒数据
+        string[,] DataGetTime = new string[1000, 10];
+        string[,] processTime = new string[1000, 10];
+        string[,] sendTime = new string[1000, 10];
+        string[,] saveTime = new string[1000, 10];
+        string[,] pickTime = new string[1000, 10];
+        string[,] beforeDeTime = new string[1000, 10];
+        public Boolean writeFlag = false;
 
         private int RunFlag = 0;                   //是否运行标志
         public int udpCnt = 1;
@@ -77,10 +78,13 @@ namespace XEthernetDemo
         public int sendflag = 1;  //是否发送udp数据
         public int intocount = 0;
         public int sendcount = 0;
-        public int gap = 15;        //阈值
+        public int gap = 5;        //阈值
 
         private Thread listen_thread;
         private Thread process_thread1, process_thread2, process_thread3, process_thread4;
+
+        GFList gflist = new GFList();
+        GFList gflist2 = new GFList();
 
         // url
         //public Controller Conupdate = new Controller();
@@ -113,7 +117,8 @@ namespace XEthernetDemo
         int lost_line = 0;
         int total_card_num = 0;
         uint cur_dm_index = 0;
-        int total_clock_num = 0;
+        int total_clock_num = 0;                // 共检测到物块
+        int total_detect_num = 0;               // 共喷吹物块
         Int64 time_now;
         Int64 time_finish;
         int pic_num = 0;
@@ -123,7 +128,7 @@ namespace XEthernetDemo
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
-        uint time_interval = 4;                 // 定时器定时时间为5ms
+        uint time_interval = 5;                 // 定时器定时时间为5ms
         public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
         public float SOD = 815;
@@ -134,9 +139,9 @@ namespace XEthernetDemo
         public byte[] Rcvbuffer;                //接收字节组数
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
-        string test_txt_filepath = "C:/Users/weike/Desktop/TEST17.txt";
-        string result_data = "C:/Users/weike/Desktop/0413_data/result-data.txt";
-        string time_data = "C:/Users/weike/Desktop/0413_data/frame-time-data.txt";
+        string test_txt_filepath = "C:/Users/96342/Desktop/TEST20.txt";
+        string result_data = "C:/Users/weike/Desktop/0413_data/result/";
+        string time_data = "C:/Users/weike/Desktop/0413_data/result/";
         FileStream fs;
         StreamWriter wr;
         FileStream fs2;
@@ -145,11 +150,53 @@ namespace XEthernetDemo
         public string arrayServer = "169.254.84.167";       // 线阵IP
         public string powerServer = "172.28.110.50";        // 功放IP
         public string ntpServer2 = "127.0.0.1";
-        //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
         Thread recv_thread;
         static Object locker;
         GFinfo first_info = new GFinfo();
+
+
+        void Connect_to_PLC()
+        {
+            if (client == null)
+            {
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            }
+            if (!client.Connected)
+            {
+                // OperateResult connect = omronFinisNet.ConnectServer();
+                // Data_Set syn_data = new Data_Set
+
+                IPAddress ip = IPAddress.Parse(ntpServer);
+                IPEndPoint remoteep = new IPEndPoint(ip, 6000);
+                // AsyncCallback callback = new AsyncCallback(ConnectCallback);
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                client.Connect(remoteep);
+                /*if (client.Connected)
+                    Total_Block_Num.Text = "Successfully Connect!";
+                else
+                    Total_Block_Num.Text = "Unsuccessfully Connect!";
+                client.ReceiveTimeout = 3000;*/
+                // client.Send(ntp_testdata);
+            }
+        }
+
+        void SetIntegralTime()
+        {
+            ulong pixel_size;
+            unsafe
+            {
+                ulong data;
+                xcommand.GetPara(36, &data, 0);
+                pixel_size = data;
+            }
+            float integral = 0;
+            integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
+            //MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
+            ulong integral_times = (ulong)(integral * 1000);
+            xcommand.SetPara(3, integral_times, 0);
+            integral_time = integral;
+        }
 
         // 向PLC发送消息
         public int SendData(Data_Set data)
@@ -424,6 +471,67 @@ namespace XEthernetDemo
             frame_count++;
             threadCounters(image);
             xdisplay.Display(image);
+        }
+
+        private void Humidity_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            frame_count = 0;
+            lost_line = 0;
+            DateTime time = DateTime.Now;
+            fs = new FileStream(result_data + "result_data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            wr = new StreamWriter(fs);
+            fs2 = new FileStream(time_data + "frame-time-data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            wr2 = new StreamWriter(fs2);
+            wr.WriteLine("\n*************************************************************************");
+            DateTime dt = DateTime.Now;
+            wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
+            wr2.WriteLine("\n*************************************************************************");
+            wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
+            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttime1\ttime2\ttypof_block\tqueue_flag\tarea\tblack_location");
+            wr.Flush();
+            wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
+            wr2.Flush();
+            LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
+            xacquisition.Grab(0);
+            Console.WriteLine("start grab!!!");
+
+            // 启动接收功放数据线程
+            recv = true;
+            if (recv)
+            {
+                //CardNum1.Text = "Start Receive!";
+                recv_thread = new Thread(recv_data);
+                recv_thread.IsBackground = true;
+                recv_thread.Start();
+            }
+
+            first_info.flag = 0;
+            first_info.channelindex = 0;
+            first_info.time = 0;
+
+            gflist.is_active = false;       // 初始设置保存队列中最早时间功放信息列表激活值为false，表示列表暂时未启用或需要重新刷新列表值
+            gflist.list = new GFinfo[100];
+            gflist.length = 0;
+            gflist2.is_active = false;       // 初始设置保存队列中最早时间功放信息列表激活值为false，表示列表暂时未启用或需要重新刷新列表值
+            gflist2.list = new GFinfo[100];
+            gflist2.length = 0;
+
+            listen_thread = new Thread(RecvMessage);
+            process_thread1 = new Thread(ProcessMessage);
+
+            listen_thread.IsBackground = true;
+            process_thread1.IsBackground = true;
+            listen_thread.Start();
+            process_thread1.Start();
+
+            MessageBox.Show("成功启动线阵与功放！");
+            StartButton.Enabled = false;
+            StopButton.Enabled = true;
         }
 
         void threadCounters(Object obj)
@@ -795,46 +903,271 @@ namespace XEthernetDemo
                 string sn = xcommand.GetPara(51, 0);
                 SN.Text = "SN: " + sn;
 
-                // 参数初始化
-                /*UInt64 para_data;
-                unsafe
-                {
-                    xcommand.GetPara(61, &para_data, 0);
-                    GCUType.SelectedIndex = Convert.ToInt32(para_data);
-                    xcommand.GetPara(45, &para_data, 0);
-                    CardType.SelectedIndex = Convert.ToInt32(para_data);
-                    xcommand.GetPara(5, &para_data, 0);
-                    OPMode.SelectedIndex = Convert.ToInt32(para_data);
-                    xcommand.GetPara(37, &para_data, 0);
-                    switch (para_data)
-                    {
-                        case 16:
-                            PixelDepth.SelectedIndex = 0;
-                            break;
-                        case 18:
-                            PixelDepth.SelectedIndex = 1;
-                            break;
-                    }
-                    xcommand.GetPara(43, &para_data, 0);
-                    DMPixNum.SelectedIndex = Convert.ToInt32(para_data) - 5;
-                    xcommand.GetPara(20, &para_data, 0);
-                    BinMode.SelectedIndex = Convert.ToInt32(para_data);
+                // 连接到PLC
+                Connect_to_PLC();
+                SetIntegralTime();
 
-                    xcommand.GetPara(8, &para_data, 0);
-                    CardNum1.Text = ((para_data & 0x000000FF00000000) >> 32).ToString();
-                    CardNum2.Text = ((para_data & 0x00000000FF000000) >> 24).ToString();
-                    CardNum3.Text = ((para_data & 0x0000000000FF0000) >> 16).ToString();
-                    CardNum4.Text = ((para_data & 0x000000000000FF00) >> 8).ToString();
-                    CardNum5.Text = (para_data & 0x00000000000000FF).ToString();
-
-                    total_card_num = Convert.ToInt32(CardNum1.Text) + Convert.ToInt32(CardNum2.Text) + Convert.ToInt32(CardNum3.Text) + Convert.ToInt32(CardNum4.Text) + Convert.ToInt32(CardNum5.Text);
-                    for (int i = 0; i < total_card_num; i++)
-                    {
-                        string item = "DM" + Convert.ToString(i + 1);
-                        DMIndex.Items.Add(item);
-                    }
-                }*/
+                // 设定定时器
+                timerthread = new Thread(timer);
+                timerthread.IsBackground = true;
+                timerthread.Start();
             }
+        }
+
+        private void RecvMessage()
+        {
+            while (!quit_flag)
+            {
+                Msg msg;
+                byte[] buf = new byte[10000];
+                if (buf == null)
+                    throw new Exception();
+                int read = 0;
+                try
+                {
+                    read = udpRecv.Receive(buf);
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    if (quit_flag)
+                        return;
+                }
+                msg.getTime = DateTime.Now;
+
+                msg.bytes = buf;
+                msg.length = read;
+                msg.pickTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);       //这几个变量是现场调试添加
+                msg.processTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                msg.sendTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                msg.beforeDeTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+                lock (locker)
+                {
+                    msg.saveTime = DateTime.Now;
+                    msg_queue.Enqueue(msg);
+                    //label4.Text = msg_queue.Count.ToString();//todo
+                }
+                conditional_variable.Set();
+            }
+        }
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            // 暂停线阵
+            wr.Close();
+            fs.Close();
+            wr2.Close();
+            fs2.Close();
+            //AutoCheckTimer.Enabled = false;
+            //AutoCheckTimer2.Enabled = false;
+            //t.Enabled = false;
+            timerthread.Abort();
+            recv = false;
+            //recv_thread.Abort();
+            xacquisition.Stop();
+
+            // 暂停功放
+            quit_flag = true;
+            udpRecv.Close();
+            listen_thread.Join();
+            lock (locker)
+            {
+                msg_queue.Clear();
+                conditional_variable.Set();
+                //conditional_variable.Set();
+                //conditional_variable.Set();
+                //conditional_variable.Set();
+            }
+            process_thread1.Join();
+            //process_thread2.Join();
+            //process_thread3.Join();
+            //process_thread4.Join();
+            if (writeFlag)
+            {
+                write(SCAData);
+            }
+
+            MessageBox.Show("线阵与功放停止运行！");
+            StartButton.Enabled = true;
+            StopButton.Enabled = false;
+        }
+
+        private void ProcessMessage()
+        {
+            while (!quit_flag)
+            {
+                List<Msg> msgs = new List<Msg>();
+                conditional_variable.WaitOne();
+                if (quit_flag)
+                    return;
+                lock (locker)
+                {
+                    while (msg_queue.Count != 0)
+                    {
+                        DateTime Detime = DateTime.Now;
+                        Msg t = msg_queue.Dequeue();
+                        t.beforeDeTime = Detime;
+                        t.pickTime = DateTime.Now;
+                        msgs.Add(t);
+                    }
+                }
+                foreach (Msg msg in msgs)
+                {
+                    ProcessMsg(msg);
+                }
+            }
+        }
+
+        private void ProcessMsg(Msg msg)
+        {
+            string s = bytetohexstr(msg.bytes, msg.length);
+            string rawdata = s.Replace(" ", "");     //视情况可删减
+            dataProcess dp = new dataProcess();
+
+            //label1.Text = dp.processway.ToString();//todo
+
+            int index = 0;
+            Interlocked.Increment(ref CycleCount);
+            while (index < rawdata.Length - 6)        //数据处理，测试处理时间基本在6-7ms
+            {
+                int SectionLen = 0;
+                int SectionType = 0;
+
+                SectionLen = dp.GetN(rawdata, ref index, 2);
+                SectionType = dp.GetN(rawdata, ref index, 1);
+
+                switch (SectionType)
+                {
+                    case 1:
+                        chnldx = dp.ChannelMetaSection(ref index, SectionLen, rawdata);
+                        break;
+                    case 2:
+                        dp.SpectralMetaSection(ref index, SectionLen, rawdata);
+                        break;
+                    case 3:
+                        dp.SpectrumSection(ref index, SectionLen, rawdata);
+                        break;
+                    case 4:
+                        dp.DiagnosticDataSection(ref index, SectionLen, rawdata);
+                        break;
+                    case 5:
+                        dp.SCADataSection(ref index, SectionLen, rawdata);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Data!");
+                        break;
+                }
+            }
+
+            if (chnldx >= 0 && chnldx < 11)
+            {
+                msg.processTime = DateTime.Now;
+                Interlocked.Increment(ref intocount);
+                //label3.Text = intocount.ToString();
+
+                //调试用保存数据
+                if (writeFlag)
+                {
+                    int j = 0;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCAStartBin[i];
+                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCALength[i];
+                        SCAData[CycleCount / 10, chnldx - 1, j++] = dp.SCACount[i];
+                    }
+                    SCAData[CycleCount / 10, chnldx - 1, 9] = chnldx;
+                    DataGetTime[CycleCount / 10, chnldx - 1] = msg.getTime.TimeOfDay.ToString();
+                    processTime[CycleCount / 10, chnldx - 1] = msg.processTime.TimeOfDay.ToString();
+                    saveTime[CycleCount / 10, chnldx - 1] = msg.saveTime.TimeOfDay.ToString();
+                    pickTime[CycleCount / 10, chnldx - 1] = msg.pickTime.TimeOfDay.ToString();
+                    beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
+
+                }
+
+                if (dp.SCACount[0] > gap || dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
+                {
+                    //sendcount++;
+                    //label4.Text = sendcount.ToString();
+                    byte[] gfData = new byte[10];
+                    TimeSpan timeStamp = msg.getTime - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    long temp = (Int64)timeStamp.TotalMilliseconds - 40;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        gfData[i] = (byte)(temp >> (i * 8) & 0xff);
+                    }
+                    byte[] c = new byte[2];
+                    c = BitConverter.GetBytes(chnldx);
+                    gfData[8] = c[0];
+                    gfData[9] = c[1];
+                    udpSend.Send(gfData);
+                    msg.sendTime = DateTime.Now;
+                    sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
+                }
+            }
+            else
+            {
+                MessageBox.Show("channel index error!");
+            }
+        }
+
+        public string bytetohexstr(byte[] bytes, int length)     //字节转化为二进制
+        {
+            if (bytes == null)
+                return "";
+            char[] r = new char[2 * length];
+            for (int i = 0; i < length; i++)
+            {
+                int high = bytes[i] / 16;
+                int low = bytes[i] % 16;
+                r[i * 2] = idx_to_hex[high];
+                r[i * 2 + 1] = idx_to_hex[low];
+            }
+            string ret = new string(r);
+            return ret;
+        }
+
+        public void write(int[,,] arr)             //保存txt文本
+        {
+            string temppath = @"D:\422test\data";
+
+
+            for (int k = 0; k < CycleCount / 10; k++)
+            {
+                for (int i = 0; i < 10; ++i)
+                {
+                    //if (arr[k, i, 2] > gap || arr[k, i, 5] > gap || arr[k, i, 8] > gap)
+                    if (arr[k, i, 2] > gap)
+                    {
+                        int temp = i + 1;
+                        string txtname = temppath + k + "." + temp;
+                        txtname = txtname + ".txt";
+                        FileStream fs = new FileStream(txtname, FileMode.Create);
+                        StreamWriter sw = new StreamWriter(fs);
+                        sw.WriteLine(i);
+                        sw.WriteLine(DataGetTime[k, i]);
+                        sw.WriteLine(saveTime[k, i]);
+                        sw.WriteLine(beforeDeTime[k, i]);
+                        sw.WriteLine(pickTime[k, i]);
+                        sw.WriteLine(processTime[k, i]);
+                        sw.WriteLine(sendTime[k, i]);
+
+
+                        for (int j = 0; j < 10; ++j)
+                        {
+                            sw.Write(arr[k, i, j] + " ");
+                        }
+                        sw.Flush();
+                        //关闭流
+                        sw.Close();
+                        fs.Close();
+
+                    }
+
+                }
+            }
+            MessageBox.Show("write finish!");
         }
     }
 }

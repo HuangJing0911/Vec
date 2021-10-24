@@ -12,7 +12,7 @@ namespace XEthernetDemo
     public partial class StartMenu : Form
     {
         bool setting_change = false;
-
+        //new Sunisoft.IrisSkin.SkinEngine().SkinFile = "Skins/MacOS.ssk";
         public StartMenu()
         {
             InitializeComponent();
@@ -36,6 +36,7 @@ namespace XEthernetDemo
                 }
             }
             //label1.Visible = false;
+            
         }
 
         private void SettingButton_Click(object sender, EventArgs e)
@@ -139,5 +140,12 @@ namespace XEthernetDemo
             f1.SDD = Convert.ToInt32(SDD.Text);
             f1.ShowDialog();
         }
+
+        private void StartMenu_Load(object sender, EventArgs e)
+        {
+            Sunisoft.IrisSkin.SkinEngine skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
+            skinEngine1.SkinFile = System.Environment.CurrentDirectory + "\\Skins\\office2007.ssk";
+        }
+
     }
 }
