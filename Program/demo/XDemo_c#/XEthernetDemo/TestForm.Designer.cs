@@ -43,11 +43,13 @@
             // FindDeviceButton
             // 
             this.FindDeviceButton.BackColor = System.Drawing.Color.Gainsboro;
+            this.FindDeviceButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FindDeviceButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FindDeviceButton.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.FindDeviceButton.Location = new System.Drawing.Point(772, 89);
+            this.FindDeviceButton.Location = new System.Drawing.Point(579, 71);
+            this.FindDeviceButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.FindDeviceButton.Name = "FindDeviceButton";
-            this.FindDeviceButton.Size = new System.Drawing.Size(188, 61);
+            this.FindDeviceButton.Size = new System.Drawing.Size(141, 49);
             this.FindDeviceButton.TabIndex = 3;
             this.FindDeviceButton.Tag = "0";
             this.FindDeviceButton.Text = "查找设备";
@@ -57,11 +59,13 @@
             // StartButton
             // 
             this.StartButton.BackColor = System.Drawing.Color.Gainsboro;
+            this.StartButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.StartButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StartButton.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.StartButton.Location = new System.Drawing.Point(772, 240);
+            this.StartButton.Location = new System.Drawing.Point(579, 192);
+            this.StartButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(188, 61);
+            this.StartButton.Size = new System.Drawing.Size(141, 49);
             this.StartButton.TabIndex = 4;
             this.StartButton.Tag = "0";
             this.StartButton.Text = "启动";
@@ -71,11 +75,13 @@
             // StopButton
             // 
             this.StopButton.BackColor = System.Drawing.Color.Gainsboro;
+            this.StopButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.StopButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StopButton.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.StopButton.Location = new System.Drawing.Point(772, 386);
+            this.StopButton.Location = new System.Drawing.Point(579, 309);
+            this.StopButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.StopButton.Name = "StopButton";
-            this.StopButton.Size = new System.Drawing.Size(188, 61);
+            this.StopButton.Size = new System.Drawing.Size(141, 49);
             this.StopButton.TabIndex = 5;
             this.StopButton.Tag = "0";
             this.StopButton.Text = "停止";
@@ -87,10 +93,9 @@
             this.LostLine.AutoSize = true;
             this.LostLine.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.LostLine.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.LostLine.Location = new System.Drawing.Point(33, 45);
-            this.LostLine.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LostLine.Location = new System.Drawing.Point(25, 36);
             this.LostLine.Name = "LostLine";
-            this.LostLine.Size = new System.Drawing.Size(83, 19);
+            this.LostLine.Size = new System.Drawing.Size(71, 17);
             this.LostLine.TabIndex = 12;
             this.LostLine.Text = "Lost Line: ";
             // 
@@ -99,10 +104,9 @@
             this.Error.AutoSize = true;
             this.Error.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Error.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.Error.Location = new System.Drawing.Point(629, 9);
-            this.Error.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Error.Location = new System.Drawing.Point(472, 7);
             this.Error.Name = "Error";
-            this.Error.Size = new System.Drawing.Size(50, 19);
+            this.Error.Size = new System.Drawing.Size(41, 17);
             this.Error.TabIndex = 11;
             this.Error.Text = "Error:";
             // 
@@ -111,10 +115,9 @@
             this.Humidity.AutoSize = true;
             this.Humidity.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Humidity.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.Humidity.Location = new System.Drawing.Point(425, 9);
-            this.Humidity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Humidity.Location = new System.Drawing.Point(319, 7);
             this.Humidity.Name = "Humidity";
-            this.Humidity.Size = new System.Drawing.Size(83, 19);
+            this.Humidity.Size = new System.Drawing.Size(69, 17);
             this.Humidity.TabIndex = 10;
             this.Humidity.Text = "Humidity:";
             this.Humidity.Click += new System.EventHandler(this.Humidity_Click);
@@ -124,10 +127,9 @@
             this.Temperature.AutoSize = true;
             this.Temperature.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Temperature.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.Temperature.Location = new System.Drawing.Point(187, 9);
-            this.Temperature.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Temperature.Location = new System.Drawing.Point(140, 7);
             this.Temperature.Name = "Temperature";
-            this.Temperature.Size = new System.Drawing.Size(111, 19);
+            this.Temperature.Size = new System.Drawing.Size(90, 17);
             this.Temperature.TabIndex = 9;
             this.Temperature.Text = "Temperature:";
             // 
@@ -136,10 +138,9 @@
             this.SN.AutoSize = true;
             this.SN.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.SN.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.SN.Location = new System.Drawing.Point(33, 9);
-            this.SN.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.SN.Location = new System.Drawing.Point(25, 7);
             this.SN.Name = "SN";
-            this.SN.Size = new System.Drawing.Size(39, 19);
+            this.SN.Size = new System.Drawing.Size(32, 17);
             this.SN.TabIndex = 8;
             this.SN.Text = "SN: ";
             // 
@@ -149,18 +150,18 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DisWin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DisWin.Location = new System.Drawing.Point(30, 89);
-            this.DisWin.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.DisWin.Location = new System.Drawing.Point(22, 71);
+            this.DisWin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DisWin.Name = "DisWin";
-            this.DisWin.Size = new System.Drawing.Size(649, 388);
+            this.DisWin.Size = new System.Drawing.Size(487, 311);
             this.DisWin.TabIndex = 13;
             this.DisWin.TabStop = false;
             // 
             // TestForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1027, 511);
+            this.ClientSize = new System.Drawing.Size(770, 409);
             this.Controls.Add(this.DisWin);
             this.Controls.Add(this.LostLine);
             this.Controls.Add(this.Error);
@@ -170,6 +171,7 @@
             this.Controls.Add(this.StopButton);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.FindDeviceButton);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TestForm";
             this.Text = "测试系统";
             this.Load += new System.EventHandler(this.TestForm_Load);

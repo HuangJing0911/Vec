@@ -40,14 +40,14 @@ namespace XEthernetDemo
         //功放变量
         static Queue<Msg> msg_queue;
         static Queue<GFinfo> info_queue;
-        static Socket socket;
+        //static Socket socket;
         static AutoResetEvent conditional_variable;
         static Object gflocker;
         static volatile bool quit_flag = false;
-        static IPEndPoint ep;
+        //static IPEndPoint ep;
 
         static char[] idx_to_hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
+        /*
         public int[,,] SCAData = new int[1000, 10, 10];    //40为一秒轮次，可存储25秒数据
         string[,] DataGetTime = new string[1000, 10];
         string[,] processTime = new string[1000, 10];
@@ -55,9 +55,10 @@ namespace XEthernetDemo
         string[,] saveTime = new string[1000, 10];
         string[,] pickTime = new string[1000, 10];
         string[,] beforeDeTime = new string[1000, 10];
+        */
         public Boolean writeFlag = false;
 
-        private int RunFlag = 0;                   //是否运行标志
+        //private int RunFlag = 0;                   //是否运行标志
         public int udpCnt = 1;
         static Socket udpRecv;
         static Socket udpSend;
@@ -81,7 +82,8 @@ namespace XEthernetDemo
         public int gap = 5;        //阈值
 
         private Thread listen_thread;
-        private Thread process_thread1, process_thread2, process_thread3, process_thread4;
+        //private Thread process_thread1, process_thread2, process_thread3, process_thread4;
+        private Thread process_thread1;
 
         GFList gflist = new GFList();
         GFList gflist2 = new GFList();
@@ -140,8 +142,8 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST20.txt";
-        string result_data = "C:/Users/weike/Desktop/0413_data/result/";
-        string time_data = "C:/Users/weike/Desktop/0413_data/result/";
+        string result_data = System.Windows.Forms.Application.StartupPath + "/result/";
+        string time_data = System.Windows.Forms.Application.StartupPath + "/result/";
         FileStream fs;
         StreamWriter wr;
         FileStream fs2;
@@ -986,7 +988,7 @@ namespace XEthernetDemo
             //process_thread4.Join();
             if (writeFlag)
             {
-                write(SCAData);
+                //write(SCAData);
             }
 
             MessageBox.Show("线阵与功放停止运行！");
@@ -1067,6 +1069,7 @@ namespace XEthernetDemo
                 Interlocked.Increment(ref intocount);
                 //label3.Text = intocount.ToString();
 
+                /*
                 //调试用保存数据
                 if (writeFlag)
                 {
@@ -1085,6 +1088,7 @@ namespace XEthernetDemo
                     beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
 
                 }
+                */
 
                 if (dp.SCACount[0] > gap || dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
                 {
@@ -1103,7 +1107,7 @@ namespace XEthernetDemo
                     gfData[9] = c[1];
                     udpSend.Send(gfData);
                     msg.sendTime = DateTime.Now;
-                    sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
+                    //sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
                 }
             }
             else
@@ -1127,7 +1131,8 @@ namespace XEthernetDemo
             string ret = new string(r);
             return ret;
         }
-
+        
+        /*
         public void write(int[,,] arr)             //保存txt文本
         {
             string temppath = @"D:\422test\data";
@@ -1169,5 +1174,6 @@ namespace XEthernetDemo
             }
             MessageBox.Show("write finish!");
         }
+        */
     }
 }

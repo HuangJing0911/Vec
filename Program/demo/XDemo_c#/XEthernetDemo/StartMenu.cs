@@ -144,7 +144,7 @@ namespace XEthernetDemo
         private void StartMenu_Load(object sender, EventArgs e)
         {
             Sunisoft.IrisSkin.SkinEngine skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
-            skinEngine1.SkinFile = System.Environment.CurrentDirectory + "\\Skins\\office2007.ssk";
+            skinEngine1.SkinFile = System.Environment.CurrentDirectory + "\\Skins\\MacOS.ssk";
         }
 
     }
