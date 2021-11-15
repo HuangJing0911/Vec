@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Configure = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -1557,7 +1558,7 @@
             // 
             this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(548, 31);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(111, 23);
             this.button1.TabIndex = 14;
@@ -1569,7 +1570,7 @@
             // 
             this.TestPLC.Enabled = false;
             this.TestPLC.Location = new System.Drawing.Point(688, 30);
-            this.TestPLC.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TestPLC.Margin = new System.Windows.Forms.Padding(2);
             this.TestPLC.Name = "TestPLC";
             this.TestPLC.Size = new System.Drawing.Size(111, 22);
             this.TestPLC.TabIndex = 15;
@@ -1607,6 +1608,7 @@
             this.Controls.Add(this.DisWin);
             this.Controls.Add(this.tabControl1);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "调试系统";

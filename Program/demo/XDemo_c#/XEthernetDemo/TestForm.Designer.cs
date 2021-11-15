@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestForm));
             this.FindDeviceButton = new System.Windows.Forms.Button();
             this.StartButton = new System.Windows.Forms.Button();
             this.StopButton = new System.Windows.Forms.Button();
@@ -47,7 +48,7 @@
             this.FindDeviceButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FindDeviceButton.ForeColor = System.Drawing.Color.MidnightBlue;
             this.FindDeviceButton.Location = new System.Drawing.Point(579, 71);
-            this.FindDeviceButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.FindDeviceButton.Margin = new System.Windows.Forms.Padding(2);
             this.FindDeviceButton.Name = "FindDeviceButton";
             this.FindDeviceButton.Size = new System.Drawing.Size(141, 49);
             this.FindDeviceButton.TabIndex = 3;
@@ -63,7 +64,7 @@
             this.StartButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StartButton.ForeColor = System.Drawing.Color.MidnightBlue;
             this.StartButton.Location = new System.Drawing.Point(579, 192);
-            this.StartButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.StartButton.Margin = new System.Windows.Forms.Padding(2);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(141, 49);
             this.StartButton.TabIndex = 4;
@@ -79,7 +80,7 @@
             this.StopButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StopButton.ForeColor = System.Drawing.Color.MidnightBlue;
             this.StopButton.Location = new System.Drawing.Point(579, 309);
-            this.StopButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.StopButton.Margin = new System.Windows.Forms.Padding(2);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(141, 49);
             this.StopButton.TabIndex = 5;
@@ -171,7 +172,8 @@
             this.Controls.Add(this.StopButton);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.FindDeviceButton);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "TestForm";
             this.Text = "测试系统";
             this.Load += new System.EventHandler(this.TestForm_Load);
