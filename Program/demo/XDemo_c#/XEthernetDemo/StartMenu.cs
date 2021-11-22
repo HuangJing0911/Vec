@@ -122,6 +122,7 @@ namespace XEthernetDemo
             f1.length_linearray = Convert.ToInt32(ArrayLength.Text);
             f1.SOD = Convert.ToInt32(SOD.Text);
             f1.SDD = Convert.ToInt32(SDD.Text);
+            f1.gap = Convert.ToInt32(gap.Text);
             f1.SetSetting();
             f1.ShowDialog();
         }
@@ -138,13 +139,14 @@ namespace XEthernetDemo
             f1.length_linearray = Convert.ToInt32(ArrayLength.Text);
             f1.SOD = Convert.ToInt32(SOD.Text);
             f1.SDD = Convert.ToInt32(SDD.Text);
+            f1.gap = Convert.ToInt32(gap.Text);
             f1.ShowDialog();
         }
 
         private void StartMenu_Load(object sender, EventArgs e)
         {
             Sunisoft.IrisSkin.SkinEngine skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
-            skinEngine1.SkinFile = System.Environment.CurrentDirectory + "\\Skins\\MacOS.ssk";
+            //skinEngine1.SkinFile = System.Environment.CurrentDirectory + "\\Skins\\MacOS.ssk";
         }
 
     }
