@@ -61,6 +61,7 @@
             // 
             this.StartButton.BackColor = System.Drawing.Color.Gainsboro;
             this.StartButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.StartButton.Enabled = false;
             this.StartButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StartButton.ForeColor = System.Drawing.Color.MidnightBlue;
             this.StartButton.Location = new System.Drawing.Point(579, 192);
@@ -77,6 +78,7 @@
             // 
             this.StopButton.BackColor = System.Drawing.Color.Gainsboro;
             this.StopButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.StopButton.Enabled = false;
             this.StopButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StopButton.ForeColor = System.Drawing.Color.MidnightBlue;
             this.StopButton.Location = new System.Drawing.Point(579, 309);
@@ -105,7 +107,7 @@
             this.Error.AutoSize = true;
             this.Error.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Error.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.Error.Location = new System.Drawing.Point(472, 7);
+            this.Error.Location = new System.Drawing.Point(351, 36);
             this.Error.Name = "Error";
             this.Error.Size = new System.Drawing.Size(41, 17);
             this.Error.TabIndex = 11;
@@ -116,7 +118,7 @@
             this.Humidity.AutoSize = true;
             this.Humidity.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Humidity.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.Humidity.Location = new System.Drawing.Point(319, 7);
+            this.Humidity.Location = new System.Drawing.Point(401, 9);
             this.Humidity.Name = "Humidity";
             this.Humidity.Size = new System.Drawing.Size(69, 17);
             this.Humidity.TabIndex = 10;
@@ -128,7 +130,7 @@
             this.Temperature.AutoSize = true;
             this.Temperature.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Temperature.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.Temperature.Location = new System.Drawing.Point(140, 7);
+            this.Temperature.Location = new System.Drawing.Point(205, 9);
             this.Temperature.Name = "Temperature";
             this.Temperature.Size = new System.Drawing.Size(90, 17);
             this.Temperature.TabIndex = 9;

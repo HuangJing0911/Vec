@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 
 namespace XEthernetDemo
 {
-    struct Msg
+    public struct Msg
     {
         internal byte[] bytes;
         internal int length;
@@ -37,7 +37,7 @@ namespace XEthernetDemo
         internal DateTime beforeDeTime;
     }
 
-    struct GFinfo
+    public struct GFinfo
     {
         internal int channelindex;          // 物块在第几通道
         internal Int64 time;                // 物块到达的时间
@@ -45,7 +45,7 @@ namespace XEthernetDemo
         internal bool next_same;            // 下一个信息与自己时间信息是否相同
     }
 
-    struct GFList
+    public struct GFList
     {
         internal GFinfo[] list;         // 所有时间相同的GFinfo元素
         internal int length;            // 表示列表中有效元素的个数
@@ -89,14 +89,15 @@ namespace XEthernetDemo
         static IPEndPoint ep;
 
         static char[] idx_to_hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
-        public int[,,] SCAData = new int[1000, 10, 10];    //40为一秒轮次，可存储25秒数据
-        string[,] DataGetTime = new string[1000, 10];
-        string[,] processTime = new string[1000, 10];
-        string[,] sendTime = new string[1000, 10];
-        string[,] saveTime = new string[1000, 10];
-        string[,] pickTime = new string[1000, 10];
+        /*
+        public int[,,] SCAData = new int[1000000, 10, 10];    //40为一秒轮次，可存储25秒数据
+        string[,] DataGetTime = new string[1000000, 10];
+        string[,] processTime = new string[1000000, 10];
+        string[,] sendTime = new string[1000000, 10];
+        string[,] saveTime = new string[1000000, 10];
+        string[,] pickTime = new string[1000000, 10];
         string[,] beforeDeTime = new string[1000, 10];
+        */
         public Boolean writeFlag = false;
 
         private int RunFlag = 0;                   //是否运行标志
@@ -120,7 +121,7 @@ namespace XEthernetDemo
         public int sendflag = 1;  //是否发送udp数据
         public int intocount = 0;
         public int sendcount = 0;
-        public int gap = 5;        //阈值
+        public int gap = 8;        //阈值
 
         private Thread listen_thread;
         private Thread process_thread1, process_thread2, process_thread3, process_thread4;
@@ -179,8 +180,8 @@ namespace XEthernetDemo
         delegate void AppendDelegate(string str);
         AppendDelegate AppendString;
         string test_txt_filepath = "C:/Users/96342/Desktop/TEST20.txt";
-        string result_data = "C:/Users/weike/Desktop/0413_data/result/";
-        string time_data = "C:/Users/weike/Desktop/0413_data/result/";
+        string result_data = System.Windows.Forms.Application.StartupPath + "/result/";
+        string time_data = System.Windows.Forms.Application.StartupPath + "/result/";
         FileStream fs;
         StreamWriter wr;
         FileStream fs2;
@@ -218,11 +219,11 @@ namespace XEthernetDemo
                             gflist.start_channel = gflist.list[i].channelindex - 1;
                             gflist.end_channel = gflist.list[i].channelindex + 1;
                         }
-                        else if (gflist.list[i].channelindex < gflist.start_channel)
+                        if (gflist.list[i].channelindex <= gflist.start_channel)
                         {
                             gflist.start_channel = gflist.list[i].channelindex - 1;
                         }
-                        else if (gflist.list[i].channelindex > gflist.end_channel)
+                        if (gflist.list[i].channelindex >= gflist.end_channel)
                         {
                             gflist.end_channel = gflist.list[i].channelindex + 1;
                         }
@@ -315,7 +316,7 @@ namespace XEthernetDemo
                     a = a + data[i].ToString("X2");
                 }
                 time = Convert.ToInt64(a, 16);
-                info.time = Convert.ToInt64(time.ToString()) - 10;
+                info.time = Convert.ToInt64(time.ToString()) - 15;
                 //index = index << 8 & data[9];
                 info.channelindex = Convert.ToInt32(data[8].ToString("X2"), 16);
                 info.flag = 1;               // 入队列的为铜的信息
@@ -492,7 +493,7 @@ namespace XEthernetDemo
             //Cv2.ImShow("Init_pic", image);
             //Cv2.WaitKey();
             Mat image_test = image;
-            
+
             image.ConvertTo(image, MatType.CV_32F);
             Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
             image = image * 255;
@@ -568,8 +569,8 @@ namespace XEthernetDemo
             for (int i = 0; i < contours.Length; i++)
             {
                 double area = Cv2.ContourArea(contours[i]);
-                if(area == 0)
-                //if (area == 0 || boundRect[i].Height > 170 || boundRect[i].Width < 8 || boundRect[i].Height < 10)
+                if (area == 0)
+                    //if (area == 0 || boundRect[i].Height > 170 || boundRect[i].Width < 8 || boundRect[i].Height < 10)
                     continue;
                 Scalar color = new Scalar(0, 0, 255);
                 //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
@@ -966,21 +967,37 @@ namespace XEthernetDemo
             {
                 return 100000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4));
             }
+            else if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 2)) < value)
+            {
+                return 200000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 2));
+            }
             else if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width * 3 / 4)) < value)
             {
-                return 200000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width * 3 / 4));
+                return 300000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width * 3 / 4));
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 4)) < value)
+            {
+                return 400000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 4));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 2)) < value)
             {
-                return 300000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 2));
+                return 500000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width / 2));
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width * 3 / 4)) < value)
+            {
+                return 600000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 2), (uint)(X + Width * 3 / 4));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 4)) < value)
             {
-                return 400000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 4));
+                return 700000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 4));
+            }
+            else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 2)) < value)
+            {
+                return 800000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width / 2));
             }
             else if (ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width * 3 / 4)) < value)
             {
-                return 500000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width * 3 / 4));
+                return 900000 + (int)ximagew.GetPixelVal((uint)(Y + Height * 3 / 4), (uint)(X + Width * 3 / 4));
             }
             else
                 return 0;
@@ -997,7 +1014,7 @@ namespace XEthernetDemo
             Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
-            init_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/init" + pic_num + ".png";
+            init_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/init" + pic_num + ".png";
             //Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
@@ -1056,9 +1073,9 @@ namespace XEthernetDemo
                     //Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                     //HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0));
                     Cv2.PutText(connImage, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
-                    HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0));
+                    HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                 }
-                result_pic = "C:/Users/weike/Desktop/0413_data/2_with_timestamp/result" + pic_num + ".png";
+                result_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/result" + pic_num + ".png";
                 //Cv2.ImWrite(result_pic, connImage);
 
                 // 求出时间戳并发送物块信息
@@ -1081,11 +1098,13 @@ namespace XEthernetDemo
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
 
                     bool is_small = false;
+                    /*
                     if (area < 200)
                     {
                         is_small = true;
                         data.typof_block = 10;
                     }
+                    */
 
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
@@ -1137,7 +1156,8 @@ namespace XEthernetDemo
                     int start_num = (int)Math.Ceiling((float)data.start_num * 10 / num_of_mouth);
                     int end_num = (int)Math.Ceiling((float)data.end_num * 10 / num_of_mouth);
                     //while (info_queue.Count != 0 || first_info.flag != 0)
-                    while (!is_small)
+                    //while (!is_small)
+                    while (true)
                     {
                         //gfinfo = info_queue;
                         //GFinfo first_info = gfinfo.Dequeue();
@@ -1168,12 +1188,14 @@ namespace XEthernetDemo
                                     continue;
                                 }
                             }
+                            /*
                             else if (Math.Abs(a) <= 25 && gflist.start_channel <= end_num && gflist.end_channel >= start_num && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 7000) > 0)
                             {
                                 queue_flag = 4;
                                 data.typof_block = (byte)first_info.flag;
                                 break;
                             }
+                            */
                             else if (a > 20)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                             {
                                 queue_flag = 2;
@@ -1266,12 +1288,12 @@ namespace XEthernetDemo
 
 
                     // 确定物块最终喷吹的时间
-                    data.start_time_int += (int)(2400 / speed) - 10;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int += (int)(2400 / speed) - 12;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 5);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);
                     //data.blow_time = (short)100;
 
 
@@ -1285,8 +1307,8 @@ namespace XEthernetDemo
                     //if (i != 0)
                     //Thread.Sleep(2);
                     int num = 0;
-                    if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                        //if (data.typof_block == 1)
+                    //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
+                    if (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0)
                         num = SendData(data);
                     total_clock_num++;
                     if (num == 23)
@@ -1310,7 +1332,7 @@ namespace XEthernetDemo
                 if (flag == 1)
                 {
                     //Cv2.ImWrite(init_pic, image);
-                    ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
+                    ximagew.Save(System.Windows.Forms.Application.StartupPath + "/result/pic/TEST" + pic_num + ".txt");
                     Cv2.ImWrite(result_pic, connImage);
                 }
 
@@ -1705,6 +1727,8 @@ namespace XEthernetDemo
         private void Stop_Click(object sender, EventArgs e)
         {
             // 暂停线阵
+            wr.WriteLine(total_detect_num + " Detect / " + total_clock_num + " Find");
+            wr.Flush();
             wr.Close();
             fs.Close();
             wr2.Close();
@@ -1735,7 +1759,7 @@ namespace XEthernetDemo
             //process_thread4.Join();
             if (writeFlag)
             {
-                write(SCAData);
+                //write(SCAData);
             }
 
             MessageBox.Show("线阵与功放停止运行！");
@@ -2166,6 +2190,7 @@ namespace XEthernetDemo
                 Interlocked.Increment(ref intocount);
                 //label3.Text = intocount.ToString();
 
+                /*
                 //调试用保存数据
                 if (writeFlag)
                 {
@@ -2184,8 +2209,9 @@ namespace XEthernetDemo
                     beforeDeTime[CycleCount / 10, chnldx - 1] = msg.beforeDeTime.TimeOfDay.ToString();
 
                 }
+                */
 
-                if (dp.SCACount[0] > gap || dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
+                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
@@ -2202,7 +2228,7 @@ namespace XEthernetDemo
                     gfData[9] = c[1];
                     udpSend.Send(gfData);
                     msg.sendTime = DateTime.Now;
-                    sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
+                    //sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
                 }
             }
             else
@@ -2236,7 +2262,7 @@ namespace XEthernetDemo
         {
 
         }
-
+        /*
         public void write(int[,,] arr)             //保存txt文本
         {
             string temppath = @"D:\422test\data";
@@ -2278,6 +2304,7 @@ namespace XEthernetDemo
             }
             MessageBox.Show("write finish!");
         }
+        */
 
         private void AutoCheckTimer2_Tick(object sender, EventArgs e)
         {
