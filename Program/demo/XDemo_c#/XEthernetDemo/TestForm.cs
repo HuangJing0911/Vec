@@ -483,6 +483,17 @@ namespace XEthernetDemo
         void OnError(int err_id, string msg)
         {
             Error.Text = "Error: " + msg;
+            if (timerthread.IsAlive)
+            {
+                if (StopButton.Enabled)
+                {
+                    StopButton_Click(msg, EventArgs.Empty);
+                }
+                else
+                {
+                    timerthread.Abort();
+                }
+            }
         }
         void OnEvent1(int event_id, int data)
         {
