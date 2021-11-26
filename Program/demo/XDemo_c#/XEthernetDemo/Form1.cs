@@ -121,8 +121,9 @@ namespace XEthernetDemo
         public int sendflag = 1;  //是否发送udp数据
         public int intocount = 0;
         public int sendcount = 0;
-        public int gap = 8;        //阈值
-
+        public int gap = 8;        //阈值 铜锌
+        public int[] recvData = new int[7];
+        public int[] channelStateData = new int[10]; 
         private Thread listen_thread;
         private Thread process_thread1, process_thread2, process_thread3, process_thread4;
 
@@ -2164,7 +2165,12 @@ namespace XEthernetDemo
                 switch (SectionType)
                 {
                     case 1:
-                        chnldx = dp.ChannelMetaSection(ref index, SectionLen, rawdata);
+                        recvData = dp.ChannelMetaSection(ref index, SectionLen, rawdata);
+                        chnldx = recvData[0];
+                        for(int temp = 1; temp < 7; temp++)
+                        {
+                            channelStateData[chnldx - 1] += recvData[temp];
+                        }
                         break;
                     case 2:
                         dp.SpectralMetaSection(ref index, SectionLen, rawdata);
@@ -2211,7 +2217,7 @@ namespace XEthernetDemo
                 }
                 */
 
-                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap)           //符合条件的数据报，发送给HJ
+                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap || dp.SCACount[2] > 30)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
@@ -2335,6 +2341,7 @@ namespace XEthernetDemo
         public int DppAvailable, SpectralDataAvailabel, SnapshotStatisticDataValid, MxPowerSupplyState, MxPowerSupplyStable, SddTemperatureReady;
         public int ChannelState, CntCommunicationReset, CntUdpPacket, CntUdpSendErr, CntMissedPacket, CntSyncErr, CntSnapshotStatInvalid;
         public float DppTemperature, SddTemperature;
+        public int[] res = new int[7];
 
         //数据二
         public int SpectCtr, Events, BytesPerBin, NumberOfBins, StartBin;
@@ -2381,7 +2388,7 @@ namespace XEthernetDemo
             return f;
         }
 
-        public int ChannelMetaSection(ref int index, int SectionLen, string rawdata)
+        public int[] ChannelMetaSection(ref int index, int SectionLen, string rawdata)
         {
             if (processway == 1)
             {
@@ -2425,10 +2432,18 @@ namespace XEthernetDemo
                 temp = rawdata.Substring(index, 8);
                 SddTemperature = strToFloat(temp);
                 index += 8;
+
+                res[0] = Chnidx;
+                res[1] = DppAvailable;
+                res[2] = SpectralDataAvailabel;
+                res[3] = SnapshotStatisticDataValid;
+                res[4] = MxPowerSupplyState;
+                res[5] = MxPowerSupplyStable;
+                res[6] = SddTemperatureReady;
             }
 
 
-            return Chnidx;
+            return res;
 
         }
 
