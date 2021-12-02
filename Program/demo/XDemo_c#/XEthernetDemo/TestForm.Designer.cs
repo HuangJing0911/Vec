@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestForm));
             this.FindDeviceButton = new System.Windows.Forms.Button();
             this.StartButton = new System.Windows.Forms.Button();
@@ -38,6 +39,7 @@
             this.Temperature = new System.Windows.Forms.Label();
             this.SN = new System.Windows.Forms.Label();
             this.DisWin = new System.Windows.Forms.PictureBox();
+            this.ChannelChecktimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.SuspendLayout();
             // 
@@ -165,6 +167,11 @@
             this.DisWin.TabIndex = 13;
             this.DisWin.TabStop = false;
             // 
+            // ChannelChecktimer
+            // 
+            this.ChannelChecktimer.Interval = 20000;
+            this.ChannelChecktimer.Tick += new System.EventHandler(this.ChannelChecktimer_Tick);
+            // 
             // TestForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -202,5 +209,6 @@
         private System.Windows.Forms.Label Temperature;
         private System.Windows.Forms.Label SN;
         private System.Windows.Forms.PictureBox DisWin;
+        private System.Windows.Forms.Timer ChannelChecktimer;
     }
 }

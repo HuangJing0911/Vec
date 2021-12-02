@@ -79,7 +79,9 @@ namespace XEthernetDemo
         public int sendflag = 1;  //是否发送udp数据
         public int intocount = 0;
         public int sendcount = 0;
-        public int gap = 8;        //阈值
+        public int gap = 8;        //阈值 铜锌
+        public int[] recvData = new int[7];
+        public int[] channelStateData = new int[10];
 
         private Thread listen_thread;
         private Thread process_thread1, process_thread2, process_thread3, process_thread4;
@@ -342,6 +344,20 @@ namespace XEthernetDemo
             }
         }
 
+        // 定时检测功放当前通道功能是否正常
+        public void ChannelStateCheck()
+        {
+            if (process_thread1.IsAlive)
+            {
+                for(int i = 0; i < channelStateData.Length; i++)
+                {
+                    if (channelStateData[i] != 1)
+                        OnError(50, "Channel " + i + " error!");
+                }
+            }
+            wr2.WriteLine(DateTime.Now.ToString() + "ChannelStateCheck Finishing!");
+        }
+
         // 发送当前时间点的时间戳
         public void timecheck()
         {
@@ -601,11 +617,15 @@ namespace XEthernetDemo
             quit_flag = false;
             listen_thread = new Thread(RecvMessage);
             process_thread1 = new Thread(ProcessMessage);
+            
 
             listen_thread.IsBackground = true;
             process_thread1.IsBackground = true;
             listen_thread.Start();
             process_thread1.Start();
+
+            // 功放功能定时检测
+            ChannelChecktimer.Enabled = true;
 
             MessageBox.Show("成功启动线阵与功放！");
             StartButton.Enabled = false;
@@ -1190,9 +1210,16 @@ namespace XEthernetDemo
                 //write(SCAData);
             }
 
+            ChannelChecktimer.Enabled = false;
+
             MessageBox.Show("线阵与功放停止运行！");
             StartButton.Enabled = true;
             StopButton.Enabled = false;
+        }
+
+        private void ChannelChecktimer_Tick(object sender, EventArgs e)
+        {
+            ChannelStateCheck();
         }
 
         private void ProcessMessage()
@@ -1242,7 +1269,12 @@ namespace XEthernetDemo
                 switch (SectionType)
                 {
                     case 1:
-                        chnldx = dp.ChannelMetaSection(ref index, SectionLen, rawdata);
+                        recvData = dp.ChannelMetaSection(ref index, SectionLen, rawdata);
+                        chnldx = recvData[0];
+                        for (int temp = 1; temp < 7; temp++)
+                        {
+                            channelStateData[chnldx - 1] += recvData[temp];
+                        }
                         break;
                     case 2:
                         dp.SpectralMetaSection(ref index, SectionLen, rawdata);
@@ -1289,7 +1321,7 @@ namespace XEthernetDemo
                 }
                 */
 
-                if (dp.SCACount[0] > gap || dp.SCACount[1] > gap)           //符合条件的数据报，发送给HJ
+                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap || dp.SCACount[2] > 30)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
@@ -1375,4 +1407,8 @@ namespace XEthernetDemo
         }
         */
     }
+
+
 }
+
+
