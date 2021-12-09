@@ -2353,9 +2353,9 @@ namespace XEthernetDemo
 
         //数据五
         //public int SCAStartBin ,SCALength ,SCACount;
-        public int[] SCAStartBin = new int[4];
-        public int[] SCALength = new int[4];
-        public int[] SCACount = new int[4];
+        public int[] SCAStartBin = new int[5];
+        public int[] SCALength = new int[5];
+        public int[] SCACount = new int[5];
 
 
         public int GetN(string data, ref int index, int n)
@@ -2461,7 +2461,7 @@ namespace XEthernetDemo
                     SCALength = templength;
                     SCACount = tempcount;
                 }*/
-                if (i >= 0 && i < 3)             //根据SCA个数要进行修改
+                if (i >= 0 && i < 5)             //根据SCA个数要进行修改
                 {
                     SCAStartBin[i] = tempstartbin;
                     SCALength[i] = templength;

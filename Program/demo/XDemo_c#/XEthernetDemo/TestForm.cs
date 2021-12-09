@@ -625,7 +625,7 @@ namespace XEthernetDemo
             process_thread1.Start();
 
             // 功放功能定时检测
-            ChannelChecktimer.Enabled = true;
+            //ChannelChecktimer.Enabled = true;
 
             MessageBox.Show("成功启动线阵与功放！");
             StartButton.Enabled = false;
@@ -749,6 +749,7 @@ namespace XEthernetDemo
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchy;
             Cv2.FindContours(image, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+            connImage.CopyTo(image);
 
             Rect[] boundRect = new Rect[contours.Length];
             RotatedRect[] box = new RotatedRect[contours.Length];
@@ -790,12 +791,12 @@ namespace XEthernetDemo
                     Scalar color = new Scalar(0, 0, 255);
                     //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
-                    Cv2.Rectangle(connImage, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                    Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                         new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                         new Scalar(0, 255, 0), 1, LineTypes.Link8);
                     //Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                     //HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0));
-                    Cv2.PutText(connImage, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                    Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                     HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                 }
                 result_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/result" + pic_num + ".png";
@@ -1032,7 +1033,12 @@ namespace XEthernetDemo
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
                     if (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0)
+                    {
                         num = SendData(data);
+                        Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X+10, boundRect[i].Y),
+                        HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
+                    }
+                        
                     total_clock_num++;
                     if (num == 23)
                     {
@@ -1054,9 +1060,9 @@ namespace XEthernetDemo
                 // 画出原始图像和处理后图像
                 if (flag == 1)
                 {
-                    //Cv2.ImWrite(init_pic, image);
+                    Cv2.ImWrite(result_pic, image);
                     ximagew.Save(System.Windows.Forms.Application.StartupPath + "/result/pic/TEST" + pic_num + ".txt");
-                    Cv2.ImWrite(result_pic, connImage);
+                    Cv2.ImWrite(init_pic, connImage);
                 }
 
 
@@ -1132,6 +1138,7 @@ namespace XEthernetDemo
                 SetIntegralTime();
 
                 StartButton.Enabled = true;
+                FindDeviceButton.Enabled = false;
             }
         }
 
@@ -1215,6 +1222,7 @@ namespace XEthernetDemo
             MessageBox.Show("线阵与功放停止运行！");
             StartButton.Enabled = true;
             StopButton.Enabled = false;
+            FindDeviceButton.Enabled = true;
         }
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
@@ -1321,7 +1329,7 @@ namespace XEthernetDemo
                 }
                 */
 
-                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap || dp.SCACount[2] > 30)           //符合条件的数据报，发送给HJ
+                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap || dp.SCACount[3] > gap || dp.SCACount[2] > gap || dp.SCACount[4] > gap)           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
