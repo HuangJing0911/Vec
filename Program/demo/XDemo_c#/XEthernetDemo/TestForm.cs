@@ -159,6 +159,20 @@ namespace XEthernetDemo
         GFList gflist = new GFList();
         GFList gflist2 = new GFList();
 
+        // 功能选择
+        bool Select_Cu = true;
+        bool Select_Zn = true;
+        bool Select_Pb = false;
+        bool Select_Fe = false;
+
+        private void funtion_select()
+        {
+            Select_Cu = FunctionSelect_Cu.Checked;
+            Select_Zn = FunctionSelect_Zn.Checked;
+            Select_Pb = FunctionSelect_Pb.Checked;
+            Select_Fe = FunctionSelect_Fe.Checked;
+        }
+
 
         // 功放信息首列表清空并重置
         private void gflist_Reset()
@@ -499,6 +513,7 @@ namespace XEthernetDemo
         void OnError(int err_id, string msg)
         {
             Error.Text = "Error: " + msg;
+            /*
             if (timerthread.IsAlive)
             {
                 if (StopButton.Enabled)
@@ -510,6 +525,7 @@ namespace XEthernetDemo
                     timerthread.Abort();
                 }
             }
+            */
         }
         void OnEvent1(int event_id, int data)
         {
@@ -568,6 +584,7 @@ namespace XEthernetDemo
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            FunctionBox.Enabled = false;
             frame_count = 0;
             lost_line = 0;
             DateTime time = DateTime.Now;
@@ -1139,6 +1156,7 @@ namespace XEthernetDemo
 
                 StartButton.Enabled = true;
                 FindDeviceButton.Enabled = false;
+                FunctionBox.Enabled = true;
             }
         }
 
@@ -1329,7 +1347,7 @@ namespace XEthernetDemo
                 }
                 */
 
-                if (dp.SCACount[1] > gap || dp.SCACount[0] > gap || dp.SCACount[3] > gap || dp.SCACount[2] > gap || dp.SCACount[4] > gap)           //符合条件的数据报，发送给HJ
+                if ((Select_Cu && dp.SCACount[0] > gap) || (Select_Zn && dp.SCACount[1] > gap) || (Select_Pb && (dp.SCACount[3] > gap || dp.SCACount[2] > gap)) || (Select_Fe && dp.SCACount[4] > gap))           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();

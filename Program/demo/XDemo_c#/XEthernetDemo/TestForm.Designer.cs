@@ -40,7 +40,14 @@
             this.SN = new System.Windows.Forms.Label();
             this.DisWin = new System.Windows.Forms.PictureBox();
             this.ChannelChecktimer = new System.Windows.Forms.Timer(this.components);
+            this.FunctionBox = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.FunctionSelect_Cu = new System.Windows.Forms.CheckBox();
+            this.FunctionSelect_Zn = new System.Windows.Forms.CheckBox();
+            this.FunctionSelect_Pb = new System.Windows.Forms.CheckBox();
+            this.FunctionSelect_Fe = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
+            this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // FindDeviceButton
@@ -49,7 +56,7 @@
             this.FindDeviceButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FindDeviceButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FindDeviceButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.FindDeviceButton.Location = new System.Drawing.Point(772, 89);
+            this.FindDeviceButton.Location = new System.Drawing.Point(771, 216);
             this.FindDeviceButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.FindDeviceButton.Name = "FindDeviceButton";
             this.FindDeviceButton.Size = new System.Drawing.Size(188, 61);
@@ -66,7 +73,7 @@
             this.StartButton.Enabled = false;
             this.StartButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StartButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.StartButton.Location = new System.Drawing.Point(772, 240);
+            this.StartButton.Location = new System.Drawing.Point(771, 316);
             this.StartButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(188, 61);
@@ -83,7 +90,7 @@
             this.StopButton.Enabled = false;
             this.StopButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StopButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.StopButton.Location = new System.Drawing.Point(772, 386);
+            this.StopButton.Location = new System.Drawing.Point(771, 416);
             this.StopButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(188, 61);
@@ -101,7 +108,7 @@
             this.LostLine.Location = new System.Drawing.Point(33, 45);
             this.LostLine.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LostLine.Name = "LostLine";
-            this.LostLine.Size = new System.Drawing.Size(83, 19);
+            this.LostLine.Size = new System.Drawing.Size(71, 17);
             this.LostLine.TabIndex = 12;
             this.LostLine.Text = "Lost Line: ";
             // 
@@ -110,10 +117,10 @@
             this.Error.AutoSize = true;
             this.Error.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Error.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Error.Location = new System.Drawing.Point(468, 45);
+            this.Error.Location = new System.Drawing.Point(408, 45);
             this.Error.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Error.Name = "Error";
-            this.Error.Size = new System.Drawing.Size(50, 19);
+            this.Error.Size = new System.Drawing.Size(41, 17);
             this.Error.TabIndex = 11;
             this.Error.Text = "Error:";
             // 
@@ -125,7 +132,7 @@
             this.Humidity.Location = new System.Drawing.Point(535, 11);
             this.Humidity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Humidity.Name = "Humidity";
-            this.Humidity.Size = new System.Drawing.Size(83, 19);
+            this.Humidity.Size = new System.Drawing.Size(69, 17);
             this.Humidity.TabIndex = 10;
             this.Humidity.Text = "Humidity:";
             this.Humidity.Click += new System.EventHandler(this.Humidity_Click);
@@ -138,7 +145,7 @@
             this.Temperature.Location = new System.Drawing.Point(273, 11);
             this.Temperature.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Temperature.Name = "Temperature";
-            this.Temperature.Size = new System.Drawing.Size(111, 19);
+            this.Temperature.Size = new System.Drawing.Size(90, 17);
             this.Temperature.TabIndex = 9;
             this.Temperature.Text = "Temperature:";
             // 
@@ -150,7 +157,7 @@
             this.SN.Location = new System.Drawing.Point(33, 9);
             this.SN.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SN.Name = "SN";
-            this.SN.Size = new System.Drawing.Size(39, 19);
+            this.SN.Size = new System.Drawing.Size(32, 17);
             this.SN.TabIndex = 8;
             this.SN.Text = "SN: ";
             // 
@@ -172,11 +179,92 @@
             this.ChannelChecktimer.Interval = 20000;
             this.ChannelChecktimer.Tick += new System.EventHandler(this.ChannelChecktimer_Tick);
             // 
+            // FunctionBox
+            // 
+            this.FunctionBox.Controls.Add(this.FunctionSelect_Fe);
+            this.FunctionBox.Controls.Add(this.FunctionSelect_Pb);
+            this.FunctionBox.Controls.Add(this.FunctionSelect_Zn);
+            this.FunctionBox.Controls.Add(this.FunctionSelect_Cu);
+            this.FunctionBox.Controls.Add(this.textBox1);
+            this.FunctionBox.Enabled = false;
+            this.FunctionBox.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionBox.Location = new System.Drawing.Point(737, 12);
+            this.FunctionBox.Name = "FunctionBox";
+            this.FunctionBox.Size = new System.Drawing.Size(254, 162);
+            this.FunctionBox.TabIndex = 15;
+            this.FunctionBox.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.BackColor = System.Drawing.Color.BurlyWood;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.textBox1.Location = new System.Drawing.Point(34, 24);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(188, 26);
+            this.textBox1.TabIndex = 15;
+            this.textBox1.Text = "分选功能选择";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // FunctionSelect_Cu
+            // 
+            this.FunctionSelect_Cu.AutoSize = true;
+            this.FunctionSelect_Cu.Checked = true;
+            this.FunctionSelect_Cu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FunctionSelect_Cu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Cu.Location = new System.Drawing.Point(51, 65);
+            this.FunctionSelect_Cu.Name = "FunctionSelect_Cu";
+            this.FunctionSelect_Cu.Size = new System.Drawing.Size(42, 23);
+            this.FunctionSelect_Cu.TabIndex = 16;
+            this.FunctionSelect_Cu.Text = "铜";
+            this.FunctionSelect_Cu.UseVisualStyleBackColor = true;
+            // 
+            // FunctionSelect_Zn
+            // 
+            this.FunctionSelect_Zn.AutoSize = true;
+            this.FunctionSelect_Zn.Checked = true;
+            this.FunctionSelect_Zn.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FunctionSelect_Zn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Zn.Location = new System.Drawing.Point(152, 65);
+            this.FunctionSelect_Zn.Name = "FunctionSelect_Zn";
+            this.FunctionSelect_Zn.Size = new System.Drawing.Size(42, 23);
+            this.FunctionSelect_Zn.TabIndex = 17;
+            this.FunctionSelect_Zn.Text = "锌";
+            this.FunctionSelect_Zn.UseVisualStyleBackColor = true;
+            // 
+            // FunctionSelect_Pb
+            // 
+            this.FunctionSelect_Pb.AutoSize = true;
+            this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Pb.Location = new System.Drawing.Point(51, 106);
+            this.FunctionSelect_Pb.Name = "FunctionSelect_Pb";
+            this.FunctionSelect_Pb.Size = new System.Drawing.Size(42, 23);
+            this.FunctionSelect_Pb.TabIndex = 18;
+            this.FunctionSelect_Pb.Text = "铅";
+            this.FunctionSelect_Pb.UseVisualStyleBackColor = true;
+            // 
+            // FunctionSelect_Fe
+            // 
+            this.FunctionSelect_Fe.AutoSize = true;
+            this.FunctionSelect_Fe.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Fe.Location = new System.Drawing.Point(152, 106);
+            this.FunctionSelect_Fe.Name = "FunctionSelect_Fe";
+            this.FunctionSelect_Fe.Size = new System.Drawing.Size(70, 23);
+            this.FunctionSelect_Fe.TabIndex = 19;
+            this.FunctionSelect_Fe.Text = "不锈钢";
+            this.FunctionSelect_Fe.UseVisualStyleBackColor = true;
+            // 
             // TestForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(1027, 511);
+            this.Controls.Add(this.FunctionBox);
             this.Controls.Add(this.DisWin);
             this.Controls.Add(this.LostLine);
             this.Controls.Add(this.Error);
@@ -193,6 +281,8 @@
             this.Text = "工业物料喷吹分拣系统";
             this.Load += new System.EventHandler(this.TestForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).EndInit();
+            this.FunctionBox.ResumeLayout(false);
+            this.FunctionBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,5 +300,11 @@
         private System.Windows.Forms.Label SN;
         private System.Windows.Forms.PictureBox DisWin;
         private System.Windows.Forms.Timer ChannelChecktimer;
+        private System.Windows.Forms.GroupBox FunctionBox;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox FunctionSelect_Fe;
+        private System.Windows.Forms.CheckBox FunctionSelect_Pb;
+        private System.Windows.Forms.CheckBox FunctionSelect_Zn;
+        private System.Windows.Forms.CheckBox FunctionSelect_Cu;
     }
 }
