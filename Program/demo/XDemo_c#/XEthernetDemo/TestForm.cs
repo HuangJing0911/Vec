@@ -584,7 +584,7 @@ namespace XEthernetDemo
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            FunctionBox.Enabled = false;
+            //FunctionBox.Enabled = false;
             frame_count = 0;
             lost_line = 0;
             DateTime time = DateTime.Now;
@@ -1241,6 +1241,7 @@ namespace XEthernetDemo
             StartButton.Enabled = true;
             StopButton.Enabled = false;
             FindDeviceButton.Enabled = true;
+            //FunctionBox.Enabled = true;
         }
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
