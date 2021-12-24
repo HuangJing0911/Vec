@@ -80,6 +80,7 @@ namespace XEthernetDemo
         public int intocount = 0;
         public int sendcount = 0;
         public int gap = 8;        //阈值 铜锌
+        public int gap_pb = 15;     //阈值 铅
         public int[] recvData = new int[7];
         public int[] channelStateData = new int[10];
 
@@ -1048,8 +1049,8 @@ namespace XEthernetDemo
                     //if (i != 0)
                     //Thread.Sleep(2);
                     int num = 0;
-                    //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    if (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0)
+                    if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (boundRect[i].Y >= row * 0.8 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
+                    //if (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0)
                     {
                         num = SendData(data);
                         Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X+10, boundRect[i].Y),
@@ -1348,7 +1349,7 @@ namespace XEthernetDemo
                 }
                 */
 
-                if ((Select_Cu && dp.SCACount[0] > gap) || (Select_Zn && dp.SCACount[1] > gap) || (Select_Pb && (dp.SCACount[3] > gap || dp.SCACount[2] > gap)) || (Select_Fe && dp.SCACount[4] > gap))           //符合条件的数据报，发送给HJ
+                if ((FunctionSelect_Cu.Checked && dp.SCACount[0] > gap) || (FunctionSelect_Zn.Checked && dp.SCACount[1] > gap) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > gap))           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
