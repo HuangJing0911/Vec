@@ -41,11 +41,12 @@
             this.DisWin = new System.Windows.Forms.PictureBox();
             this.ChannelChecktimer = new System.Windows.Forms.Timer(this.components);
             this.FunctionBox = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.FunctionSelect_Cu = new System.Windows.Forms.CheckBox();
-            this.FunctionSelect_Zn = new System.Windows.Forms.CheckBox();
-            this.FunctionSelect_Pb = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_Fe = new System.Windows.Forms.CheckBox();
+            this.FunctionSelect_Pb = new System.Windows.Forms.CheckBox();
+            this.FunctionSelect_Zn = new System.Windows.Forms.CheckBox();
+            this.FunctionSelect_Cu = new System.Windows.Forms.CheckBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.FunctionSelect_NoSelect = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -181,6 +182,7 @@
             // 
             // FunctionBox
             // 
+            this.FunctionBox.Controls.Add(this.FunctionSelect_NoSelect);
             this.FunctionBox.Controls.Add(this.FunctionSelect_Fe);
             this.FunctionBox.Controls.Add(this.FunctionSelect_Pb);
             this.FunctionBox.Controls.Add(this.FunctionSelect_Zn);
@@ -190,9 +192,53 @@
             this.FunctionBox.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionBox.Location = new System.Drawing.Point(737, 12);
             this.FunctionBox.Name = "FunctionBox";
-            this.FunctionBox.Size = new System.Drawing.Size(254, 162);
+            this.FunctionBox.Size = new System.Drawing.Size(254, 174);
             this.FunctionBox.TabIndex = 15;
             this.FunctionBox.TabStop = false;
+            // 
+            // FunctionSelect_Fe
+            // 
+            this.FunctionSelect_Fe.AutoSize = true;
+            this.FunctionSelect_Fe.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Fe.Location = new System.Drawing.Point(152, 106);
+            this.FunctionSelect_Fe.Name = "FunctionSelect_Fe";
+            this.FunctionSelect_Fe.Size = new System.Drawing.Size(70, 23);
+            this.FunctionSelect_Fe.TabIndex = 19;
+            this.FunctionSelect_Fe.Text = "不锈钢";
+            this.FunctionSelect_Fe.UseVisualStyleBackColor = true;
+            // 
+            // FunctionSelect_Pb
+            // 
+            this.FunctionSelect_Pb.AutoSize = true;
+            this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Pb.Location = new System.Drawing.Point(51, 106);
+            this.FunctionSelect_Pb.Name = "FunctionSelect_Pb";
+            this.FunctionSelect_Pb.Size = new System.Drawing.Size(42, 23);
+            this.FunctionSelect_Pb.TabIndex = 18;
+            this.FunctionSelect_Pb.Text = "铅";
+            this.FunctionSelect_Pb.UseVisualStyleBackColor = true;
+            // 
+            // FunctionSelect_Zn
+            // 
+            this.FunctionSelect_Zn.AutoSize = true;
+            this.FunctionSelect_Zn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Zn.Location = new System.Drawing.Point(152, 65);
+            this.FunctionSelect_Zn.Name = "FunctionSelect_Zn";
+            this.FunctionSelect_Zn.Size = new System.Drawing.Size(42, 23);
+            this.FunctionSelect_Zn.TabIndex = 17;
+            this.FunctionSelect_Zn.Text = "锌";
+            this.FunctionSelect_Zn.UseVisualStyleBackColor = true;
+            // 
+            // FunctionSelect_Cu
+            // 
+            this.FunctionSelect_Cu.AutoSize = true;
+            this.FunctionSelect_Cu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_Cu.Location = new System.Drawing.Point(51, 65);
+            this.FunctionSelect_Cu.Name = "FunctionSelect_Cu";
+            this.FunctionSelect_Cu.Size = new System.Drawing.Size(42, 23);
+            this.FunctionSelect_Cu.TabIndex = 16;
+            this.FunctionSelect_Cu.Text = "铜";
+            this.FunctionSelect_Cu.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
@@ -211,53 +257,18 @@
             this.textBox1.Text = "分选功能选择";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // FunctionSelect_Cu
+            // FunctionSelect_NoSelect
             // 
-            this.FunctionSelect_Cu.AutoSize = true;
-            this.FunctionSelect_Cu.Checked = true;
-            this.FunctionSelect_Cu.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.FunctionSelect_Cu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Cu.Location = new System.Drawing.Point(51, 65);
-            this.FunctionSelect_Cu.Name = "FunctionSelect_Cu";
-            this.FunctionSelect_Cu.Size = new System.Drawing.Size(42, 23);
-            this.FunctionSelect_Cu.TabIndex = 16;
-            this.FunctionSelect_Cu.Text = "铜";
-            this.FunctionSelect_Cu.UseVisualStyleBackColor = true;
-            // 
-            // FunctionSelect_Zn
-            // 
-            this.FunctionSelect_Zn.AutoSize = true;
-            this.FunctionSelect_Zn.Checked = true;
-            this.FunctionSelect_Zn.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.FunctionSelect_Zn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Zn.Location = new System.Drawing.Point(152, 65);
-            this.FunctionSelect_Zn.Name = "FunctionSelect_Zn";
-            this.FunctionSelect_Zn.Size = new System.Drawing.Size(42, 23);
-            this.FunctionSelect_Zn.TabIndex = 17;
-            this.FunctionSelect_Zn.Text = "锌";
-            this.FunctionSelect_Zn.UseVisualStyleBackColor = true;
-            // 
-            // FunctionSelect_Pb
-            // 
-            this.FunctionSelect_Pb.AutoSize = true;
-            this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Pb.Location = new System.Drawing.Point(51, 106);
-            this.FunctionSelect_Pb.Name = "FunctionSelect_Pb";
-            this.FunctionSelect_Pb.Size = new System.Drawing.Size(42, 23);
-            this.FunctionSelect_Pb.TabIndex = 18;
-            this.FunctionSelect_Pb.Text = "铅";
-            this.FunctionSelect_Pb.UseVisualStyleBackColor = true;
-            // 
-            // FunctionSelect_Fe
-            // 
-            this.FunctionSelect_Fe.AutoSize = true;
-            this.FunctionSelect_Fe.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Fe.Location = new System.Drawing.Point(152, 106);
-            this.FunctionSelect_Fe.Name = "FunctionSelect_Fe";
-            this.FunctionSelect_Fe.Size = new System.Drawing.Size(70, 23);
-            this.FunctionSelect_Fe.TabIndex = 19;
-            this.FunctionSelect_Fe.Text = "不锈钢";
-            this.FunctionSelect_Fe.UseVisualStyleBackColor = true;
+            this.FunctionSelect_NoSelect.AutoSize = true;
+            this.FunctionSelect_NoSelect.Checked = true;
+            this.FunctionSelect_NoSelect.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.FunctionSelect_NoSelect.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_NoSelect.Location = new System.Drawing.Point(91, 140);
+            this.FunctionSelect_NoSelect.Name = "FunctionSelect_NoSelect";
+            this.FunctionSelect_NoSelect.Size = new System.Drawing.Size(70, 23);
+            this.FunctionSelect_NoSelect.TabIndex = 20;
+            this.FunctionSelect_NoSelect.Text = "不分选";
+            this.FunctionSelect_NoSelect.UseVisualStyleBackColor = true;
             // 
             // TestForm
             // 
@@ -306,5 +317,6 @@
         private System.Windows.Forms.CheckBox FunctionSelect_Pb;
         private System.Windows.Forms.CheckBox FunctionSelect_Zn;
         private System.Windows.Forms.CheckBox FunctionSelect_Cu;
+        private System.Windows.Forms.CheckBox FunctionSelect_NoSelect;
     }
 }
