@@ -513,7 +513,7 @@ namespace XEthernetDemo
         // 三个错误显示程序
         void OnError(int err_id, string msg)
         {
-            Error.Text = "Error: " + msg;
+            Error.Text = "Error ID: " + err_id.ToString() + "，" + msg;
             /*
             if (timerthread.IsAlive)
             {
@@ -1099,6 +1099,16 @@ namespace XEthernetDemo
             xsystem.LocalIP = arrayServer;
             xsystem.OnXError += new XSystemW.DelOnXError(OnError);
 
+            /*try
+            {
+                Power_Amplifier_Load();
+            }
+            catch (SocketException ex)
+            {
+                Error.Text = "Error ID:" + ex.ErrorCode.ToString() + "，功放连接" + ex.Message;
+                return;
+            }*/
+
             if (xsystem.Open() > 0)
             {
                 int dev_num = xsystem.FindDevice();
@@ -1112,7 +1122,7 @@ namespace XEthernetDemo
                 }
             }
 
-            Power_Amplifier_Load();
+            //Power_Amplifier_Load();
             locker = new object();
             open_recv();
 

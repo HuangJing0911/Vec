@@ -168,11 +168,11 @@
             this.tabControl1.Controls.Add(this.Configure);
             this.tabControl1.Controls.Add(this.Control);
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(830, 9);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabControl1.Location = new System.Drawing.Point(1107, 11);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(298, 642);
+            this.tabControl1.Size = new System.Drawing.Size(397, 802);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -183,11 +183,11 @@
             this.Configure.Controls.Add(this.groupBox2);
             this.Configure.Controls.Add(this.groupBox1);
             this.Configure.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.Configure.Location = new System.Drawing.Point(4, 22);
-            this.Configure.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Configure.Location = new System.Drawing.Point(4, 25);
+            this.Configure.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Configure.Name = "Configure";
-            this.Configure.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Configure.Size = new System.Drawing.Size(290, 616);
+            this.Configure.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.Configure.Size = new System.Drawing.Size(389, 773);
             this.Configure.TabIndex = 0;
             this.Configure.Text = "Configure";
             // 
@@ -197,11 +197,11 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.LineNumber);
             this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Location = new System.Drawing.Point(4, 204);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox3.Location = new System.Drawing.Point(5, 255);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox3.Size = new System.Drawing.Size(274, 68);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox3.Size = new System.Drawing.Size(365, 85);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Image Property";
@@ -215,10 +215,10 @@
             "COS",
             "HOT",
             "JET"});
-            this.PsColor.Location = new System.Drawing.Point(119, 42);
-            this.PsColor.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PsColor.Location = new System.Drawing.Point(159, 52);
+            this.PsColor.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.PsColor.Name = "PsColor";
-            this.PsColor.Size = new System.Drawing.Size(148, 20);
+            this.PsColor.Size = new System.Drawing.Size(196, 23);
             this.PsColor.TabIndex = 16;
             this.PsColor.Tag = "0";
             // 
@@ -227,18 +227,19 @@
             this.label12.AutoSize = true;
             this.label12.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label12.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label12.Location = new System.Drawing.Point(7, 44);
+            this.label12.Location = new System.Drawing.Point(9, 55);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(83, 12);
+            this.label12.Size = new System.Drawing.Size(111, 15);
             this.label12.TabIndex = 15;
             this.label12.Text = "Pseudo Color:";
             // 
             // LineNumber
             // 
-            this.LineNumber.Location = new System.Drawing.Point(119, 14);
-            this.LineNumber.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LineNumber.Location = new System.Drawing.Point(159, 18);
+            this.LineNumber.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LineNumber.Name = "LineNumber";
-            this.LineNumber.Size = new System.Drawing.Size(148, 21);
+            this.LineNumber.Size = new System.Drawing.Size(196, 25);
             this.LineNumber.TabIndex = 14;
             this.LineNumber.Text = "512";
             // 
@@ -247,9 +248,10 @@
             this.label11.AutoSize = true;
             this.label11.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label11.Location = new System.Drawing.Point(7, 17);
+            this.label11.Location = new System.Drawing.Point(9, 21);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(77, 12);
+            this.label11.Size = new System.Drawing.Size(103, 15);
             this.label11.TabIndex = 13;
             this.label11.Text = "Line Number:";
             // 
@@ -281,11 +283,11 @@
             this.groupBox2.Controls.Add(this.Close);
             this.groupBox2.Controls.Add(this.Open);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(5, 283);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Location = new System.Drawing.Point(7, 354);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(277, 413);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox2.Size = new System.Drawing.Size(369, 516);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Detector Configuration";
@@ -294,10 +296,10 @@
             // 
             this.RestoreConf.Enabled = false;
             this.RestoreConf.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.RestoreConf.Location = new System.Drawing.Point(10, 365);
-            this.RestoreConf.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.RestoreConf.Location = new System.Drawing.Point(13, 456);
+            this.RestoreConf.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.RestoreConf.Name = "RestoreConf";
-            this.RestoreConf.Size = new System.Drawing.Size(110, 22);
+            this.RestoreConf.Size = new System.Drawing.Size(147, 28);
             this.RestoreConf.TabIndex = 38;
             this.RestoreConf.Text = "Restore";
             this.RestoreConf.UseVisualStyleBackColor = true;
@@ -307,10 +309,10 @@
             // 
             this.ResetConf.Enabled = false;
             this.ResetConf.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ResetConf.Location = new System.Drawing.Point(157, 365);
-            this.ResetConf.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ResetConf.Location = new System.Drawing.Point(209, 456);
+            this.ResetConf.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ResetConf.Name = "ResetConf";
-            this.ResetConf.Size = new System.Drawing.Size(110, 22);
+            this.ResetConf.Size = new System.Drawing.Size(147, 28);
             this.ResetConf.TabIndex = 37;
             this.ResetConf.Text = "Reset";
             this.ResetConf.UseVisualStyleBackColor = true;
@@ -318,10 +320,10 @@
             // 
             // CardNum5
             // 
-            this.CardNum5.Location = new System.Drawing.Point(119, 336);
-            this.CardNum5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CardNum5.Location = new System.Drawing.Point(159, 420);
+            this.CardNum5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CardNum5.Name = "CardNum5";
-            this.CardNum5.Size = new System.Drawing.Size(148, 21);
+            this.CardNum5.Size = new System.Drawing.Size(196, 25);
             this.CardNum5.TabIndex = 36;
             // 
             // label17
@@ -329,18 +331,19 @@
             this.label17.AutoSize = true;
             this.label17.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label17.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label17.Location = new System.Drawing.Point(7, 338);
+            this.label17.Location = new System.Drawing.Point(9, 422);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(83, 12);
+            this.label17.Size = new System.Drawing.Size(111, 15);
             this.label17.TabIndex = 35;
             this.label17.Text = "CH5 Card Num:";
             // 
             // CardNum4
             // 
-            this.CardNum4.Location = new System.Drawing.Point(119, 308);
-            this.CardNum4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CardNum4.Location = new System.Drawing.Point(159, 385);
+            this.CardNum4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CardNum4.Name = "CardNum4";
-            this.CardNum4.Size = new System.Drawing.Size(148, 21);
+            this.CardNum4.Size = new System.Drawing.Size(196, 25);
             this.CardNum4.TabIndex = 34;
             // 
             // label16
@@ -348,18 +351,19 @@
             this.label16.AutoSize = true;
             this.label16.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label16.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label16.Location = new System.Drawing.Point(7, 311);
+            this.label16.Location = new System.Drawing.Point(9, 389);
+            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(83, 12);
+            this.label16.Size = new System.Drawing.Size(111, 15);
             this.label16.TabIndex = 33;
             this.label16.Text = "CH4 Card Num:";
             // 
             // CardNum3
             // 
-            this.CardNum3.Location = new System.Drawing.Point(119, 282);
-            this.CardNum3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CardNum3.Location = new System.Drawing.Point(159, 352);
+            this.CardNum3.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CardNum3.Name = "CardNum3";
-            this.CardNum3.Size = new System.Drawing.Size(148, 21);
+            this.CardNum3.Size = new System.Drawing.Size(196, 25);
             this.CardNum3.TabIndex = 32;
             // 
             // label15
@@ -367,18 +371,19 @@
             this.label15.AutoSize = true;
             this.label15.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label15.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label15.Location = new System.Drawing.Point(7, 286);
+            this.label15.Location = new System.Drawing.Point(9, 358);
+            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(83, 12);
+            this.label15.Size = new System.Drawing.Size(111, 15);
             this.label15.TabIndex = 31;
             this.label15.Text = "CH3 Card Num:";
             // 
             // CardNum2
             // 
-            this.CardNum2.Location = new System.Drawing.Point(119, 254);
-            this.CardNum2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CardNum2.Location = new System.Drawing.Point(159, 318);
+            this.CardNum2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CardNum2.Name = "CardNum2";
-            this.CardNum2.Size = new System.Drawing.Size(148, 21);
+            this.CardNum2.Size = new System.Drawing.Size(196, 25);
             this.CardNum2.TabIndex = 30;
             // 
             // label14
@@ -386,18 +391,19 @@
             this.label14.AutoSize = true;
             this.label14.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label14.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label14.Location = new System.Drawing.Point(7, 257);
+            this.label14.Location = new System.Drawing.Point(9, 321);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(83, 12);
+            this.label14.Size = new System.Drawing.Size(111, 15);
             this.label14.TabIndex = 29;
             this.label14.Text = "CH2 Card Num:";
             // 
             // CardNum1
             // 
-            this.CardNum1.Location = new System.Drawing.Point(119, 227);
-            this.CardNum1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CardNum1.Location = new System.Drawing.Point(159, 284);
+            this.CardNum1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CardNum1.Name = "CardNum1";
-            this.CardNum1.Size = new System.Drawing.Size(148, 21);
+            this.CardNum1.Size = new System.Drawing.Size(196, 25);
             this.CardNum1.TabIndex = 18;
             this.CardNum1.TextChanged += new System.EventHandler(this.CardNum1_TextChanged);
             // 
@@ -410,10 +416,10 @@
             "Sum 2",
             "Avg 4",
             "Sum 4"});
-            this.BinMode.Location = new System.Drawing.Point(119, 198);
-            this.BinMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BinMode.Location = new System.Drawing.Point(159, 248);
+            this.BinMode.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.BinMode.Name = "BinMode";
-            this.BinMode.Size = new System.Drawing.Size(148, 20);
+            this.BinMode.Size = new System.Drawing.Size(196, 23);
             this.BinMode.TabIndex = 28;
             this.BinMode.Tag = "0";
             // 
@@ -422,9 +428,10 @@
             this.label13.AutoSize = true;
             this.label13.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label13.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label13.Location = new System.Drawing.Point(7, 230);
+            this.label13.Location = new System.Drawing.Point(9, 288);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 12);
+            this.label13.Size = new System.Drawing.Size(111, 15);
             this.label13.TabIndex = 17;
             this.label13.Text = "CH1 Card Num:";
             // 
@@ -438,10 +445,10 @@
             "128",
             "256",
             "512"});
-            this.DMPixNum.Location = new System.Drawing.Point(119, 170);
-            this.DMPixNum.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DMPixNum.Location = new System.Drawing.Point(159, 212);
+            this.DMPixNum.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.DMPixNum.Name = "DMPixNum";
-            this.DMPixNum.Size = new System.Drawing.Size(148, 20);
+            this.DMPixNum.Size = new System.Drawing.Size(196, 23);
             this.DMPixNum.TabIndex = 27;
             this.DMPixNum.Tag = "0";
             // 
@@ -453,10 +460,10 @@
             "16-bits",
             "18-bits",
             "20-bits"});
-            this.PixelDepth.Location = new System.Drawing.Point(119, 142);
-            this.PixelDepth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PixelDepth.Location = new System.Drawing.Point(159, 178);
+            this.PixelDepth.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.PixelDepth.Name = "PixelDepth";
-            this.PixelDepth.Size = new System.Drawing.Size(148, 20);
+            this.PixelDepth.Size = new System.Drawing.Size(196, 23);
             this.PixelDepth.TabIndex = 26;
             this.PixelDepth.Tag = "0";
             // 
@@ -468,10 +475,10 @@
             "Non-contiouous",
             "Constant",
             "Non-continuous Hi/Lo"});
-            this.OPMode.Location = new System.Drawing.Point(119, 114);
-            this.OPMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.OPMode.Location = new System.Drawing.Point(159, 142);
+            this.OPMode.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.OPMode.Name = "OPMode";
-            this.OPMode.Size = new System.Drawing.Size(148, 20);
+            this.OPMode.Size = new System.Drawing.Size(196, 23);
             this.OPMode.TabIndex = 25;
             this.OPMode.Tag = "0";
             // 
@@ -487,10 +494,10 @@
             "Dual-row LCS2",
             "Aurora GT",
             "LCS2 DUAL LINE"});
-            this.CardType.Location = new System.Drawing.Point(119, 84);
-            this.CardType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CardType.Location = new System.Drawing.Point(159, 105);
+            this.CardType.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CardType.Name = "CardType";
-            this.CardType.Size = new System.Drawing.Size(148, 20);
+            this.CardType.Size = new System.Drawing.Size(196, 23);
             this.CardType.TabIndex = 24;
             this.CardType.Tag = "0";
             // 
@@ -501,10 +508,10 @@
             this.GCUType.Items.AddRange(new object[] {
             "Ethernet",
             "CameraLink"});
-            this.GCUType.Location = new System.Drawing.Point(119, 56);
-            this.GCUType.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GCUType.Location = new System.Drawing.Point(159, 70);
+            this.GCUType.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.GCUType.Name = "GCUType";
-            this.GCUType.Size = new System.Drawing.Size(148, 20);
+            this.GCUType.Size = new System.Drawing.Size(196, 23);
             this.GCUType.TabIndex = 17;
             this.GCUType.Tag = "0";
             // 
@@ -513,9 +520,10 @@
             this.label10.AutoSize = true;
             this.label10.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label10.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label10.Location = new System.Drawing.Point(7, 200);
+            this.label10.Location = new System.Drawing.Point(9, 250);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(83, 12);
+            this.label10.Size = new System.Drawing.Size(111, 15);
             this.label10.TabIndex = 23;
             this.label10.Text = "Binning Mode:";
             // 
@@ -524,9 +532,10 @@
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label9.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label9.Location = new System.Drawing.Point(7, 174);
+            this.label9.Location = new System.Drawing.Point(9, 218);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(101, 12);
+            this.label9.Size = new System.Drawing.Size(135, 15);
             this.label9.TabIndex = 21;
             this.label9.Text = "DM Pixel Number:";
             // 
@@ -535,9 +544,10 @@
             this.label8.AutoSize = true;
             this.label8.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label8.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label8.Location = new System.Drawing.Point(7, 146);
+            this.label8.Location = new System.Drawing.Point(9, 182);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 12);
+            this.label8.Size = new System.Drawing.Size(103, 15);
             this.label8.TabIndex = 19;
             this.label8.Text = "Pixel Depth:";
             // 
@@ -546,9 +556,10 @@
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label7.Location = new System.Drawing.Point(7, 118);
+            this.label7.Location = new System.Drawing.Point(9, 148);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(95, 12);
+            this.label7.Size = new System.Drawing.Size(127, 15);
             this.label7.TabIndex = 17;
             this.label7.Text = "Operation Mode:";
             // 
@@ -557,19 +568,20 @@
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label6.Location = new System.Drawing.Point(7, 88);
+            this.label6.Location = new System.Drawing.Point(9, 110);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.Size = new System.Drawing.Size(87, 15);
             this.label6.TabIndex = 15;
             this.label6.Text = "Card Type:";
             // 
             // Close
             // 
             this.Close.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Close.Location = new System.Drawing.Point(157, 19);
-            this.Close.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Close.Location = new System.Drawing.Point(209, 24);
+            this.Close.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Close.Name = "Close";
-            this.Close.Size = new System.Drawing.Size(110, 22);
+            this.Close.Size = new System.Drawing.Size(147, 28);
             this.Close.TabIndex = 14;
             this.Close.Text = "Close";
             this.Close.UseVisualStyleBackColor = true;
@@ -578,10 +590,10 @@
             // Open
             // 
             this.Open.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Open.Location = new System.Drawing.Point(10, 19);
-            this.Open.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Open.Location = new System.Drawing.Point(13, 24);
+            this.Open.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Open.Name = "Open";
-            this.Open.Size = new System.Drawing.Size(110, 22);
+            this.Open.Size = new System.Drawing.Size(147, 28);
             this.Open.TabIndex = 13;
             this.Open.Text = "Open";
             this.Open.UseVisualStyleBackColor = true;
@@ -592,9 +604,10 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(7, 61);
+            this.label2.Location = new System.Drawing.Point(9, 76);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 12);
+            this.label2.Size = new System.Drawing.Size(95, 15);
             this.label2.TabIndex = 13;
             this.label2.Text = "X-GCU Type:";
             // 
@@ -611,11 +624,11 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.LocalAdapter);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 6);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Location = new System.Drawing.Point(4, 8);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(275, 192);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox1.Size = new System.Drawing.Size(367, 240);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Network Configuration";
@@ -623,10 +636,10 @@
             // Reset
             // 
             this.Reset.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Reset.Location = new System.Drawing.Point(157, 158);
-            this.Reset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Reset.Location = new System.Drawing.Point(209, 198);
+            this.Reset.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Reset.Name = "Reset";
-            this.Reset.Size = new System.Drawing.Size(110, 22);
+            this.Reset.Size = new System.Drawing.Size(147, 28);
             this.Reset.TabIndex = 12;
             this.Reset.Text = "Reset";
             this.Reset.UseVisualStyleBackColor = true;
@@ -635,10 +648,10 @@
             // Recover
             // 
             this.Recover.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.Recover.Location = new System.Drawing.Point(10, 158);
-            this.Recover.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Recover.Location = new System.Drawing.Point(13, 198);
+            this.Recover.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Recover.Name = "Recover";
-            this.Recover.Size = new System.Drawing.Size(110, 22);
+            this.Recover.Size = new System.Drawing.Size(147, 28);
             this.Recover.TabIndex = 11;
             this.Recover.Text = "Recover";
             this.Recover.UseVisualStyleBackColor = true;
@@ -647,10 +660,10 @@
             // FindDevice
             // 
             this.FindDevice.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.FindDevice.Location = new System.Drawing.Point(157, 46);
-            this.FindDevice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FindDevice.Location = new System.Drawing.Point(209, 58);
+            this.FindDevice.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.FindDevice.Name = "FindDevice";
-            this.FindDevice.Size = new System.Drawing.Size(110, 22);
+            this.FindDevice.Size = new System.Drawing.Size(147, 28);
             this.FindDevice.TabIndex = 10;
             this.FindDevice.Text = "Find Device";
             this.FindDevice.UseVisualStyleBackColor = true;
@@ -658,10 +671,10 @@
             // 
             // ImgPort
             // 
-            this.ImgPort.Location = new System.Drawing.Point(119, 130);
-            this.ImgPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ImgPort.Location = new System.Drawing.Point(159, 162);
+            this.ImgPort.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ImgPort.Name = "ImgPort";
-            this.ImgPort.Size = new System.Drawing.Size(148, 21);
+            this.ImgPort.Size = new System.Drawing.Size(196, 25);
             this.ImgPort.TabIndex = 9;
             this.ImgPort.TextChanged += new System.EventHandler(this.ImgPort_TextChanged);
             // 
@@ -670,18 +683,19 @@
             this.label5.AutoSize = true;
             this.label5.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label5.Location = new System.Drawing.Point(7, 133);
+            this.label5.Location = new System.Drawing.Point(9, 166);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 12);
+            this.label5.Size = new System.Drawing.Size(127, 15);
             this.label5.TabIndex = 8;
             this.label5.Text = "X-GCU IMG Port:";
             // 
             // CmdPort
             // 
-            this.CmdPort.Location = new System.Drawing.Point(119, 102);
-            this.CmdPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CmdPort.Location = new System.Drawing.Point(159, 128);
+            this.CmdPort.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CmdPort.Name = "CmdPort";
-            this.CmdPort.Size = new System.Drawing.Size(148, 21);
+            this.CmdPort.Size = new System.Drawing.Size(196, 25);
             this.CmdPort.TabIndex = 7;
             // 
             // label4
@@ -689,18 +703,19 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label4.Location = new System.Drawing.Point(7, 106);
+            this.label4.Location = new System.Drawing.Point(9, 132);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(95, 12);
+            this.label4.Size = new System.Drawing.Size(127, 15);
             this.label4.TabIndex = 6;
             this.label4.Text = "X-GCU CMD Port:";
             // 
             // GCUIP
             // 
-            this.GCUIP.Location = new System.Drawing.Point(119, 76);
-            this.GCUIP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GCUIP.Location = new System.Drawing.Point(159, 95);
+            this.GCUIP.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.GCUIP.Name = "GCUIP";
-            this.GCUIP.Size = new System.Drawing.Size(148, 21);
+            this.GCUIP.Size = new System.Drawing.Size(196, 25);
             this.GCUIP.TabIndex = 5;
             // 
             // label3
@@ -708,18 +723,19 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label3.Location = new System.Drawing.Point(7, 78);
+            this.label3.Location = new System.Drawing.Point(9, 98);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.Size = new System.Drawing.Size(79, 15);
             this.label3.TabIndex = 4;
             this.label3.Text = "X-GCU IP:";
             // 
             // LocalAdapter
             // 
-            this.LocalAdapter.Location = new System.Drawing.Point(119, 18);
-            this.LocalAdapter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LocalAdapter.Location = new System.Drawing.Point(159, 22);
+            this.LocalAdapter.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LocalAdapter.Name = "LocalAdapter";
-            this.LocalAdapter.Size = new System.Drawing.Size(148, 21);
+            this.LocalAdapter.Size = new System.Drawing.Size(196, 25);
             this.LocalAdapter.TabIndex = 1;
             this.LocalAdapter.Text = "169.254.84.167";
             this.LocalAdapter.TextChanged += new System.EventHandler(this.LocalAdapter_TextChanged);
@@ -729,9 +745,10 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(7, 22);
+            this.label1.Location = new System.Drawing.Point(9, 28);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 12);
+            this.label1.Size = new System.Drawing.Size(119, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Local Adapter:";
             // 
@@ -741,11 +758,11 @@
             this.Control.Controls.Add(this.groupBox5);
             this.Control.Controls.Add(this.groupBox4);
             this.Control.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.Control.Location = new System.Drawing.Point(4, 22);
-            this.Control.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Control.Location = new System.Drawing.Point(4, 25);
+            this.Control.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Control.Name = "Control";
-            this.Control.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Control.Size = new System.Drawing.Size(290, 616);
+            this.Control.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.Control.Size = new System.Drawing.Size(389, 773);
             this.Control.TabIndex = 1;
             this.Control.Text = "Control";
             // 
@@ -762,11 +779,11 @@
             this.groupBox5.Controls.Add(this.HighGain);
             this.groupBox5.Controls.Add(this.DMIndex);
             this.groupBox5.Controls.Add(this.label19);
-            this.groupBox5.Location = new System.Drawing.Point(5, 218);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox5.Location = new System.Drawing.Point(7, 272);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox5.Size = new System.Drawing.Size(274, 396);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox5.Size = new System.Drawing.Size(365, 495);
             this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "DM";
@@ -774,10 +791,10 @@
             // ResetAllDMGain
             // 
             this.ResetAllDMGain.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ResetAllDMGain.Location = new System.Drawing.Point(163, 114);
-            this.ResetAllDMGain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ResetAllDMGain.Location = new System.Drawing.Point(217, 142);
+            this.ResetAllDMGain.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ResetAllDMGain.Name = "ResetAllDMGain";
-            this.ResetAllDMGain.Size = new System.Drawing.Size(110, 22);
+            this.ResetAllDMGain.Size = new System.Drawing.Size(147, 28);
             this.ResetAllDMGain.TabIndex = 29;
             this.ResetAllDMGain.Text = "Reset All DM Gain";
             this.ResetAllDMGain.UseVisualStyleBackColor = true;
@@ -786,10 +803,10 @@
             // ResetADM
             // 
             this.ResetADM.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ResetADM.Location = new System.Drawing.Point(10, 114);
-            this.ResetADM.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ResetADM.Location = new System.Drawing.Point(13, 142);
+            this.ResetADM.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ResetADM.Name = "ResetADM";
-            this.ResetADM.Size = new System.Drawing.Size(110, 22);
+            this.ResetADM.Size = new System.Drawing.Size(147, 28);
             this.ResetADM.TabIndex = 28;
             this.ResetADM.Text = "Reset a DM Gain";
             this.ResetADM.UseVisualStyleBackColor = true;
@@ -800,9 +817,10 @@
             this.HealthInfo.AutoSize = true;
             this.HealthInfo.BackColor = System.Drawing.Color.WhiteSmoke;
             this.HealthInfo.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.HealthInfo.Location = new System.Drawing.Point(10, 182);
+            this.HealthInfo.Location = new System.Drawing.Point(13, 228);
+            this.HealthInfo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.HealthInfo.Name = "HealthInfo";
-            this.HealthInfo.Size = new System.Drawing.Size(77, 12);
+            this.HealthInfo.Size = new System.Drawing.Size(103, 15);
             this.HealthInfo.TabIndex = 27;
             this.HealthInfo.Text = "Health Info:";
             // 
@@ -813,10 +831,10 @@
             "Normal",
             "AAAAA",
             "I\'m here"});
-            this.DMTestPattern.Location = new System.Drawing.Point(158, 146);
-            this.DMTestPattern.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DMTestPattern.Location = new System.Drawing.Point(211, 182);
+            this.DMTestPattern.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.DMTestPattern.Name = "DMTestPattern";
-            this.DMTestPattern.Size = new System.Drawing.Size(112, 20);
+            this.DMTestPattern.Size = new System.Drawing.Size(148, 23);
             this.DMTestPattern.TabIndex = 26;
             this.DMTestPattern.Tag = "0";
             this.DMTestPattern.SelectedIndexChanged += new System.EventHandler(this.DMTestPattern_SelectedIndexChanged);
@@ -826,9 +844,10 @@
             this.label22.AutoSize = true;
             this.label22.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label22.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label22.Location = new System.Drawing.Point(10, 150);
+            this.label22.Location = new System.Drawing.Point(13, 188);
+            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(101, 12);
+            this.label22.Size = new System.Drawing.Size(135, 15);
             this.label22.TabIndex = 25;
             this.label22.Text = "DM Test Pattern:";
             // 
@@ -837,18 +856,19 @@
             this.label21.AutoSize = true;
             this.label21.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label21.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label21.Location = new System.Drawing.Point(10, 84);
+            this.label21.Location = new System.Drawing.Point(13, 105);
+            this.label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(59, 12);
+            this.label21.Size = new System.Drawing.Size(79, 15);
             this.label21.TabIndex = 24;
             this.label21.Text = "Low Gain:";
             // 
             // LowGain
             // 
-            this.LowGain.Location = new System.Drawing.Point(158, 82);
-            this.LowGain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LowGain.Location = new System.Drawing.Point(211, 102);
+            this.LowGain.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LowGain.Name = "LowGain";
-            this.LowGain.Size = new System.Drawing.Size(112, 21);
+            this.LowGain.Size = new System.Drawing.Size(148, 25);
             this.LowGain.TabIndex = 23;
             // 
             // label20
@@ -856,27 +876,28 @@
             this.label20.AutoSize = true;
             this.label20.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label20.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label20.Location = new System.Drawing.Point(10, 54);
+            this.label20.Location = new System.Drawing.Point(13, 68);
+            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(65, 12);
+            this.label20.Size = new System.Drawing.Size(87, 15);
             this.label20.TabIndex = 21;
             this.label20.Text = "High Gain:";
             // 
             // HighGain
             // 
-            this.HighGain.Location = new System.Drawing.Point(158, 50);
-            this.HighGain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.HighGain.Location = new System.Drawing.Point(211, 62);
+            this.HighGain.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.HighGain.Name = "HighGain";
-            this.HighGain.Size = new System.Drawing.Size(112, 21);
+            this.HighGain.Size = new System.Drawing.Size(148, 25);
             this.HighGain.TabIndex = 21;
             // 
             // DMIndex
             // 
             this.DMIndex.FormattingEnabled = true;
-            this.DMIndex.Location = new System.Drawing.Point(158, 22);
-            this.DMIndex.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DMIndex.Location = new System.Drawing.Point(211, 28);
+            this.DMIndex.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.DMIndex.Name = "DMIndex";
-            this.DMIndex.Size = new System.Drawing.Size(112, 20);
+            this.DMIndex.Size = new System.Drawing.Size(148, 23);
             this.DMIndex.TabIndex = 22;
             this.DMIndex.Tag = "0";
             this.DMIndex.SelectedIndexChanged += new System.EventHandler(this.DMIndex_SelectedIndexChanged);
@@ -886,9 +907,10 @@
             this.label19.AutoSize = true;
             this.label19.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label19.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label19.Location = new System.Drawing.Point(10, 25);
+            this.label19.Location = new System.Drawing.Point(13, 31);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(59, 12);
+            this.label19.Size = new System.Drawing.Size(79, 15);
             this.label19.TabIndex = 21;
             this.label19.Text = "DM Index:";
             // 
@@ -903,11 +925,11 @@
             this.groupBox4.Controls.Add(this.NonIntTime);
             this.groupBox4.Controls.Add(this.SetIntTime);
             this.groupBox4.Controls.Add(this.IntTime);
-            this.groupBox4.Location = new System.Drawing.Point(3, 8);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox4.Location = new System.Drawing.Point(4, 10);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox4.Size = new System.Drawing.Size(275, 200);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox4.Size = new System.Drawing.Size(367, 250);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "General";
@@ -915,10 +937,10 @@
             // SendCmd
             // 
             this.SendCmd.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.SendCmd.Location = new System.Drawing.Point(10, 168);
-            this.SendCmd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SendCmd.Location = new System.Drawing.Point(13, 210);
+            this.SendCmd.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.SendCmd.Name = "SendCmd";
-            this.SendCmd.Size = new System.Drawing.Size(110, 22);
+            this.SendCmd.Size = new System.Drawing.Size(147, 28);
             this.SendCmd.TabIndex = 20;
             this.SendCmd.Text = "Send Cmd";
             this.SendCmd.UseVisualStyleBackColor = true;
@@ -926,10 +948,10 @@
             // 
             // CommandText
             // 
-            this.CommandText.Location = new System.Drawing.Point(10, 142);
-            this.CommandText.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CommandText.Location = new System.Drawing.Point(13, 178);
+            this.CommandText.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CommandText.Name = "CommandText";
-            this.CommandText.Size = new System.Drawing.Size(259, 21);
+            this.CommandText.Size = new System.Drawing.Size(344, 25);
             this.CommandText.TabIndex = 19;
             // 
             // EnableLED
@@ -937,10 +959,10 @@
             this.EnableLED.AutoSize = true;
             this.EnableLED.BackColor = System.Drawing.Color.Transparent;
             this.EnableLED.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EnableLED.Location = new System.Drawing.Point(14, 115);
-            this.EnableLED.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.EnableLED.Location = new System.Drawing.Point(19, 144);
+            this.EnableLED.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.EnableLED.Name = "EnableLED";
-            this.EnableLED.Size = new System.Drawing.Size(84, 16);
+            this.EnableLED.Size = new System.Drawing.Size(109, 19);
             this.EnableLED.TabIndex = 18;
             this.EnableLED.Text = "Enable LED";
             this.EnableLED.UseVisualStyleBackColor = false;
@@ -953,10 +975,10 @@
             "None",
             "Normal",
             "Slope"});
-            this.GCUTestPattern.Location = new System.Drawing.Point(158, 82);
-            this.GCUTestPattern.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GCUTestPattern.Location = new System.Drawing.Point(211, 102);
+            this.GCUTestPattern.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.GCUTestPattern.Name = "GCUTestPattern";
-            this.GCUTestPattern.Size = new System.Drawing.Size(112, 20);
+            this.GCUTestPattern.Size = new System.Drawing.Size(148, 23);
             this.GCUTestPattern.TabIndex = 17;
             this.GCUTestPattern.Tag = "0";
             this.GCUTestPattern.SelectedIndexChanged += new System.EventHandler(this.GCUTestPattern_SelectedIndexChanged);
@@ -966,19 +988,20 @@
             this.label18.AutoSize = true;
             this.label18.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label18.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label18.Location = new System.Drawing.Point(10, 86);
+            this.label18.Location = new System.Drawing.Point(13, 108);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(119, 12);
+            this.label18.Size = new System.Drawing.Size(159, 15);
             this.label18.TabIndex = 15;
             this.label18.Text = "X-GCU Test Pattern:";
             // 
             // SetNonIntTime
             // 
             this.SetNonIntTime.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.SetNonIntTime.Location = new System.Drawing.Point(10, 49);
-            this.SetNonIntTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SetNonIntTime.Location = new System.Drawing.Point(13, 61);
+            this.SetNonIntTime.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.SetNonIntTime.Name = "SetNonIntTime";
-            this.SetNonIntTime.Size = new System.Drawing.Size(110, 22);
+            this.SetNonIntTime.Size = new System.Drawing.Size(147, 28);
             this.SetNonIntTime.TabIndex = 14;
             this.SetNonIntTime.Text = "Set Non Int Time";
             this.SetNonIntTime.UseVisualStyleBackColor = true;
@@ -986,19 +1009,19 @@
             // 
             // NonIntTime
             // 
-            this.NonIntTime.Location = new System.Drawing.Point(158, 50);
-            this.NonIntTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.NonIntTime.Location = new System.Drawing.Point(211, 62);
+            this.NonIntTime.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.NonIntTime.Name = "NonIntTime";
-            this.NonIntTime.Size = new System.Drawing.Size(112, 21);
+            this.NonIntTime.Size = new System.Drawing.Size(148, 25);
             this.NonIntTime.TabIndex = 13;
             // 
             // SetIntTime
             // 
             this.SetIntTime.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.SetIntTime.Location = new System.Drawing.Point(10, 18);
-            this.SetIntTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SetIntTime.Location = new System.Drawing.Point(13, 22);
+            this.SetIntTime.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.SetIntTime.Name = "SetIntTime";
-            this.SetIntTime.Size = new System.Drawing.Size(110, 22);
+            this.SetIntTime.Size = new System.Drawing.Size(147, 28);
             this.SetIntTime.TabIndex = 12;
             this.SetIntTime.Text = "Set Int Time";
             this.SetIntTime.UseVisualStyleBackColor = true;
@@ -1006,10 +1029,10 @@
             // 
             // IntTime
             // 
-            this.IntTime.Location = new System.Drawing.Point(158, 18);
-            this.IntTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.IntTime.Location = new System.Drawing.Point(211, 22);
+            this.IntTime.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.IntTime.Name = "IntTime";
-            this.IntTime.Size = new System.Drawing.Size(112, 21);
+            this.IntTime.Size = new System.Drawing.Size(148, 25);
             this.IntTime.TabIndex = 6;
             // 
             // tabPage1
@@ -1019,11 +1042,11 @@
             this.tabPage1.Controls.Add(this.groupBox8);
             this.tabPage1.Controls.Add(this.groupBox7);
             this.tabPage1.Controls.Add(this.groupBox6);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(290, 616);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.tabPage1.Size = new System.Drawing.Size(389, 773);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Operate";
             // 
@@ -1033,11 +1056,11 @@
             this.groupBox9.Controls.Add(this.label27);
             this.groupBox9.Controls.Add(this.AverageFilter);
             this.groupBox9.Controls.Add(this.label29);
-            this.groupBox9.Location = new System.Drawing.Point(0, 515);
-            this.groupBox9.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox9.Location = new System.Drawing.Point(0, 644);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox9.Size = new System.Drawing.Size(279, 88);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox9.Size = new System.Drawing.Size(372, 110);
             this.groupBox9.TabIndex = 3;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Filter";
@@ -1055,10 +1078,10 @@
             "64 Lines",
             "128 Lines",
             "256 Lines"});
-            this.SumFilter.Location = new System.Drawing.Point(158, 52);
-            this.SumFilter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SumFilter.Location = new System.Drawing.Point(211, 65);
+            this.SumFilter.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.SumFilter.Name = "SumFilter";
-            this.SumFilter.Size = new System.Drawing.Size(112, 20);
+            this.SumFilter.Size = new System.Drawing.Size(148, 23);
             this.SumFilter.TabIndex = 25;
             this.SumFilter.Tag = "0";
             this.SumFilter.SelectedIndexChanged += new System.EventHandler(this.SumFilter_SelectedIndexChanged);
@@ -1068,9 +1091,10 @@
             this.label27.AutoSize = true;
             this.label27.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label27.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label27.Location = new System.Drawing.Point(10, 55);
+            this.label27.Location = new System.Drawing.Point(13, 69);
+            this.label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(53, 12);
+            this.label27.Size = new System.Drawing.Size(71, 15);
             this.label27.TabIndex = 24;
             this.label27.Text = "Summing:";
             // 
@@ -1087,10 +1111,10 @@
             "64 Lines",
             "128 Lines",
             "256 Lines"});
-            this.AverageFilter.Location = new System.Drawing.Point(158, 20);
-            this.AverageFilter.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.AverageFilter.Location = new System.Drawing.Point(211, 25);
+            this.AverageFilter.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.AverageFilter.Name = "AverageFilter";
-            this.AverageFilter.Size = new System.Drawing.Size(112, 20);
+            this.AverageFilter.Size = new System.Drawing.Size(148, 23);
             this.AverageFilter.TabIndex = 23;
             this.AverageFilter.Tag = "0";
             this.AverageFilter.SelectedIndexChanged += new System.EventHandler(this.AverageFilter_SelectedIndexChanged);
@@ -1100,9 +1124,10 @@
             this.label29.AutoSize = true;
             this.label29.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label29.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label29.Location = new System.Drawing.Point(10, 24);
+            this.label29.Location = new System.Drawing.Point(13, 30);
+            this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(65, 12);
+            this.label29.Size = new System.Drawing.Size(87, 15);
             this.label29.TabIndex = 22;
             this.label29.Text = "Averaging:";
             // 
@@ -1114,11 +1139,11 @@
             this.groupBox8.Controls.Add(this.FrameTriggerMode);
             this.groupBox8.Controls.Add(this.label28);
             this.groupBox8.Controls.Add(this.EnableExFrame);
-            this.groupBox8.Location = new System.Drawing.Point(0, 390);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox8.Location = new System.Drawing.Point(0, 488);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox8.Size = new System.Drawing.Size(279, 114);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox8.Size = new System.Drawing.Size(372, 142);
             this.groupBox8.TabIndex = 2;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "External Frame Trigger";
@@ -1126,19 +1151,20 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(103, 86);
+            this.label26.Location = new System.Drawing.Point(137, 108);
+            this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(53, 12);
+            this.label26.Size = new System.Drawing.Size(71, 15);
             this.label26.TabIndex = 26;
             this.label26.Text = "x 32line";
             // 
             // FrameDelay
             // 
             this.FrameDelay.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.FrameDelay.Location = new System.Drawing.Point(10, 80);
-            this.FrameDelay.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FrameDelay.Location = new System.Drawing.Point(13, 100);
+            this.FrameDelay.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.FrameDelay.Name = "FrameDelay";
-            this.FrameDelay.Size = new System.Drawing.Size(80, 22);
+            this.FrameDelay.Size = new System.Drawing.Size(107, 28);
             this.FrameDelay.TabIndex = 25;
             this.FrameDelay.Text = "Delay";
             this.FrameDelay.UseVisualStyleBackColor = true;
@@ -1146,10 +1172,10 @@
             // 
             // FrameD
             // 
-            this.FrameD.Location = new System.Drawing.Point(158, 82);
-            this.FrameD.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FrameD.Location = new System.Drawing.Point(211, 102);
+            this.FrameD.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.FrameD.Name = "FrameD";
-            this.FrameD.Size = new System.Drawing.Size(112, 21);
+            this.FrameD.Size = new System.Drawing.Size(148, 25);
             this.FrameD.TabIndex = 24;
             this.FrameD.Text = "0";
             // 
@@ -1159,10 +1185,10 @@
             this.FrameTriggerMode.Items.AddRange(new object[] {
             "Rising Edge",
             "Falling Edge"});
-            this.FrameTriggerMode.Location = new System.Drawing.Point(158, 48);
-            this.FrameTriggerMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FrameTriggerMode.Location = new System.Drawing.Point(211, 60);
+            this.FrameTriggerMode.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.FrameTriggerMode.Name = "FrameTriggerMode";
-            this.FrameTriggerMode.Size = new System.Drawing.Size(112, 20);
+            this.FrameTriggerMode.Size = new System.Drawing.Size(148, 23);
             this.FrameTriggerMode.TabIndex = 23;
             this.FrameTriggerMode.Tag = "0";
             this.FrameTriggerMode.SelectedIndexChanged += new System.EventHandler(this.FrameTriggerMode_SelectedIndexChanged);
@@ -1172,9 +1198,10 @@
             this.label28.AutoSize = true;
             this.label28.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label28.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label28.Location = new System.Drawing.Point(10, 52);
+            this.label28.Location = new System.Drawing.Point(13, 65);
+            this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(119, 12);
+            this.label28.Size = new System.Drawing.Size(159, 15);
             this.label28.TabIndex = 22;
             this.label28.Text = "Frame Trigger Mode:";
             // 
@@ -1183,10 +1210,10 @@
             this.EnableExFrame.AutoSize = true;
             this.EnableExFrame.BackColor = System.Drawing.Color.Transparent;
             this.EnableExFrame.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EnableExFrame.Location = new System.Drawing.Point(14, 24);
-            this.EnableExFrame.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.EnableExFrame.Location = new System.Drawing.Point(19, 30);
+            this.EnableExFrame.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.EnableExFrame.Name = "EnableExFrame";
-            this.EnableExFrame.Size = new System.Drawing.Size(198, 16);
+            this.EnableExFrame.Size = new System.Drawing.Size(261, 19);
             this.EnableExFrame.TabIndex = 21;
             this.EnableExFrame.Text = "Enable External Frame Trigger";
             this.EnableExFrame.UseVisualStyleBackColor = false;
@@ -1203,11 +1230,11 @@
             this.groupBox7.Controls.Add(this.LineTriggerMode);
             this.groupBox7.Controls.Add(this.label23);
             this.groupBox7.Controls.Add(this.EnableExLine);
-            this.groupBox7.Location = new System.Drawing.Point(3, 236);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox7.Location = new System.Drawing.Point(4, 295);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox7.Size = new System.Drawing.Size(279, 150);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox7.Size = new System.Drawing.Size(372, 188);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "External Line Trigger";
@@ -1215,19 +1242,20 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(103, 118);
+            this.label25.Location = new System.Drawing.Point(137, 148);
+            this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(41, 12);
+            this.label25.Size = new System.Drawing.Size(55, 15);
             this.label25.TabIndex = 29;
             this.label25.Text = "x 64us";
             // 
             // LineRawDelay
             // 
             this.LineRawDelay.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LineRawDelay.Location = new System.Drawing.Point(10, 112);
-            this.LineRawDelay.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LineRawDelay.Location = new System.Drawing.Point(13, 140);
+            this.LineRawDelay.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LineRawDelay.Name = "LineRawDelay";
-            this.LineRawDelay.Size = new System.Drawing.Size(80, 22);
+            this.LineRawDelay.Size = new System.Drawing.Size(107, 28);
             this.LineRawDelay.TabIndex = 28;
             this.LineRawDelay.Text = "Raw Delay";
             this.LineRawDelay.UseVisualStyleBackColor = true;
@@ -1235,29 +1263,30 @@
             // 
             // LineRawD
             // 
-            this.LineRawD.Location = new System.Drawing.Point(159, 114);
-            this.LineRawD.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LineRawD.Location = new System.Drawing.Point(212, 142);
+            this.LineRawD.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LineRawD.Name = "LineRawD";
-            this.LineRawD.Size = new System.Drawing.Size(112, 21);
+            this.LineRawD.Size = new System.Drawing.Size(148, 25);
             this.LineRawD.TabIndex = 27;
             this.LineRawD.Text = "0";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(103, 86);
+            this.label24.Location = new System.Drawing.Point(137, 108);
+            this.label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(53, 12);
+            this.label24.Size = new System.Drawing.Size(71, 15);
             this.label24.TabIndex = 26;
             this.label24.Text = "x0.125us";
             // 
             // LineFineDelay
             // 
             this.LineFineDelay.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LineFineDelay.Location = new System.Drawing.Point(10, 80);
-            this.LineFineDelay.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LineFineDelay.Location = new System.Drawing.Point(13, 100);
+            this.LineFineDelay.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LineFineDelay.Name = "LineFineDelay";
-            this.LineFineDelay.Size = new System.Drawing.Size(80, 22);
+            this.LineFineDelay.Size = new System.Drawing.Size(107, 28);
             this.LineFineDelay.TabIndex = 25;
             this.LineFineDelay.Text = "Fine Delay";
             this.LineFineDelay.UseVisualStyleBackColor = true;
@@ -1265,10 +1294,10 @@
             // 
             // LineFineD
             // 
-            this.LineFineD.Location = new System.Drawing.Point(158, 82);
-            this.LineFineD.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LineFineD.Location = new System.Drawing.Point(211, 102);
+            this.LineFineD.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LineFineD.Name = "LineFineD";
-            this.LineFineD.Size = new System.Drawing.Size(112, 21);
+            this.LineFineD.Size = new System.Drawing.Size(148, 25);
             this.LineFineD.TabIndex = 24;
             this.LineFineD.Text = "0";
             // 
@@ -1279,10 +1308,10 @@
             "Rising Edge",
             "Falling Edge",
             "Trigger Stamp"});
-            this.LineTriggerMode.Location = new System.Drawing.Point(158, 48);
-            this.LineTriggerMode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LineTriggerMode.Location = new System.Drawing.Point(211, 60);
+            this.LineTriggerMode.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LineTriggerMode.Name = "LineTriggerMode";
-            this.LineTriggerMode.Size = new System.Drawing.Size(112, 20);
+            this.LineTriggerMode.Size = new System.Drawing.Size(148, 23);
             this.LineTriggerMode.TabIndex = 23;
             this.LineTriggerMode.Tag = "0";
             this.LineTriggerMode.SelectedIndexChanged += new System.EventHandler(this.LineTriggerMode_SelectedIndexChanged);
@@ -1292,9 +1321,10 @@
             this.label23.AutoSize = true;
             this.label23.BackColor = System.Drawing.Color.WhiteSmoke;
             this.label23.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label23.Location = new System.Drawing.Point(10, 52);
+            this.label23.Location = new System.Drawing.Point(13, 65);
+            this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(113, 12);
+            this.label23.Size = new System.Drawing.Size(151, 15);
             this.label23.TabIndex = 22;
             this.label23.Text = "Line Trigger Mode:";
             // 
@@ -1303,10 +1333,10 @@
             this.EnableExLine.AutoSize = true;
             this.EnableExLine.BackColor = System.Drawing.Color.Transparent;
             this.EnableExLine.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EnableExLine.Location = new System.Drawing.Point(14, 24);
-            this.EnableExLine.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.EnableExLine.Location = new System.Drawing.Point(19, 30);
+            this.EnableExLine.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.EnableExLine.Name = "EnableExLine";
-            this.EnableExLine.Size = new System.Drawing.Size(192, 16);
+            this.EnableExLine.Size = new System.Drawing.Size(253, 19);
             this.EnableExLine.TabIndex = 21;
             this.EnableExLine.Text = "Enable External Line Trigger";
             this.EnableExLine.UseVisualStyleBackColor = false;
@@ -1323,21 +1353,21 @@
             this.groupBox6.Controls.Add(this.CalculateOffset);
             this.groupBox6.Controls.Add(this.CalculateGain);
             this.groupBox6.Controls.Add(this.CorrectTarget);
-            this.groupBox6.Location = new System.Drawing.Point(1, 6);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox6.Location = new System.Drawing.Point(1, 8);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox6.Size = new System.Drawing.Size(277, 221);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.groupBox6.Size = new System.Drawing.Size(369, 276);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Correction";
             // 
             // BaseLine
             // 
-            this.BaseLine.Location = new System.Drawing.Point(158, 184);
-            this.BaseLine.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.BaseLine.Location = new System.Drawing.Point(211, 230);
+            this.BaseLine.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.BaseLine.Name = "BaseLine";
-            this.BaseLine.Size = new System.Drawing.Size(112, 21);
+            this.BaseLine.Size = new System.Drawing.Size(148, 25);
             this.BaseLine.TabIndex = 21;
             this.BaseLine.Text = "1000";
             // 
@@ -1346,10 +1376,10 @@
             this.EnableBS.AutoSize = true;
             this.EnableBS.BackColor = System.Drawing.Color.Transparent;
             this.EnableBS.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EnableBS.Location = new System.Drawing.Point(14, 186);
-            this.EnableBS.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.EnableBS.Location = new System.Drawing.Point(19, 232);
+            this.EnableBS.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.EnableBS.Name = "EnableBS";
-            this.EnableBS.Size = new System.Drawing.Size(162, 16);
+            this.EnableBS.Size = new System.Drawing.Size(213, 19);
             this.EnableBS.TabIndex = 20;
             this.EnableBS.Text = "Enable Baseline Correct";
             this.EnableBS.UseVisualStyleBackColor = false;
@@ -1360,10 +1390,10 @@
             this.EnableGO.AutoSize = true;
             this.EnableGO.BackColor = System.Drawing.Color.Transparent;
             this.EnableGO.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.EnableGO.Location = new System.Drawing.Point(14, 156);
-            this.EnableGO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.EnableGO.Location = new System.Drawing.Point(19, 195);
+            this.EnableGO.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.EnableGO.Name = "EnableGO";
-            this.EnableGO.Size = new System.Drawing.Size(180, 16);
+            this.EnableGO.Size = new System.Drawing.Size(237, 19);
             this.EnableGO.TabIndex = 19;
             this.EnableGO.Text = "Enable Gain/Offset Correct";
             this.EnableGO.UseVisualStyleBackColor = false;
@@ -1372,10 +1402,10 @@
             // LoadGO
             // 
             this.LoadGO.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.LoadGO.Location = new System.Drawing.Point(10, 118);
-            this.LoadGO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LoadGO.Location = new System.Drawing.Point(13, 148);
+            this.LoadGO.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.LoadGO.Name = "LoadGO";
-            this.LoadGO.Size = new System.Drawing.Size(110, 22);
+            this.LoadGO.Size = new System.Drawing.Size(147, 28);
             this.LoadGO.TabIndex = 18;
             this.LoadGO.Text = "Load Gain/Offset";
             this.LoadGO.UseVisualStyleBackColor = true;
@@ -1384,10 +1414,10 @@
             // SaveGO
             // 
             this.SaveGO.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.SaveGO.Location = new System.Drawing.Point(10, 84);
-            this.SaveGO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SaveGO.Location = new System.Drawing.Point(13, 105);
+            this.SaveGO.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.SaveGO.Name = "SaveGO";
-            this.SaveGO.Size = new System.Drawing.Size(110, 22);
+            this.SaveGO.Size = new System.Drawing.Size(147, 28);
             this.SaveGO.TabIndex = 17;
             this.SaveGO.Text = "Save Gain/Offset";
             this.SaveGO.UseVisualStyleBackColor = true;
@@ -1395,20 +1425,20 @@
             // 
             // FlashIndex
             // 
-            this.FlashIndex.Location = new System.Drawing.Point(158, 106);
-            this.FlashIndex.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.FlashIndex.Location = new System.Drawing.Point(211, 132);
+            this.FlashIndex.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.FlashIndex.Name = "FlashIndex";
-            this.FlashIndex.Size = new System.Drawing.Size(112, 21);
+            this.FlashIndex.Size = new System.Drawing.Size(148, 25);
             this.FlashIndex.TabIndex = 16;
             this.FlashIndex.Text = "0";
             // 
             // CalculateOffset
             // 
             this.CalculateOffset.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.CalculateOffset.Location = new System.Drawing.Point(10, 18);
-            this.CalculateOffset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CalculateOffset.Location = new System.Drawing.Point(13, 22);
+            this.CalculateOffset.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CalculateOffset.Name = "CalculateOffset";
-            this.CalculateOffset.Size = new System.Drawing.Size(110, 22);
+            this.CalculateOffset.Size = new System.Drawing.Size(147, 28);
             this.CalculateOffset.TabIndex = 15;
             this.CalculateOffset.Text = "Calculate Offset";
             this.CalculateOffset.UseVisualStyleBackColor = true;
@@ -1417,10 +1447,10 @@
             // CalculateGain
             // 
             this.CalculateGain.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.CalculateGain.Location = new System.Drawing.Point(10, 50);
-            this.CalculateGain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CalculateGain.Location = new System.Drawing.Point(13, 62);
+            this.CalculateGain.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CalculateGain.Name = "CalculateGain";
-            this.CalculateGain.Size = new System.Drawing.Size(110, 22);
+            this.CalculateGain.Size = new System.Drawing.Size(147, 28);
             this.CalculateGain.TabIndex = 14;
             this.CalculateGain.Text = "Calculate Gain";
             this.CalculateGain.UseVisualStyleBackColor = true;
@@ -1428,20 +1458,20 @@
             // 
             // CorrectTarget
             // 
-            this.CorrectTarget.Location = new System.Drawing.Point(158, 52);
-            this.CorrectTarget.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.CorrectTarget.Location = new System.Drawing.Point(211, 65);
+            this.CorrectTarget.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.CorrectTarget.Name = "CorrectTarget";
-            this.CorrectTarget.Size = new System.Drawing.Size(112, 21);
+            this.CorrectTarget.Size = new System.Drawing.Size(148, 25);
             this.CorrectTarget.TabIndex = 13;
             this.CorrectTarget.Text = "50000";
             // 
             // DisWin
             // 
             this.DisWin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DisWin.Location = new System.Drawing.Point(1, 59);
-            this.DisWin.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.DisWin.Location = new System.Drawing.Point(1, 74);
+            this.DisWin.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.DisWin.Name = "DisWin";
-            this.DisWin.Size = new System.Drawing.Size(801, 511);
+            this.DisWin.Size = new System.Drawing.Size(1067, 638);
             this.DisWin.TabIndex = 1;
             this.DisWin.TabStop = false;
             this.DisWin.Click += new System.EventHandler(this.DisWin_Click);
@@ -1449,58 +1479,63 @@
             // SN
             // 
             this.SN.AutoSize = true;
-            this.SN.Location = new System.Drawing.Point(12, 8);
+            this.SN.Location = new System.Drawing.Point(16, 10);
+            this.SN.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SN.Name = "SN";
-            this.SN.Size = new System.Drawing.Size(29, 12);
+            this.SN.Size = new System.Drawing.Size(39, 15);
             this.SN.TabIndex = 2;
             this.SN.Text = "SN: ";
             // 
             // Temperature
             // 
             this.Temperature.AutoSize = true;
-            this.Temperature.Location = new System.Drawing.Point(186, 8);
+            this.Temperature.Location = new System.Drawing.Point(248, 10);
+            this.Temperature.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Temperature.Name = "Temperature";
-            this.Temperature.Size = new System.Drawing.Size(77, 12);
+            this.Temperature.Size = new System.Drawing.Size(103, 15);
             this.Temperature.TabIndex = 3;
             this.Temperature.Text = "Temperature:";
             // 
             // Humidity
             // 
             this.Humidity.AutoSize = true;
-            this.Humidity.Location = new System.Drawing.Point(391, 8);
+            this.Humidity.Location = new System.Drawing.Point(521, 10);
+            this.Humidity.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Humidity.Name = "Humidity";
-            this.Humidity.Size = new System.Drawing.Size(59, 12);
+            this.Humidity.Size = new System.Drawing.Size(79, 15);
             this.Humidity.TabIndex = 4;
             this.Humidity.Text = "Humidity:";
             // 
             // Error
             // 
             this.Error.AutoSize = true;
-            this.Error.Location = new System.Drawing.Point(575, 8);
+            this.Error.Location = new System.Drawing.Point(767, 10);
+            this.Error.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Error.Name = "Error";
-            this.Error.Size = new System.Drawing.Size(41, 12);
+            this.Error.Size = new System.Drawing.Size(55, 15);
             this.Error.TabIndex = 5;
             this.Error.Text = "Error:";
             // 
             // LostLine
             // 
             this.LostLine.AutoSize = true;
-            this.LostLine.Location = new System.Drawing.Point(12, 36);
+            this.LostLine.Location = new System.Drawing.Point(16, 45);
+            this.LostLine.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LostLine.Name = "LostLine";
-            this.LostLine.Size = new System.Drawing.Size(71, 12);
+            this.LostLine.Size = new System.Drawing.Size(95, 15);
             this.LostLine.TabIndex = 7;
             this.LostLine.Text = "Lost Line: ";
             // 
             // Grab
             // 
             this.Grab.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Grab.Location = new System.Drawing.Point(188, 597);
-            this.Grab.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Grab.Location = new System.Drawing.Point(251, 746);
+            this.Grab.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Grab.Name = "Grab";
-            this.Grab.Size = new System.Drawing.Size(150, 56);
+            this.Grab.Size = new System.Drawing.Size(200, 70);
             this.Grab.TabIndex = 8;
             this.Grab.Tag = "start";
-            this.Grab.Text = "开始";
+            this.Grab.Text = "START";
             this.Grab.UseVisualStyleBackColor = true;
             this.Grab.Click += new System.EventHandler(this.Grab_Click);
             // 
@@ -1508,23 +1543,23 @@
             // 
             this.Stop.Enabled = false;
             this.Stop.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Stop.Location = new System.Drawing.Point(458, 598);
-            this.Stop.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Stop.Location = new System.Drawing.Point(611, 748);
+            this.Stop.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Stop.Name = "Stop";
-            this.Stop.Size = new System.Drawing.Size(150, 56);
+            this.Stop.Size = new System.Drawing.Size(200, 70);
             this.Stop.TabIndex = 9;
             this.Stop.Tag = "end";
-            this.Stop.Text = "暂停";
+            this.Stop.Text = "STOP";
             this.Stop.UseVisualStyleBackColor = true;
             this.Stop.Click += new System.EventHandler(this.Stop_Click);
             // 
             // GamaPlus
             // 
             this.GamaPlus.Enabled = false;
-            this.GamaPlus.Location = new System.Drawing.Point(688, 598);
-            this.GamaPlus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GamaPlus.Location = new System.Drawing.Point(917, 748);
+            this.GamaPlus.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.GamaPlus.Name = "GamaPlus";
-            this.GamaPlus.Size = new System.Drawing.Size(110, 22);
+            this.GamaPlus.Size = new System.Drawing.Size(147, 28);
             this.GamaPlus.TabIndex = 11;
             this.GamaPlus.Text = "Gama+";
             this.GamaPlus.UseVisualStyleBackColor = true;
@@ -1534,10 +1569,10 @@
             // GamaSub
             // 
             this.GamaSub.Enabled = false;
-            this.GamaSub.Location = new System.Drawing.Point(691, 639);
-            this.GamaSub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GamaSub.Location = new System.Drawing.Point(921, 799);
+            this.GamaSub.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.GamaSub.Name = "GamaSub";
-            this.GamaSub.Size = new System.Drawing.Size(110, 22);
+            this.GamaSub.Size = new System.Drawing.Size(147, 28);
             this.GamaSub.TabIndex = 12;
             this.GamaSub.Text = "Gama-";
             this.GamaSub.UseVisualStyleBackColor = true;
@@ -1547,20 +1582,20 @@
             // Total_Block_Num
             // 
             this.Total_Block_Num.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.Total_Block_Num.Location = new System.Drawing.Point(276, 34);
-            this.Total_Block_Num.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Total_Block_Num.Location = new System.Drawing.Point(368, 42);
+            this.Total_Block_Num.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Total_Block_Num.Name = "Total_Block_Num";
-            this.Total_Block_Num.Size = new System.Drawing.Size(230, 21);
+            this.Total_Block_Num.Size = new System.Drawing.Size(305, 25);
             this.Total_Block_Num.TabIndex = 13;
             this.Total_Block_Num.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(548, 31);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(731, 39);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 23);
+            this.button1.Size = new System.Drawing.Size(148, 29);
             this.button1.TabIndex = 14;
             this.button1.Text = "CheckTime";
             this.button1.UseVisualStyleBackColor = true;
@@ -1569,10 +1604,10 @@
             // TestPLC
             // 
             this.TestPLC.Enabled = false;
-            this.TestPLC.Location = new System.Drawing.Point(688, 30);
-            this.TestPLC.Margin = new System.Windows.Forms.Padding(2);
+            this.TestPLC.Location = new System.Drawing.Point(917, 38);
+            this.TestPLC.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TestPLC.Name = "TestPLC";
-            this.TestPLC.Size = new System.Drawing.Size(111, 22);
+            this.TestPLC.Size = new System.Drawing.Size(148, 28);
             this.TestPLC.TabIndex = 15;
             this.TestPLC.Text = "TestPLC";
             this.TestPLC.UseVisualStyleBackColor = true;
@@ -1590,9 +1625,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1134, 682);
+            this.ClientSize = new System.Drawing.Size(1512, 852);
             this.Controls.Add(this.TestPLC);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Total_Block_Num);
@@ -1609,9 +1644,8 @@
             this.Controls.Add(this.tabControl1);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.Name = "Form1";
-            this.Text = "调试系统";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
