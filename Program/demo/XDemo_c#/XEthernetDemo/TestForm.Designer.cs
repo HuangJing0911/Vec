@@ -199,8 +199,6 @@
             // FunctionSelect_NoSelect
             // 
             this.FunctionSelect_NoSelect.AutoSize = true;
-            this.FunctionSelect_NoSelect.Checked = true;
-            this.FunctionSelect_NoSelect.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_NoSelect.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_NoSelect.Location = new System.Drawing.Point(91, 140);
             this.FunctionSelect_NoSelect.Name = "FunctionSelect_NoSelect";
@@ -223,6 +221,8 @@
             // FunctionSelect_Pb
             // 
             this.FunctionSelect_Pb.AutoSize = true;
+            this.FunctionSelect_Pb.Checked = true;
+            this.FunctionSelect_Pb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Pb.Location = new System.Drawing.Point(51, 106);
             this.FunctionSelect_Pb.Name = "FunctionSelect_Pb";
@@ -234,6 +234,8 @@
             // FunctionSelect_Zn
             // 
             this.FunctionSelect_Zn.AutoSize = true;
+            this.FunctionSelect_Zn.Checked = true;
+            this.FunctionSelect_Zn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Zn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Zn.Location = new System.Drawing.Point(152, 65);
             this.FunctionSelect_Zn.Name = "FunctionSelect_Zn";
@@ -245,6 +247,8 @@
             // FunctionSelect_Cu
             // 
             this.FunctionSelect_Cu.AutoSize = true;
+            this.FunctionSelect_Cu.Checked = true;
+            this.FunctionSelect_Cu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Cu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Cu.Location = new System.Drawing.Point(51, 65);
             this.FunctionSelect_Cu.Name = "FunctionSelect_Cu";
