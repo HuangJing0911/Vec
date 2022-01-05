@@ -427,10 +427,9 @@
             this.Version.ForeColor = System.Drawing.SystemColors.Control;
             this.Version.Location = new System.Drawing.Point(831, 423);
             this.Version.Name = "Version";
-            this.Version.ReadOnly = true;
             this.Version.Size = new System.Drawing.Size(135, 18);
             this.Version.TabIndex = 28;
-            this.Version.Tag = "0";
+            this.Version.Tag = "3";
             this.Version.Text = "Version: 1.5.7";
             // 
             // StartMenu

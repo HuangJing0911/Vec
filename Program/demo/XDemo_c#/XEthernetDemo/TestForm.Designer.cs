@@ -280,6 +280,7 @@
             // 
             this.Version.BackColor = System.Drawing.Color.BurlyWood;
             this.Version.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Version.Enabled = false;
             this.Version.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Version.ForeColor = System.Drawing.SystemColors.Control;
             this.Version.Location = new System.Drawing.Point(911, 489);
