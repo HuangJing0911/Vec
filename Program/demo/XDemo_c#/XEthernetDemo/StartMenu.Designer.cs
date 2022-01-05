@@ -420,20 +420,18 @@
             // 
             // Version
             // 
-            this.Version.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.Version.BackColor = System.Drawing.Color.BurlyWood;
             this.Version.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Version.Enabled = false;
-            this.Version.ForeColor = System.Drawing.SystemColors.Window;
-            this.Version.Location = new System.Drawing.Point(834, 423);
+            this.Version.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Version.ForeColor = System.Drawing.SystemColors.Control;
+            this.Version.Location = new System.Drawing.Point(831, 423);
             this.Version.Name = "Version";
             this.Version.ReadOnly = true;
             this.Version.Size = new System.Drawing.Size(135, 18);
             this.Version.TabIndex = 28;
+            this.Version.Tag = "0";
             this.Version.Text = "Version: 1.5.7";
-            this.Version.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // StartMenu
             // 

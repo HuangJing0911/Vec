@@ -28,7 +28,7 @@ namespace XEthernetDemo
 
         private void TestForm_Load(object sender, EventArgs e)
         {
-
+            Version.Text = version;
         }
 
         private static void CurrentDomain_UnhandleException(object sender, UnhandledExceptionEventArgs e)
@@ -36,6 +36,8 @@ namespace XEthernetDemo
             Console.WriteLine(e.ExceptionObject.ToString());
             MessageBox.Show(e.ExceptionObject.ToString());
         }
+
+        public string version;
 
         //功放变量
         static Queue<Msg> msg_queue;
@@ -498,8 +500,16 @@ namespace XEthernetDemo
                     }
                     info_queue.Enqueue(info);
                 }
-                wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
-                wr.Flush();
+                try
+                {
+                    wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
+                    wr.Flush();
+                }
+                catch(ObjectDisposedException ex)
+                {
+                    Error.Text = "Error: " + ex.Message;
+                }
+                
 
             }
             if (!recv)
@@ -588,6 +598,8 @@ namespace XEthernetDemo
             //FunctionBox.Enabled = false;
             frame_count = 0;
             lost_line = 0;
+            total_clock_num = 0;
+            total_detect_num = 0;
             DateTime time = DateTime.Now;
             fs = new FileStream(result_data + "result_data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
             wr = new StreamWriter(fs);
@@ -1030,7 +1042,7 @@ namespace XEthernetDemo
 
 
                     // 确定物块最终喷吹的时间
-                    data.start_time_int += (int)(2400 / speed) - 12;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
@@ -1050,9 +1062,10 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6000) > 0))
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6500) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 5000) > 0))
                     {
                         num = SendData(data);
+                        data.typof_block = 1;
                         Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X+10, boundRect[i].Y),
                         HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     }
@@ -1099,16 +1112,6 @@ namespace XEthernetDemo
             xsystem.LocalIP = arrayServer;
             xsystem.OnXError += new XSystemW.DelOnXError(OnError);
 
-            /*try
-            {
-                Power_Amplifier_Load();
-            }
-            catch (SocketException ex)
-            {
-                Error.Text = "Error ID:" + ex.ErrorCode.ToString() + "，功放连接" + ex.Message;
-                return;
-            }*/
-
             if (xsystem.Open() > 0)
             {
                 int dev_num = xsystem.FindDevice();
@@ -1120,6 +1123,16 @@ namespace XEthernetDemo
                     s = xdevice.ImgPort.ToString();
 
                 }
+            }
+
+            try
+            {
+                Power_Amplifier_Load();
+            }
+            catch (SocketException ex)
+            {
+                Error.Text = "Error ID:" + ex.ErrorCode.ToString() + "，功放连接" + ex.Message;
+                return;
             }
 
             //Power_Amplifier_Load();
@@ -1212,6 +1225,8 @@ namespace XEthernetDemo
 
         private void StopButton_Click(object sender, EventArgs e)
         {
+            wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
+            wr.Flush();
             // 暂停线阵
             wr.Close();
             fs.Close();
@@ -1359,7 +1374,8 @@ namespace XEthernetDemo
                 }
                 */
 
-                if ((FunctionSelect_Cu.Checked && dp.SCACount[0] > gap) || (FunctionSelect_Zn.Checked && dp.SCACount[1] > gap) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
+                //if(FunctionSelect_Cu.Checked && dp.SCACount[0] > gap)
+                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 8) || (FunctionSelect_Zn.Checked && dp.SCACount[0] > 12) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();

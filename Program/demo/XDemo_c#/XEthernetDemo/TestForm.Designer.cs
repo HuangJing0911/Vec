@@ -125,7 +125,6 @@
             this.Error.Size = new System.Drawing.Size(50, 19);
             this.Error.TabIndex = 11;
             this.Error.Text = "Error:";
-            this.Error.Click += new System.EventHandler(this.Error_Click);
             // 
             // Humidity
             // 
@@ -201,8 +200,6 @@
             // FunctionSelect_NoSelect
             // 
             this.FunctionSelect_NoSelect.AutoSize = true;
-            this.FunctionSelect_NoSelect.Checked = true;
-            this.FunctionSelect_NoSelect.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_NoSelect.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_NoSelect.Location = new System.Drawing.Point(91, 140);
             this.FunctionSelect_NoSelect.Name = "FunctionSelect_NoSelect";
@@ -225,6 +222,8 @@
             // FunctionSelect_Pb
             // 
             this.FunctionSelect_Pb.AutoSize = true;
+            this.FunctionSelect_Pb.Checked = true;
+            this.FunctionSelect_Pb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Pb.Location = new System.Drawing.Point(51, 106);
             this.FunctionSelect_Pb.Name = "FunctionSelect_Pb";
@@ -236,6 +235,8 @@
             // FunctionSelect_Zn
             // 
             this.FunctionSelect_Zn.AutoSize = true;
+            this.FunctionSelect_Zn.Checked = true;
+            this.FunctionSelect_Zn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Zn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Zn.Location = new System.Drawing.Point(152, 65);
             this.FunctionSelect_Zn.Name = "FunctionSelect_Zn";
@@ -247,6 +248,8 @@
             // FunctionSelect_Cu
             // 
             this.FunctionSelect_Cu.AutoSize = true;
+            this.FunctionSelect_Cu.Checked = true;
+            this.FunctionSelect_Cu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Cu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Cu.Location = new System.Drawing.Point(51, 65);
             this.FunctionSelect_Cu.Name = "FunctionSelect_Cu";
@@ -262,6 +265,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.BackColor = System.Drawing.Color.BurlyWood;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Enabled = false;
             this.textBox1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.textBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.textBox1.Location = new System.Drawing.Point(34, 24);
@@ -274,20 +278,15 @@
             // 
             // Version
             // 
-            this.Version.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.Version.BackColor = System.Drawing.Color.BurlyWood;
             this.Version.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Version.Enabled = false;
-            this.Version.ForeColor = System.Drawing.SystemColors.Window;
-            this.Version.Location = new System.Drawing.Point(901, 489);
+            this.Version.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Version.ForeColor = System.Drawing.SystemColors.Control;
+            this.Version.Location = new System.Drawing.Point(911, 489);
             this.Version.Name = "Version";
-            this.Version.ReadOnly = true;
-            this.Version.Size = new System.Drawing.Size(135, 18);
+            this.Version.Size = new System.Drawing.Size(124, 18);
             this.Version.TabIndex = 16;
             this.Version.Text = "Version: 1.5.6";
-            this.Version.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // TestForm
             // 
