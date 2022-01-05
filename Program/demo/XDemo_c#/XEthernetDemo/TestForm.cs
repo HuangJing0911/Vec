@@ -28,7 +28,7 @@ namespace XEthernetDemo
 
         private void TestForm_Load(object sender, EventArgs e)
         {
-
+            Version.Text = version;
         }
 
         private static void CurrentDomain_UnhandleException(object sender, UnhandledExceptionEventArgs e)
@@ -36,6 +36,8 @@ namespace XEthernetDemo
             Console.WriteLine(e.ExceptionObject.ToString());
             MessageBox.Show(e.ExceptionObject.ToString());
         }
+
+        public string version;
 
         //功放变量
         static Queue<Msg> msg_queue;
@@ -1040,12 +1042,12 @@ namespace XEthernetDemo
 
 
                     // 确定物块最终喷吹的时间
-                    data.start_time_int += (int)(2400 / speed) - 11;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+                    data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 12);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);
                     //data.blow_time = (short)100;
 
 
@@ -1060,7 +1062,7 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6000) > 0))
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6500) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 5000) > 0))
                     {
                         num = SendData(data);
                         data.typof_block = 1;
@@ -1271,6 +1273,11 @@ namespace XEthernetDemo
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
         {
             ChannelStateCheck();
+        }
+
+        private void Error_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void ProcessMessage()

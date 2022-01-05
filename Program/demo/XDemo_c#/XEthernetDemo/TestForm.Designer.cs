@@ -47,6 +47,7 @@
             this.FunctionSelect_Zn = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_Cu = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Version = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -124,6 +125,7 @@
             this.Error.Size = new System.Drawing.Size(50, 19);
             this.Error.TabIndex = 11;
             this.Error.Text = "Error:";
+            this.Error.Click += new System.EventHandler(this.Error_Click);
             // 
             // Humidity
             // 
@@ -274,11 +276,29 @@
             this.textBox1.Text = "分选功能选择";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // Version
+            // 
+            this.Version.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Version.BackColor = System.Drawing.Color.BurlyWood;
+            this.Version.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Version.Enabled = false;
+            this.Version.ForeColor = System.Drawing.SystemColors.Window;
+            this.Version.Location = new System.Drawing.Point(901, 489);
+            this.Version.Name = "Version";
+            this.Version.ReadOnly = true;
+            this.Version.Size = new System.Drawing.Size(135, 18);
+            this.Version.TabIndex = 16;
+            this.Version.Text = "Version: 1.5.6";
+            this.Version.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // TestForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(1027, 511);
+            this.Controls.Add(this.Version);
             this.Controls.Add(this.FunctionBox);
             this.Controls.Add(this.DisWin);
             this.Controls.Add(this.LostLine);
@@ -322,5 +342,6 @@
         private System.Windows.Forms.CheckBox FunctionSelect_Zn;
         private System.Windows.Forms.CheckBox FunctionSelect_Cu;
         private System.Windows.Forms.CheckBox FunctionSelect_NoSelect;
+        private System.Windows.Forms.TextBox Version;
     }
 }

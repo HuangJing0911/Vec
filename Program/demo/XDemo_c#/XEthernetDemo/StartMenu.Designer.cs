@@ -55,6 +55,7 @@
             this.SystemName = new System.Windows.Forms.Label();
             this.gap = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.Version = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // DebugButton
@@ -417,12 +418,30 @@
             this.label10.Tag = "1";
             this.label10.Text = "功放阈值：";
             // 
+            // Version
+            // 
+            this.Version.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Version.BackColor = System.Drawing.Color.BurlyWood;
+            this.Version.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Version.Enabled = false;
+            this.Version.ForeColor = System.Drawing.SystemColors.Window;
+            this.Version.Location = new System.Drawing.Point(834, 423);
+            this.Version.Name = "Version";
+            this.Version.ReadOnly = true;
+            this.Version.Size = new System.Drawing.Size(135, 18);
+            this.Version.TabIndex = 28;
+            this.Version.Text = "Version: 1.5.7";
+            this.Version.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // StartMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(981, 452);
+            this.Controls.Add(this.Version);
             this.Controls.Add(this.gap);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.PLC_IP);
@@ -487,5 +506,6 @@
         private System.Windows.Forms.Label SystemName;
         private System.Windows.Forms.TextBox gap;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox Version;
     }
 }
