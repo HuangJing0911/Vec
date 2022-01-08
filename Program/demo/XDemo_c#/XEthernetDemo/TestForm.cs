@@ -177,6 +177,44 @@ namespace XEthernetDemo
         }
 
 
+        // 清空原本result里的pic信息
+        private bool DeleteFiles(string path)
+        {
+            if (Directory.Exists(path) == false)
+            {
+                Error.Text = path + " not exits!";
+                return false;
+            }
+            DirectoryInfo dir = new DirectoryInfo(path);
+            FileInfo[] files = dir.GetFiles();
+            try
+            {
+                foreach (var item in files)
+                {
+                    File.Delete(item.FullName);
+                }
+                if (dir.GetDirectories().Length != 0)
+                {
+                    foreach (var item in dir.GetDirectories())
+                    {
+                        if (!item.ToString().Contains("$") && (!item.ToString().Contains("Boot")))
+                        {
+                            DeleteFiles(dir.ToString() + "\\" + item.ToString());
+                        }
+                    }
+                }
+                //Directory.Delete(path);
+                return true;
+            }
+            catch (Exception)
+            {
+                Error.Text = "Delete Failed!";
+                return false;
+
+            }
+        }
+
+
         // 功放信息首列表清空并重置
         private void gflist_Reset()
         {
@@ -595,7 +633,7 @@ namespace XEthernetDemo
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            //FunctionBox.Enabled = false;
+            DeleteFiles(result_data + "pic/");
             frame_count = 0;
             lost_line = 0;
             total_clock_num = 0;

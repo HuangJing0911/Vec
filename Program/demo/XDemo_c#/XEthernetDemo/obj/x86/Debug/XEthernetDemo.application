@@ -8,7 +8,7 @@
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://desktop-lqhh0af/XEthernetDemo/XEthernetDemo.application" />
+    <deploymentProvider codebase="http://desktop-j8no0qp/XEthernetDemo/XEthernetDemo.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
     <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
@@ -21,7 +21,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>ty1J6m7gaP0XIcKnU9FosIue4wg=</dsig:DigestValue>
+        <dsig:DigestValue>ZHDuowuq6xo6E2shHNrNriCX5iI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
