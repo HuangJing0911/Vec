@@ -64,7 +64,7 @@
             this.DebugButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.DebugButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.DebugButton.Location = new System.Drawing.Point(72, 208);
-            this.DebugButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.DebugButton.Margin = new System.Windows.Forms.Padding(2);
             this.DebugButton.Name = "DebugButton";
             this.DebugButton.Size = new System.Drawing.Size(141, 49);
             this.DebugButton.TabIndex = 2;
@@ -79,7 +79,7 @@
             this.SettingButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.SettingButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.SettingButton.Location = new System.Drawing.Point(250, 208);
-            this.SettingButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SettingButton.Margin = new System.Windows.Forms.Padding(2);
             this.SettingButton.Name = "SettingButton";
             this.SettingButton.Size = new System.Drawing.Size(191, 49);
             this.SettingButton.TabIndex = 3;
@@ -94,7 +94,7 @@
             this.TestButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TestButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.TestButton.Location = new System.Drawing.Point(493, 208);
-            this.TestButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TestButton.Margin = new System.Windows.Forms.Padding(2);
             this.TestButton.Name = "TestButton";
             this.TestButton.Size = new System.Drawing.Size(141, 49);
             this.TestButton.TabIndex = 4;
@@ -318,7 +318,7 @@
             this.ChangeSetiingButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ChangeSetiingButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ChangeSetiingButton.Location = new System.Drawing.Point(178, 304);
-            this.ChangeSetiingButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ChangeSetiingButton.Margin = new System.Windows.Forms.Padding(2);
             this.ChangeSetiingButton.Name = "ChangeSetiingButton";
             this.ChangeSetiingButton.Size = new System.Drawing.Size(141, 49);
             this.ChangeSetiingButton.TabIndex = 21;
@@ -333,7 +333,7 @@
             this.ReturnButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ReturnButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.ReturnButton.Location = new System.Drawing.Point(406, 304);
-            this.ReturnButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ReturnButton.Margin = new System.Windows.Forms.Padding(2);
             this.ReturnButton.Name = "ReturnButton";
             this.ReturnButton.Size = new System.Drawing.Size(141, 49);
             this.ReturnButton.TabIndex = 22;
@@ -415,13 +415,13 @@
             this.Version.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Version.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Version.Location = new System.Drawing.Point(623, 338);
-            this.Version.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Version.Margin = new System.Windows.Forms.Padding(2);
             this.Version.Name = "Version";
             this.Version.ReadOnly = true;
             this.Version.Size = new System.Drawing.Size(101, 14);
             this.Version.TabIndex = 28;
             this.Version.Tag = "0";
-            this.Version.Text = "Version: 1.5.8";
+            this.Version.Text = "Version: 1.5.9";
             // 
             // StartMenu
             // 
@@ -457,7 +457,7 @@
             this.Controls.Add(this.DebugButton);
             this.Controls.Add(this.SystemName);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "StartMenu";
             this.Text = "工业物料喷吹分拣系统";

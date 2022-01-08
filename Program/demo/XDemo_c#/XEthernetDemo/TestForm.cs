@@ -183,6 +183,7 @@ namespace XEthernetDemo
             if (Directory.Exists(path) == false)
             {
                 Error.Text = path + " not exits!";
+                Directory.CreateDirectory(path);
                 return false;
             }
             DirectoryInfo dir = new DirectoryInfo(path);
@@ -1146,6 +1147,7 @@ namespace XEthernetDemo
 
         private void FindDeviceButton_Click(object sender, EventArgs e)
         {
+            //DeleteFiles(result_data + "pic/");
             xsystem = new XSystemW();
             xsystem.LocalIP = arrayServer;
             xsystem.OnXError += new XSystemW.DelOnXError(OnError);
