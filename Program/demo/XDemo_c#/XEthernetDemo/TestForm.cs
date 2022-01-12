@@ -755,6 +755,7 @@ namespace XEthernetDemo
         // 物块是否是铜的判断函数(五个点任意一点满足就可以)
         private int Is_Material(XImageW ximagew, int X, int Y, int Height, int Width, int value)
         {
+            /*
             if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4)) < value)
             {
                 return 100000 + (int)ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4));
@@ -793,6 +794,17 @@ namespace XEthernetDemo
             }
             else
                 return 0;
+            */
+            for(int i = X; i <= X + Width; i += 2)
+            {
+                for(int j = Y; j <= Y + Height; j += 2)
+                {
+                    uint k = ximagew.GetPixelVal((uint)j, (uint)i);
+                    if (k <= value)
+                        return (int)k;
+                }
+            }
+            return 0;
 
         }
 
@@ -1101,7 +1113,7 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6500) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 5000) > 0))
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6000) > 0))
                     {
                         num = SendData(data);
                         data.typof_block = 1;
@@ -1415,7 +1427,7 @@ namespace XEthernetDemo
                 */
 
                 //if(FunctionSelect_Cu.Checked && dp.SCACount[0] > gap)
-                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 8) || (FunctionSelect_Zn.Checked && dp.SCACount[0] > 12) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
+                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 8) || (FunctionSelect_Zn.Checked && dp.SCACount[0] > 10) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();

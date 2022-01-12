@@ -421,7 +421,7 @@
             this.Version.Size = new System.Drawing.Size(101, 14);
             this.Version.TabIndex = 28;
             this.Version.Tag = "0";
-            this.Version.Text = "Version: 1.5.9";
+            this.Version.Text = "Version: 1.5.10";
             // 
             // StartMenu
             // 
