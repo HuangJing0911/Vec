@@ -490,7 +490,7 @@ namespace XEthernetDemo
             //测试数据
             time_now = DateTime.Now.Millisecond;
             //Mat image = GetTXT_as_mat(test_txt_filepath);
-            Mat image = Cv2.ImRead("C:/Users/96342/Desktop/result33.png");
+            Mat image = Cv2.ImRead("C:/Users/weike/Desktop/init390.png");
             //Cv2.ImShow("Init_pic", image);
             //Cv2.WaitKey();
             Mat image_test = image;

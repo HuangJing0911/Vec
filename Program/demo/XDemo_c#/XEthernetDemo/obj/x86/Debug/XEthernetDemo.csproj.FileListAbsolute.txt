@@ -504,4 +504,3 @@ C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
 C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\IrisSkin4.dll
-C:\Users\96342\Desktop\HuangJing0911\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csprojResolveAssemblyReference.cache

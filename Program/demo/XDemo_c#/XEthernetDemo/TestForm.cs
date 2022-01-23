@@ -182,7 +182,7 @@ namespace XEthernetDemo
         {
             if (Directory.Exists(path) == false)
             {
-                Error.Text = path + " not exits!";
+                Error.Text = "pic dic not exits!";
                 Directory.CreateDirectory(path);
                 return false;
             }
@@ -949,7 +949,7 @@ namespace XEthernetDemo
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
 
-                    DateTime time2 = DateTime.Now;
+                    
 
 
                     // 对物块的种类进行判断
@@ -1113,14 +1113,17 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (boundRect[i].Y >= row * 0.9 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 6000) > 0))
+                    int kk = Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 5800);
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         num = SendData(data);
                         data.typof_block = 1;
                         Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X+10, boundRect[i].Y),
                         HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     }
-                        
+
+                    DateTime time2 = DateTime.Now;
+
                     total_clock_num++;
                     if (num == 23)
                     {
@@ -1134,8 +1137,7 @@ namespace XEthernetDemo
 
                     if (num == 23 && is_small)
                         queue_flag = 4;
-                    wr.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000));
-
+                    wr.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
                 }
                 wr.Flush();
                 wr2.Flush();
