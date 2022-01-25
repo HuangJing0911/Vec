@@ -753,7 +753,7 @@ namespace XEthernetDemo
         }
 
         // 物块是否是铜的判断函数(五个点任意一点满足就可以)
-        private int Is_Material(XImageW ximagew, int X, int Y, int Height, int Width, int value)
+        private int Is_Material(XImageW ximagew, int X, int Y, int Width, int Height, int value)
         {
             /*
             if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4)) < value)
@@ -1113,7 +1113,7 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    int kk = Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 5800);
+                    int kk = Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         num = SendData(data);
@@ -1429,7 +1429,7 @@ namespace XEthernetDemo
                 */
 
                 //if(FunctionSelect_Cu.Checked && dp.SCACount[0] > gap)
-                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 8) || (FunctionSelect_Zn.Checked && dp.SCACount[0] > 10) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
+                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 10) || (FunctionSelect_Zn.Checked && dp.SCACount[0] > 10) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
