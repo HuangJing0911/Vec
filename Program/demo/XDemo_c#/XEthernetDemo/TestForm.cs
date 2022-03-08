@@ -1429,7 +1429,11 @@ namespace XEthernetDemo
                 */
 
                 //if(FunctionSelect_Cu.Checked && dp.SCACount[0] > gap)
-                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 10) || (FunctionSelect_Zn.Checked && dp.SCACount[0] > 10) || (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || (FunctionSelect_Fe.Checked && dp.SCACount[4] > 8))           //符合条件的数据报，发送给HJ
+                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 25) || 
+                    (FunctionSelect_Zn.Checked && dp.SCACount[0] > 25) || 
+                    (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || 
+                    (FunctionSelect_Fe.Checked && dp.SCACount[4] > 30) ||
+                    (FunctionSelect_YelCu.Checked && dp.SCACount[1] > 25 && dp.SCACount[0] > 25))           //符合条件的数据报，发送给HJ
                 {
                     //sendcount++;
                     //label4.Text = sendcount.ToString();
