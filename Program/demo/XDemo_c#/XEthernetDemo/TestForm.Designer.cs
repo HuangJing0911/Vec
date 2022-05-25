@@ -41,6 +41,7 @@
             this.DisWin = new System.Windows.Forms.PictureBox();
             this.ChannelChecktimer = new System.Windows.Forms.Timer(this.components);
             this.FunctionBox = new System.Windows.Forms.GroupBox();
+            this.FunctionSelect_YelCu = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_NoSelect = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_Fe = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_Pb = new System.Windows.Forms.CheckBox();
@@ -48,7 +49,6 @@
             this.FunctionSelect_Cu = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.Version = new System.Windows.Forms.TextBox();
-            this.FunctionSelect_YelCu = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -200,6 +200,18 @@
             this.FunctionBox.TabIndex = 15;
             this.FunctionBox.TabStop = false;
             // 
+            // FunctionSelect_YelCu
+            // 
+            this.FunctionSelect_YelCu.AutoSize = true;
+            this.FunctionSelect_YelCu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.FunctionSelect_YelCu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FunctionSelect_YelCu.Location = new System.Drawing.Point(51, 145);
+            this.FunctionSelect_YelCu.Name = "FunctionSelect_YelCu";
+            this.FunctionSelect_YelCu.Size = new System.Drawing.Size(70, 29);
+            this.FunctionSelect_YelCu.TabIndex = 21;
+            this.FunctionSelect_YelCu.Text = "黄铜";
+            this.FunctionSelect_YelCu.UseVisualStyleBackColor = true;
+            // 
             // FunctionSelect_NoSelect
             // 
             this.FunctionSelect_NoSelect.AutoSize = true;
@@ -219,9 +231,9 @@
             this.FunctionSelect_Fe.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Fe.Location = new System.Drawing.Point(152, 105);
             this.FunctionSelect_Fe.Name = "FunctionSelect_Fe";
-            this.FunctionSelect_Fe.Size = new System.Drawing.Size(52, 29);
+            this.FunctionSelect_Fe.Size = new System.Drawing.Size(88, 29);
             this.FunctionSelect_Fe.TabIndex = 19;
-            this.FunctionSelect_Fe.Text = "铁";
+            this.FunctionSelect_Fe.Text = "不锈钢";
             this.FunctionSelect_Fe.UseVisualStyleBackColor = true;
             // 
             // FunctionSelect_Pb
@@ -296,18 +308,6 @@
             this.Version.Size = new System.Drawing.Size(124, 18);
             this.Version.TabIndex = 16;
             this.Version.Text = "Version: 1.5.6";
-            // 
-            // FunctionSelect_YelCu
-            // 
-            this.FunctionSelect_YelCu.AutoSize = true;
-            this.FunctionSelect_YelCu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.FunctionSelect_YelCu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_YelCu.Location = new System.Drawing.Point(51, 145);
-            this.FunctionSelect_YelCu.Name = "FunctionSelect_YelCu";
-            this.FunctionSelect_YelCu.Size = new System.Drawing.Size(70, 29);
-            this.FunctionSelect_YelCu.TabIndex = 21;
-            this.FunctionSelect_YelCu.Text = "紫铜";
-            this.FunctionSelect_YelCu.UseVisualStyleBackColor = true;
             // 
             // TestForm
             // 
