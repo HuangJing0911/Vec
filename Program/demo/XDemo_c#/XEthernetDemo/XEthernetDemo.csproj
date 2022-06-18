@@ -81,6 +81,9 @@
       <HintPath>..\packages\HslCommunication.9.6.6\lib\net35\HslCommunication.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HxCardDLL">
+      <HintPath>..\..\..\lib\RSHC\x64\HxCardDLL.dll</HintPath>
+    </Reference>
     <Reference Include="IrisSkin4">
       <HintPath>E:\Program Files (x86)\东日软件\IrisSkin\Bin\IrisSkin4.dll</HintPath>
     </Reference>
@@ -123,13 +126,13 @@
     <Compile Include="Channel.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Data_Set.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="op.cs" />
+    <Compile Include="ParamSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ParamSettingForm.Designer.cs">
+      <DependentUpon>ParamSettingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="op.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartMenu.cs">
@@ -144,8 +147,8 @@
     <Compile Include="TestForm.Designer.cs">
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ParamSettingForm.resx">
+      <DependentUpon>ParamSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

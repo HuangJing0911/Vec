@@ -14,7 +14,8 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using XLibWrapper;
+//using XLibWrapper;
+using HxCardDLL;
 using System.Threading;
 using OpenCvSharp;
 using System.Net.Sockets;
@@ -144,15 +145,17 @@ namespace XEthernetDemo
         public bool recv = false;   //是否开始接受功放程序数据
 
         //线阵变量
-        XSystemW xsystem;
-        XDeviceW xdevice;
-        XGigFactoryW xfactory;
-        XCommandW xcommand;
-        XFrameTransferW xtransfer;
-        XAcquisitionW xacquisition;
-        XDisplayW xdisplay;
-        XOffCorrectW xcorrect;
-        XTifFormatW xtifform;
+        //XSystemW xsystem;
+        //XDeviceW xdevice;
+        //XGigFactoryW xfactory;
+        //XCommandW xcommand;
+        //XFrameTransferW xtransfer;
+        //XAcquisitionW xacquisition;
+        //XDisplayW xdisplay;
+        //XOffCorrectW xcorrect;
+        //XTifFormatW xtifform;
+
+        HxCard hxCard;
 
         int frame_count = 0;
         int lost_line = 0;

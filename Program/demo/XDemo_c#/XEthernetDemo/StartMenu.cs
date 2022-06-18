@@ -112,19 +112,19 @@ namespace XEthernetDemo
 
         private void DebugButton_Click(object sender, EventArgs e)
         {
-            Form1 f1 = new Form1();
-            f1.arrayServer = LocalAdapter.Text;
-            f1.ntpServer = PLC_IP.Text;
-            f1.powerServer = Power_Amplifier.Text;
-            f1.speed = Convert.ToSingle(Speed.Text);
-            f1.num_of_mouth = Convert.ToInt32(MouthNum.Text);
-            f1.length_belt = Convert.ToInt32(BeltLength.Text);
-            f1.length_linearray = Convert.ToInt32(ArrayLength.Text);
-            f1.SOD = Convert.ToInt32(SOD.Text);
-            f1.SDD = Convert.ToInt32(SDD.Text);
-            f1.gap = Convert.ToInt32(gap.Text);
-            f1.SetSetting();
-            f1.ShowDialog();
+            //Form1 f1 = new Form1();
+            //f1.arrayServer = LocalAdapter.Text;
+            //f1.ntpServer = PLC_IP.Text;
+            //f1.powerServer = Power_Amplifier.Text;
+            //f1.speed = Convert.ToSingle(Speed.Text);
+            //f1.num_of_mouth = Convert.ToInt32(MouthNum.Text);
+            //f1.length_belt = Convert.ToInt32(BeltLength.Text);
+            //f1.length_linearray = Convert.ToInt32(ArrayLength.Text);
+            //f1.SOD = Convert.ToInt32(SOD.Text);
+            //f1.SDD = Convert.ToInt32(SDD.Text);
+            //f1.gap = Convert.ToInt32(gap.Text);
+            //f1.SetSetting();
+            //f1.ShowDialog();
         }
 
         private void TestButton_Click(object sender, EventArgs e)

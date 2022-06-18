@@ -8,7 +8,8 @@ using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using XLibWrapper;
+//using XLibWrapper;
+using HxCardDLL;
 using System.Threading;
 using OpenCvSharp;
 using System.Net.Sockets;
@@ -19,6 +20,294 @@ namespace XEthernetDemo
 {
     public partial class TestForm : Form
     {
+        #region  功放定义
+        public struct Msg
+        {
+            internal byte[] bytes;
+            internal int length;
+            internal DateTime getTime;
+            internal DateTime saveTime;
+            internal DateTime pickTime;
+            internal DateTime processTime;
+            internal DateTime sendTime;
+            internal DateTime beforeDeTime;
+        }
+
+        public struct GFinfo
+        {
+            internal int channelindex;          // 物块在第几通道
+            internal Int64 time;                // 物块到达的时间
+            internal int flag;                  // 物块的类型
+            internal bool next_same;            // 下一个信息与自己时间信息是否相同
+        }
+
+        public struct GFList
+        {
+            internal GFinfo[] list;         // 所有时间相同的GFinfo元素
+            internal int length;            // 表示列表中有效元素的个数
+            internal bool is_active;        // 表示该列表是否是激活状态
+            internal int start_channel;     // 列表开始的通道
+            internal int end_channel;       // 列表结束的通道
+        }
+
+        class dataProcess          //功放处理数据
+        {
+
+            public int[] SData = new int[2048];
+            int processway = 2;   //1:仅仅处理SCA
+
+            //数据一
+            public int Arridx, Chnidx, IfcVerMajor, IfcVerMinor;
+            public int DppAvailable, SpectralDataAvailabel, SnapshotStatisticDataValid, MxPowerSupplyState, MxPowerSupplyStable, SddTemperatureReady;
+            public int ChannelState, CntCommunicationReset, CntUdpPacket, CntUdpSendErr, CntMissedPacket, CntSyncErr, CntSnapshotStatInvalid;
+            public float DppTemperature, SddTemperature;
+            public int[] res = new int[7];
+
+            //数据二
+            public int SpectCtr, Events, BytesPerBin, NumberOfBins, StartBin;
+            public float DppTransferTime, Realtime, Lifetime, InputCountRate, OutputCountRate, DeadtimeRatio;
+
+            //数据三
+            public int TemperatureWarning, TemperatureFault, MxPowerUndervoltageLockout, MixedModeDetected;
+            public float MxCpuTemperature, MxCpuUpperSurfaceTemperature, MxCpuUnderSurfaceTemperature, MxCpuLoadCore1, MxCpuLoadCore2, MxPowerTemperature;
+
+            //数据五
+            //public int SCAStartBin ,SCALength ,SCACount;
+            public int[] SCAStartBin = new int[5];
+            public int[] SCALength = new int[5];
+            public int[] SCACount = new int[5];
+
+
+            public int GetN(string data, ref int index, int n)
+            {
+                int ret = 0; int j = 0;
+                for (int i = index + 2 * n - 1; i >= index; i--)
+                {
+                    int temp = data[i];
+                    if (temp > 47 && temp < 58)
+                    {
+                        temp -= 48;
+                    }
+                    else if (temp > 64 && temp < 71)
+                    {
+                        temp -= 55;
+                    }
+                    double powAns = Math.Pow(16, j);
+                    ret = ret + temp * (int)powAns;
+                    j++;
+                }
+                index += 2 * n;
+                return ret;
+            }
+
+            public float strToFloat(string data)
+            {
+                uint num = uint.Parse(data, System.Globalization.NumberStyles.AllowHexSpecifier);
+                byte[] floatVals = BitConverter.GetBytes(num);
+                float f = BitConverter.ToSingle(floatVals, 0);
+                return f;
+            }
+
+            public int[] ChannelMetaSection(ref int index, int SectionLen, string rawdata)
+            {
+                if (processway == 1)
+                {
+                    index += 2;
+                    Chnidx = GetN(rawdata, ref index, 1);
+                    index += 50;
+                }
+                else
+                {
+                    Arridx = GetN(rawdata, ref index, 1);
+                    Chnidx = GetN(rawdata, ref index, 1);
+                    IfcVerMajor = GetN(rawdata, ref index, 1);
+                    IfcVerMinor = GetN(rawdata, ref index, 1);
+
+                    string temp;
+                    int convertAns;
+                    temp = rawdata.Substring(index, 4);
+                    string Ans = Convert.ToString(Convert.ToInt32(temp, 16), 2).PadLeft(16, '0');
+
+                    DppAvailable = Ans[15] - 48;
+                    SpectralDataAvailabel = Ans[14] - 48;
+                    SnapshotStatisticDataValid = Ans[13] - 48;
+                    MxPowerSupplyState = Ans[12] - 48;
+                    MxPowerSupplyStable = Ans[11] - 48;
+                    SddTemperatureReady = Ans[10] - 48;
+
+                    index += 4;
+
+                    ChannelState = GetN(rawdata, ref index, 1);
+                    CntCommunicationReset = GetN(rawdata, ref index, 2);
+                    CntUdpPacket = GetN(rawdata, ref index, 2);
+                    CntUdpSendErr = GetN(rawdata, ref index, 2);
+                    CntMissedPacket = GetN(rawdata, ref index, 2);
+                    CntSyncErr = GetN(rawdata, ref index, 2);
+                    CntSnapshotStatInvalid = GetN(rawdata, ref index, 2);
+
+                    temp = rawdata.Substring(index, 8);
+                    DppTemperature = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    SddTemperature = strToFloat(temp);
+                    index += 8;
+
+                    res[0] = Chnidx;
+                    res[1] = DppAvailable;
+                    res[2] = SpectralDataAvailabel;
+                    res[3] = SnapshotStatisticDataValid;
+                    res[4] = MxPowerSupplyState;
+                    res[5] = MxPowerSupplyStable;
+                    res[6] = SddTemperatureReady;
+                }
+
+
+                return res;
+
+            }
+
+            public void SCADataSection(ref int index, int SectionLen, string rawdata)
+            {
+                int tempstartbin, templength, tempcount;
+                for (int i = 0; i < 16; i++)
+                {
+                    tempstartbin = GetN(rawdata, ref index, 2);
+                    templength = GetN(rawdata, ref index, 2);
+                    tempcount = GetN(rawdata, ref index, 4);
+                    /*if(i == Chnidx - 1)
+                    {
+                        SCAStartBin = tempstartbin;
+                        SCALength = templength;
+                        SCACount = tempcount;
+                    }*/
+                    if (i >= 0 && i < 5)             //根据SCA个数要进行修改
+                    {
+                        SCAStartBin[i] = tempstartbin;
+                        SCALength[i] = templength;
+                        SCACount[i] = tempcount;
+                    }
+
+                }
+
+            }
+
+            public float SpectralMetaSection(ref int index, int SectionLen, string rawdata)
+            {
+                if (processway == 1)
+                {
+                    index += 70;
+                    /*
+                    index += 20;
+                    string temp;
+                    temp = rawdata.Substring(index, 8);
+                    Lifetime = strToFloat(temp);
+                    index += 50;
+                    */
+                }
+                else
+                {
+                    SpectCtr = GetN(rawdata, ref index, 2);
+
+                    string temp;
+                    temp = rawdata.Substring(index, 8);
+                    DppTransferTime = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    Realtime = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    Lifetime = strToFloat(temp);
+                    index += 8;
+
+                    Events = GetN(rawdata, ref index, 4);
+
+                    temp = rawdata.Substring(index, 8);
+                    InputCountRate = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    OutputCountRate = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    DeadtimeRatio = strToFloat(temp);
+                    index += 8;
+
+                    BytesPerBin = GetN(rawdata, ref index, 1);
+                    NumberOfBins = GetN(rawdata, ref index, 2);
+                    StartBin = GetN(rawdata, ref index, 2);
+                }
+                return Lifetime;
+
+            }
+
+            public void SpectrumSection(ref int index, int SectionLen, string rawdata)
+            {
+                if (processway == 1)
+                {
+                    index += (SectionLen - 1) * 2;
+                }
+                else
+                {
+                    int start = index;
+                    for (int i = 0; index < start + (SectionLen - 1) * 2; i++)
+                    {
+                        SData[i] = GetN(rawdata, ref index, 2);
+                    }
+                }
+
+
+            }
+
+            public void DiagnosticDataSection(ref int index, int SectionLen, string rawdata)
+            {
+                if (processway == 1)
+                {
+                    index += 52;
+                }
+                else
+                {
+                    string temp;
+                    temp = rawdata.Substring(index, 4);
+                    string Ans = Convert.ToString(Convert.ToInt32(temp, 16), 2).PadLeft(16, '0');
+                    TemperatureWarning = Ans[15] - 48;
+                    TemperatureFault = Ans[14] - 48;
+                    MxPowerUndervoltageLockout = Ans[13] - 48;
+                    MixedModeDetected = Ans[12] - 48;
+                    index += 4;
+
+                    temp = rawdata.Substring(index, 8);
+                    MxCpuTemperature = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    MxCpuUpperSurfaceTemperature = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    MxCpuUnderSurfaceTemperature = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    MxCpuLoadCore1 = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    MxCpuLoadCore2 = strToFloat(temp);
+                    index += 8;
+
+                    temp = rawdata.Substring(index, 8);
+                    MxPowerTemperature = strToFloat(temp);
+                    index += 8;
+
+                }
+            }
+        }
+
+        #endregion
         public TestForm()
         {
             InitializeComponent();
@@ -106,15 +395,17 @@ namespace XEthernetDemo
         public bool recv = false;   //是否开始接受功放程序数据
 
         //线阵变量
-        XSystemW xsystem;
-        XDeviceW xdevice;
-        XGigFactoryW xfactory;
-        XCommandW xcommand;
-        XFrameTransferW xtransfer;
-        XAcquisitionW xacquisition;
-        XDisplayW xdisplay;
-        XOffCorrectW xcorrect;
-        XTifFormatW xtifform;
+        //XSystemW xsystem;
+        //XDeviceW xdevice;
+        //XGigFactoryW xfactory;
+        //XCommandW xcommand;
+        //XFrameTransferW xtransfer;
+        //XAcquisitionW xacquisition;
+        //XDisplayW xdisplay;
+        //XOffCorrectW xcorrect;
+        //XTifFormatW xtifform;
+
+        HxCard hxCard;
 
         int frame_count = 0;
         int lost_line = 0;
@@ -150,7 +441,11 @@ namespace XEthernetDemo
         FileStream fs2;
         StreamWriter wr2;
         public string ntpServer = "192.168.250.1";          // PLC IP
-        public string arrayServer = "169.254.84.167";       // 线阵IP
+        public string arrayServer = "192.168.0.10";       // 线阵本地IP
+        public string arrayRemoteIp = "192.168.0.7";      // 线阵远端IP
+        public int arrayRemoteCmdPort = 3000;      // 线阵远端指令接收端口
+        public int arrayRemoteDataPort = 4001;     // 线阵远端信息发送端口
+        public int arrayLocalRecvPort = 4001;      // 线阵本地信息接收端口
         public string powerServer = "172.28.110.50";        // 功放IP
         public string ntpServer2 = "127.0.0.1";
         //OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
@@ -288,18 +583,20 @@ namespace XEthernetDemo
 
         void SetIntegralTime()
         {
-            ulong pixel_size;
-            unsafe
-            {
-                ulong data;
-                xcommand.GetPara(36, &data, 0);
-                pixel_size = data;
-            }
-            float integral = 0;
-            integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
-            //MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
-            ulong integral_times = (ulong)(integral * 1000);
-            xcommand.SetPara(3, integral_times, 0);
+            //ulong pixel_size;
+            //unsafe
+            //{
+            //    ulong data;
+            //    xcommand.GetPara(36, &data, 0);
+            //    pixel_size = data;
+            //}
+            //float integral = 0;
+            //integral = ((float)pixel_size / 10) / (speed * SDD / SOD);
+            ////MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
+            //ulong integral_times = (ulong)(integral * 1000);
+            //xcommand.SetPara(3, integral_times, 0);
+            int integral = 500;//us
+            hxCard.SetIntegrationTime((uint)integral);
             integral_time = integral;
         }
 
@@ -620,11 +917,11 @@ namespace XEthernetDemo
             udpSend.Connect(sendpoint);
         }
 
-        void OnFrameReady(XImageW image)
+        void OnFrameReady(HxCard.XImgFrame image)
         {
             frame_count++;
             threadCounters(image);
-            xdisplay.Display(image);
+            //xdisplay.Display(image);
         }
 
         private void Humidity_Click(object sender, EventArgs e)
@@ -634,6 +931,7 @@ namespace XEthernetDemo
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            paraSetButton.Enabled = false;
             DeleteFiles(result_data + "pic/");
             frame_count = 0;
             lost_line = 0;
@@ -654,7 +952,8 @@ namespace XEthernetDemo
             wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
             wr2.Flush();
             LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
-            xacquisition.Grab(0);
+            //xacquisition.Grab(0);
+            hxCard.StartSampling();
             Console.WriteLine("start grab!!!");
 
             // 设定定时器
@@ -704,11 +1003,11 @@ namespace XEthernetDemo
         void threadCounters(Object obj)
         {
             DateTime stamp = DateTime.Now;
-            XImageW image = (XImageW)obj;
+            HxCard.XImgFrame image = (HxCard.XImgFrame)obj;
             pic_num++;
             string save_file;
             save_file = System.Windows.Forms.Application.StartupPath + "/result/TEST" + pic_num + ".txt";
-            int value = Marshal.ReadInt32(image.DataAddr, 0);
+            //int value = Marshal.ReadInt32(image.DataAddr, 0);
 
             try
             {
@@ -753,7 +1052,7 @@ namespace XEthernetDemo
         }
 
         // 物块是否是铜的判断函数(五个点任意一点满足就可以)
-        private int Is_Material(XImageW ximagew, int X, int Y, int Width, int Height, int value)
+        private int Is_Material(HxCard.XImgFrame ximagew, int X, int Y, int Width, int Height, int value)
         {
             /*
             if (ximagew.GetPixelVal((uint)(Y + Height / 4), (uint)(X + Width / 4)) < value)
@@ -808,7 +1107,7 @@ namespace XEthernetDemo
 
         }
 
-        public void getCounters_Pixel(XImageW ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
+        public void getCounters_Pixel(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
             //CardNum2.Text = Convert.ToString(row)+"row";
             //CardNum3.Text = Convert.ToString(col) + "col";
@@ -1162,22 +1461,25 @@ namespace XEthernetDemo
         private void FindDeviceButton_Click(object sender, EventArgs e)
         {
             //DeleteFiles(result_data + "pic/");
-            xsystem = new XSystemW();
-            xsystem.LocalIP = arrayServer;
-            xsystem.OnXError += new XSystemW.DelOnXError(OnError);
+            //xsystem = new XSystemW();
+            hxCard = new HxCard();
+            hxCard.Connect(arrayServer, arrayRemoteIp, arrayLocalRecvPort, arrayRemoteCmdPort, arrayRemoteCmdPort, arrayRemoteDataPort);
 
-            if (xsystem.Open() > 0)
-            {
-                int dev_num = xsystem.FindDevice();
-                if (dev_num > 0)
-                {
-                    xdevice = xsystem.GetDevice(0);
-                    string s = xdevice.IP;
-                    s = xdevice.CmdPort.ToString();
-                    s = xdevice.ImgPort.ToString();
+            //xsystem.LocalIP = arrayServer;
+            //xsystem.OnXError += new XSystemW.DelOnXError(OnError);
 
-                }
-            }
+            //if (xsystem.Open() > 0)
+            //{
+            //    int dev_num = xsystem.FindDevice();
+            //    if (dev_num > 0)
+            //    {
+            //        xdevice = xsystem.GetDevice(0);
+            //        string s = xdevice.IP;
+            //        s = xdevice.CmdPort.ToString();
+            //        s = xdevice.ImgPort.ToString();
+            //
+            //    }
+            //}
 
             try
             {
@@ -1194,39 +1496,39 @@ namespace XEthernetDemo
             open_recv();
 
             // openclick
-            xdevice = xsystem.GetDevice(0);
-            xfactory = new XGigFactoryW();
-            xcommand = new XCommandW();
-            xcommand.Factory = xfactory;
-            xcommand.OnXError += new XCommandW.DelOnXError(OnError);
-            xcommand.OnXEvent += new XCommandW.DelOnXEvent(OnEvent2);
+            //xdevice = xsystem.GetDevice(0);
+            //xfactory = new XGigFactoryW();
+            //xcommand = new XCommandW();
+            //xcommand.Factory = xfactory;
+            //xcommand.OnXError += new XCommandW.DelOnXError(OnError);
+            //xcommand.OnXEvent += new XCommandW.DelOnXEvent(OnEvent2);
 
-            if (xcommand.Open(xdevice) > 0)
+            if (true)//xcommand.Open(xdevice) > 0)
             {
-                xtransfer = new XFrameTransferW();
-                xtransfer.LineNum = Convert.ToUInt32("512");
-                xtransfer.OnXError += new XFrameTransferW.DelOnXError(OnError);
-                xtransfer.OnXEvent += new XFrameTransferW.DelOnXEvent(OnEvent1);
-                xtransfer.OnXFrameReady += new XFrameTransferW.DelOnFrameReady(OnFrameReady);
-
-                xacquisition = new XAcquisitionW();
-                xacquisition.Factory = xfactory;
-                xacquisition.Transfer = xtransfer;
-                xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
-                xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
-                xacquisition.EnableLineInfo = 1;
+                //xtransfer = new XFrameTransferW();
+                //xtransfer.LineNum = Convert.ToUInt32("512");
+                //xtransfer.OnXError += new XFrameTransferW.DelOnXError(OnError);
+                //xtransfer.OnXEvent += new XFrameTransferW.DelOnXEvent(OnEvent1);
+                //xtransfer.OnXFrameReady += new XFrameTransferW.DelOnFrameReady(OnFrameReady);
+                hxCard.RegisterImgCallback(OnFrameReady);
+                //xacquisition = new XAcquisitionW();
+                //xacquisition.Factory = xfactory;
+                //xacquisition.Transfer = xtransfer;
+                //xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
+                //xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
+                //xacquisition.EnableLineInfo = 1;
                 //MessageBox.Show("Finished Start the Line Info!");
 
-                if (xacquisition.Open(xdevice, xcommand) > 0)
-                {
-                    xdisplay = new XDisplayW();
-                    xdisplay.Open(xdevice, xtransfer.LineNum, DisWin.Handle, Convert.ToUInt32(0));
-                    xcorrect = new XOffCorrectW();
-                    xcorrect.Open(xdevice);
-                }
+                //if (xacquisition.Open(xdevice, xcommand) > 0)
+                //{
+                //    xdisplay = new XDisplayW();
+                //    xdisplay.Open(xdevice, xtransfer.LineNum, DisWin.Handle, Convert.ToUInt32(0));
+                //    xcorrect = new XOffCorrectW();
+                //    xcorrect.Open(xdevice);
+                //}
                 //Get serial number of X-GCU
-                string sn = xcommand.GetPara(51, 0);
-                SN.Text = "SN: " + sn;
+                //string sn = xcommand.GetPara(51, 0);
+                //SN.Text = "SN: " + sn;
 
                 // 连接到PLC
                 Connect_to_PLC();
@@ -1279,6 +1581,7 @@ namespace XEthernetDemo
 
         private void StopButton_Click(object sender, EventArgs e)
         {
+            
             wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             wr.Flush();
             // 暂停线阵
@@ -1292,8 +1595,8 @@ namespace XEthernetDemo
             timerthread.Abort();
             recv = false;
             //recv_thread.Abort();
-            xacquisition.Stop();
-
+            //xacquisition.Stop();
+            hxCard.StopSampling();
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
@@ -1322,11 +1625,24 @@ namespace XEthernetDemo
             StopButton.Enabled = false;
             FindDeviceButton.Enabled = true;
             //FunctionBox.Enabled = true;
+            paraSetButton.Enabled = true;
         }
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
         {
             ChannelStateCheck();
+        }
+
+        private void paraSetButton_Click(object sender, EventArgs e)
+        {
+            ParamSettingForm psf = new ParamSettingForm();
+            if(psf.ShowDialog()== DialogResult.OK)
+            {
+                num_of_mouth = psf.nozzleNum;          // 喷嘴数量
+                length_belt = psf.beltLength;          // 皮带长度为1000mm
+                length_linearray = psf.arrayLength;     // 线阵长度为1200mm
+                speed = psf.beltVelocity;              // 传送带速度
+            }
         }
 
         private void ProcessMessage()

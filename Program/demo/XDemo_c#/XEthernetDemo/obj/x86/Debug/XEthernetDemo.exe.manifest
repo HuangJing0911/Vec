@@ -55,6 +55,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HxCardDLL.dll" size="11776">
+      <assemblyIdentity name="HxCardDLL" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>uo6CfFtrqKqA+o7YwDZXKA08W3TrGEPjekIl2j3m9GY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IrisSkin4.dll" size="557056">
       <assemblyIdentity name="IrisSkin4" version="2006.3.22.45" publicKeyToken="127BE25A6DB25E07" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -127,14 +139,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="394240">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="268288">
       <assemblyIdentity name="XEthernetDemo" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>LbqH2v+GlglmEK1eDQOCBJf8GTRwdpjbTazGsNFCcb4=</dsig:DigestValue>
+        <dsig:DigestValue>x3FWbcdyyAwKlADaqmGEa0+EbbG3tj3UrKchHsk5Hhc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

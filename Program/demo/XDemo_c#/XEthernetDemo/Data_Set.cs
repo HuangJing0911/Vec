@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OpenCvSharp;
-using XLibWrapper;
+//using XLibWrapper;
+using HxCardDLL;
 
 
 namespace XEthernetDemo
@@ -28,7 +29,7 @@ namespace XEthernetDemo
             Console.WriteLine("对象已成功创建!");
         }
 
-        public void Init_Dataset(Rect boundRect, XImageW image)
+        public void Init_Dataset(Rect boundRect,HxCard.XImgFrame image)
         {
             blow = 1;
         }
