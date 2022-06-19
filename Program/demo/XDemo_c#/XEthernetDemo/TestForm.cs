@@ -1,8 +1,10 @@
-﻿using System;
+﻿#define _TEST
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -440,6 +442,16 @@ namespace XEthernetDemo
         StreamWriter wr;
         FileStream fs2;
         StreamWriter wr2;
+#if _TEST
+        public string ntpServer = "127.0.0.7";          // PLC IP
+        public string arrayServer = "127.0.0.1";       // 线阵本地IP
+        public string arrayRemoteIp = "127.0.0.2";      // 线阵远端IP
+        public int arrayRemoteCmdPort = 3000;      // 线阵远端指令接收端口
+        public int arrayRemoteDataPort = 4001;     // 线阵远端信息发送端口
+        public int arrayLocalRecvPort = 4001;      // 线阵本地信息接收端口
+        public string powerServer = "127.0.0.10";        // 功放IP
+        public string ntpServer2 = "127.0.0.11";
+#else
         public string ntpServer = "192.168.250.1";          // PLC IP
         public string arrayServer = "192.168.0.10";       // 线阵本地IP
         public string arrayRemoteIp = "192.168.0.7";      // 线阵远端IP
@@ -448,6 +460,7 @@ namespace XEthernetDemo
         public int arrayLocalRecvPort = 4001;      // 线阵本地信息接收端口
         public string powerServer = "172.28.110.50";        // 功放IP
         public string ntpServer2 = "127.0.0.1";
+#endif
         //OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
@@ -1130,6 +1143,21 @@ namespace XEthernetDemo
             HierarchyIndex[] hierarchy;
             Cv2.FindContours(image, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
             connImage.CopyTo(image);
+            foreach (OpenCvSharp.Point[] contour in contours)
+            {
+                //Cv2.Rectangle();
+                Rect bound = Cv2.BoundingRect(contour);
+                //int num = rect.Length;
+                //for(int i = 1;i<num;i++)
+                //{
+                //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
+                //}
+                OpenCvSharp.Point p1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
+                OpenCvSharp.Point p2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
+                Cv2.Rectangle(image, p2, p1, 255, 2);
+            }
+
+            DrawImg(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
 
             Rect[] boundRect = new Rect[contours.Length];
             RotatedRect[] box = new RotatedRect[contours.Length];
@@ -1142,8 +1170,8 @@ namespace XEthernetDemo
             time_finish = DateTime.Now.Millisecond;
             Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
 
-            wr2.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
-            wr2.Flush();
+            wr2?.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
+            wr2?.Flush();
             //ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
 
             if (contours.Length != 0)
@@ -1192,7 +1220,7 @@ namespace XEthernetDemo
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 5 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 4)
                         continue;
 
-                    wr2.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
+                    wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
 
 
@@ -1313,21 +1341,21 @@ namespace XEthernetDemo
                         }
                         if (queue_flag == 1)        // 如果队列信息已经被读取，需要对队列首个物块进行剔除
                         {
-                            wr.WriteLine("Successfully Find: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                            wr?.WriteLine("Successfully Find: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
                             break;
                         }
                         else if (queue_flag == 2)                   // 如果列表中金属信息时间远小于当前物块时间，需要更新列表信息
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Message Exceed Time Limit: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                                wr?.WriteLine("Message Exceed Time Limit: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
                                 gflist.is_active = false;        // 如果队列信息已经过期，将当前列表设为未激活状态，下一个循环会当前列表信息更新
                             }
                             //info_queue.Dequeue();   
                         }
                         else if (queue_flag == 3)               // 如果当前列表时间符合但通道数不符合，则说明当前物块不是需要喷吹的目标金属，跳出循环
                         {
-                            wr.WriteLine("Channel not meet: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                            wr?.WriteLine("Channel not meet: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
                             break;
                         }
                         else                                    // 当前物块时间远小于列表时间，则说明当前物块不是需要喷吹的目标金属，跳出循环
@@ -1436,10 +1464,10 @@ namespace XEthernetDemo
 
                     if (num == 23 && is_small)
                         queue_flag = 4;
-                    wr.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
+                    wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
                 }
-                wr.Flush();
-                wr2.Flush();
+                wr?.Flush();
+                wr2?.Flush();
                 // 画出原始图像和处理后图像
                 if (flag == 1)
                 {
@@ -1532,7 +1560,7 @@ namespace XEthernetDemo
 
                 // 连接到PLC
                 Connect_to_PLC();
-                SetIntegralTime();
+                //SetIntegralTime();
 
                 StartButton.Enabled = true;
                 FindDeviceButton.Enabled = false;
@@ -1790,7 +1818,7 @@ namespace XEthernetDemo
             string ret = new string(r);
             return ret;
         }
-        
+
         /*
         public void write(int[,,] arr)             //保存txt文本
         {
@@ -1834,6 +1862,66 @@ namespace XEthernetDemo
             MessageBox.Show("write finish!");
         }
         */
+        private void DrawImg(Bitmap img)
+        {
+            Rectangle src = new Rectangle(0, 0, img.Width, img.Height);
+            Rectangle dst = new Rectangle(0, 0, DisWin.Width, DisWin.Height);
+            DisWin.CreateGraphics().DrawImage(img, dst, src, GraphicsUnit.Pixel);
+        }
+        private void DrawImg(HxCard.XImgFrame img)
+        {
+            Rectangle src = new Rectangle(0, 0, (int)img.Width, (int)img.Height);
+            Rectangle dst = new Rectangle(0, 0, DisWin.Width, DisWin.Height);
+            Console.WriteLine(img.Data.Length);
+            Bitmap dataImg = ByteToGrayBitmap(img.Data, (int)img.Width, (int)img.Height);
+            DisWin.CreateGraphics().DrawImage(dataImg, dst, src, GraphicsUnit.Pixel);
+            //dataImg.Save(".\\data\\图像2\\" + imgIndex.ToString() + ".bmp");
+        }
+        public static Bitmap ByteToGrayBitmap(byte[] rawValues, int width, int height)
+        {
+            //申请目标位图的变量，并将其内存区域锁定
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+            BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, width, height),
+             ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+            //获取图像参数
+            int stride = bmpData.Stride;  // 扫描线的宽度  
+            int offset = stride - width;  // 显示宽度与扫描线宽度的间隙  
+            IntPtr iptr = bmpData.Scan0;  // 获取bmpData的内存起始位置  
+            int scanBytes = stride * height;// 用stride宽度，表示这是内存区域的大小  
+
+            //下面把原始的显示大小字节数组转换为内存中实际存放的字节数组
+            int posScan = 0, posReal = 0;// 分别设置两个位置指针，指向源数组和目标数组  
+            byte[] pixelValues = new byte[scanBytes];  //为目标数组分配内存  
+
+            for (int x = 0; x < height; x++)
+            {
+                //下面的循环节是模拟行扫描
+                for (int y = 0; y < width; y++)
+                {
+                    pixelValues[posScan++] = rawValues[posReal++];
+                }
+                posScan += offset;  //行扫描结束，要将目标位置指针移过那段“间隙”  
+            }
+
+            //用Marshal的Copy方法，将刚才得到的内存字节数组复制到BitmapData中
+            System.Runtime.InteropServices.Marshal.Copy(pixelValues, 0, iptr, scanBytes);
+            //解锁内存区域  
+            bmp.UnlockBits(bmpData);
+
+            //下面的代码是为了修改生成位图的索引表，从伪彩修改为灰度
+            ColorPalette tempPalette;
+            using (Bitmap tempBmp = new Bitmap(1, 1, PixelFormat.Format8bppIndexed))
+            {
+                tempPalette = tempBmp.Palette;
+            }
+            for (int i = 0; i < 256; i++)
+            {
+                tempPalette.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
+            }
+            bmp.Palette = tempPalette;
+            return bmp;
+        }
     }
 
 

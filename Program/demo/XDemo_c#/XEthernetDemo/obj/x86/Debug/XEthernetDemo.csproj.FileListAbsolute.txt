@@ -544,3 +544,4 @@ D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.cs
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.pdb
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\HxCardDLL.dll
+D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.ParamSettingForm.resources

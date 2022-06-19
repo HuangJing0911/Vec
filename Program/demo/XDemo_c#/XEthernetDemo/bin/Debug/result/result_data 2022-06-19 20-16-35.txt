@@ -1,0 +1,4 @@
+
+*************************************************************************
+*******************2022/6/19 20:16:35********************
+frame_count	start_num	end_num	start_time		blow_time		send_time	time1	time2	typof_block	queue_flag	area	black_location
