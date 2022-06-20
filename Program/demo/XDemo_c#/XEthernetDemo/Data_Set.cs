@@ -26,7 +26,7 @@ namespace XEthernetDemo
 
         public Data_Set()
         {
-            Console.WriteLine("对象已成功创建!");
+            //Console.WriteLine("对象已成功创建!");
         }
 
         public void Init_Dataset(Rect boundRect,HxCard.XImgFrame image)

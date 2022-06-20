@@ -1,4 +1,4 @@
-﻿#define _TEST
+﻿//#define _TEST
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -420,7 +420,7 @@ namespace XEthernetDemo
         int pic_num = 0;
         int check_time_num = 0;                 // 定时器1的计数器
         int check_time_num2 = 0;                // 定时器2的计数器
-        float integral_time = 3;                // 默认扫描积分时间3ms
+        float integral_time = 0.5F;                // 默认扫描积分时间3ms
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
@@ -439,9 +439,9 @@ namespace XEthernetDemo
         string result_data = System.Windows.Forms.Application.StartupPath + "/result/";
         string time_data = System.Windows.Forms.Application.StartupPath + "/result/";
         FileStream fs;
-        StreamWriter wr;
+        //StreamWriter wr;
         FileStream fs2;
-        StreamWriter wr2;
+        //StreamWriter wr2;
 #if _TEST
         public string ntpServer = "127.0.0.7";          // PLC IP
         public string arrayServer = "127.0.0.1";       // 线阵本地IP
@@ -566,7 +566,7 @@ namespace XEthernetDemo
             }
             else
                 gflist.length = 0;
-            wr.WriteLine("Update the first time info list! The length of list is: " + (gflist.length) + "(" + gflist.start_channel + "," + gflist.end_channel + ")," + ",queue_count = " + info_queue.Count);
+            ////wr.WriteLine("Update the first time info list! The length of list is: " + (gflist.length) + "(" + gflist.start_channel + "," + gflist.end_channel + ")," + ",queue_count = " + info_queue.Count);
         }
 
         void Connect_to_PLC()
@@ -695,10 +695,12 @@ namespace XEthernetDemo
                 c = BitConverter.GetBytes(data.blow_time);
                 ntp_data[15] = c[0];
                 ntp_data[16] = c[1];                        // 吹气持续时间
-                Console.WriteLine("blow time is:" + ntp_data[15] + "  " + ntp_data[16]);
+                //Console.WriteLine("blow time is:" + ntp_data[15] + "  " + ntp_data[16]);
                 c = BitConverter.GetBytes(data.start_num);
                 ntp_data[17] = c[0];
                 ntp_data[18] = c[1];                        // 开始吹气阀号
+                if (c[1] != 0)
+                    Console.WriteLine("开始吹气阀号：{0}", c[1]);
                 c = BitConverter.GetBytes(data.end_num);
                 ntp_data[19] = c[0];
                 ntp_data[20] = c[1];                        // 开始吹气阀号
@@ -721,7 +723,7 @@ namespace XEthernetDemo
                         OnError(50, "Channel " + i + " error!");
                 }
             }
-            wr2.WriteLine(DateTime.Now.ToString() + "ChannelStateCheck Finishing!");
+            //wr2.WriteLine(DateTime.Now.ToString() + "ChannelStateCheck Finishing!");
         }
 
         // 发送当前时间点的时间戳
@@ -748,8 +750,8 @@ namespace XEthernetDemo
             }
             if (data.start_time_int % 10000 == 0)
             {
-                wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_time_int) + '\t');
-                wr.Flush();
+                //wr.WriteLine("Check!" + '\t' + Convert.ToString(data.start_time_int) + '\t');
+                //wr.Flush();
             }
         }
 
@@ -851,8 +853,8 @@ namespace XEthernetDemo
                 }
                 try
                 {
-                    wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
-                    wr.Flush();
+                    //wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
+                    //wr.Flush();
                 }
                 catch(ObjectDisposedException ex)
                 {
@@ -952,18 +954,18 @@ namespace XEthernetDemo
             total_detect_num = 0;
             DateTime time = DateTime.Now;
             fs = new FileStream(result_data + "result_data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
-            wr = new StreamWriter(fs);
+            //wr = new StreamWriter(fs);
             fs2 = new FileStream(time_data + "frame-time-data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
-            wr2 = new StreamWriter(fs2);
-            wr.WriteLine("\n*************************************************************************");
+            //wr2 = new StreamWriter(fs2);
+            //wr.WriteLine("\n*************************************************************************");
             DateTime dt = DateTime.Now;
-            wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr2.WriteLine("\n*************************************************************************");
-            wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
-            wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttime1\ttime2\ttypof_block\tqueue_flag\tarea\tblack_location");
-            wr.Flush();
-            wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
-            wr2.Flush();
+            //wr.WriteLine("*******************" + Convert.ToString(dt) + "********************");
+            //wr2.WriteLine("\n*************************************************************************");
+            //wr2.WriteLine("*******************" + Convert.ToString(dt) + "********************");
+            //wr.WriteLine("frame_count" + '\t' + "start_num" + '\t' + "end_num" + '\t' + "start_time" + '\t' + '\t' + "blow_time" + '\t' + '\t' + "send_time\ttime1\ttime2\ttypof_block\tqueue_flag\tarea\tblack_location");
+            //wr.Flush();
+            //wr2.WriteLine("frame_count\tcontour_length\tstart_X\tstart_Y\tWidth\tHeight");
+            //wr2.Flush();
             LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
             //xacquisition.Grab(0);
             hxCard.StartSampling();
@@ -1053,8 +1055,8 @@ namespace XEthernetDemo
                     }
                 };
                 time_finish = DateTime.Now.Millisecond;
-                Console.WriteLine("==================================");
-                Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
+                //Console.WriteLine("==================================");
+                //Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
                 getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);
             }
             catch (ThreadAbortException e)
@@ -1125,6 +1127,7 @@ namespace XEthernetDemo
             //CardNum2.Text = Convert.ToString(row)+"row";
             //CardNum3.Text = Convert.ToString(col) + "col";
             time_now = DateTime.Now.Millisecond;
+            //long time_now2 = time_now;
             //Mat image = new Mat(row, col, type,p);
             image.ConvertTo(image, MatType.CV_32F);
             Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
@@ -1155,6 +1158,12 @@ namespace XEthernetDemo
                 OpenCvSharp.Point p1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
                 OpenCvSharp.Point p2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
                 Cv2.Rectangle(image, p2, p1, 255, 2);
+                if(Math.Abs(p2.X-p1.X)>10)
+                {
+                    Console.WriteLine("Rect -> P2:{0}", p2);
+                    Console.WriteLine("Rect -> P1:{0}", p1);
+                }
+
             }
 
             DrawImg(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
@@ -1168,17 +1177,18 @@ namespace XEthernetDemo
             //Console.WriteLine(contours.Length);
             //Console.WriteLine("=====================");
             time_finish = DateTime.Now.Millisecond;
-            Console.WriteLine("process picture spend {0} millisecond", time_finish - time_now);
+            //long time_finish2 = time_finish;
+            //Console.WriteLine("process picture spend {0} millisecond", time_finish2 - time_now2);
 
-            wr2?.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
-            wr2?.Flush();
+            //wr2?.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
+            //wr2?.Flush();
             //ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
 
             if (contours.Length != 0)
             {
                 //Console.WriteLine("=====================");
-                Console.WriteLine("successfully detect{0} blocks!", contours.Length);
-                Console.WriteLine("==================================\n\n");
+                //Console.WriteLine("successfully detect{0} blocks!", contours.Length);
+                //Console.WriteLine("==================================\n\n");
                 total_card_num += contours.Length;
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -1220,7 +1230,7 @@ namespace XEthernetDemo
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 5 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 4)
                         continue;
 
-                    wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
+                    //wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
 
 
@@ -1305,13 +1315,20 @@ namespace XEthernetDemo
                         {
                             first_info = gflist.list[n];
                             Int64 a = data.start_time_int - first_info.time;
+                            Console.WriteLine("Start Time:{0}", data.start_time_int);
+                            Console.WriteLine("first_info.time:{0}", first_info.time);
+                            Console.WriteLine("a:" + a);
+                            Console.WriteLine("========");
                             if (Math.Abs(a) <= 20)
                             {
+                                Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
+                                Console.WriteLine("end_channel:{0}", gflist.end_channel >= start_num);
                                 //if ((first_info.channelindex <= start_num && first_info.channelindex >= end_num) || (gflist.start_channel <= start_num && gflist.end_channel >= end_num))
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
                                 {
                                     queue_flag = 1;
                                     data.typof_block = (byte)first_info.flag;
+                                    Console.WriteLine("Block Type:" + data.typof_block);
                                     break;
                                 }
                                 else
@@ -1341,26 +1358,26 @@ namespace XEthernetDemo
                         }
                         if (queue_flag == 1)        // 如果队列信息已经被读取，需要对队列首个物块进行剔除
                         {
-                            wr?.WriteLine("Successfully Find: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                            //wr?.WriteLine("Successfully Find: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
                             break;
                         }
                         else if (queue_flag == 2)                   // 如果列表中金属信息时间远小于当前物块时间，需要更新列表信息
                         {
                             lock (locker)
                             {
-                                wr?.WriteLine("Message Exceed Time Limit: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                                //wr?.WriteLine("Message Exceed Time Limit: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
                                 gflist.is_active = false;        // 如果队列信息已经过期，将当前列表设为未激活状态，下一个循环会当前列表信息更新
                             }
                             //info_queue.Dequeue();   
                         }
                         else if (queue_flag == 3)               // 如果当前列表时间符合但通道数不符合，则说明当前物块不是需要喷吹的目标金属，跳出循环
                         {
-                            wr?.WriteLine("Channel not meet: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
+                            //wr?.WriteLine("Channel not meet: gflist.length = " + gflist.length + ",queue_count = " + info_queue.Count);
                             break;
                         }
                         else                                    // 当前物块时间远小于列表时间，则说明当前物块不是需要喷吹的目标金属，跳出循环
                         {
-                            //wr.WriteLine("Queue identify error:queue_count = " + info_queue.Count);
+                            ////wr.WriteLine("Queue identify error:queue_count = " + info_queue.Count);
                             break;
                         }
                         /*
@@ -1382,8 +1399,8 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Successfully Find: queue_count = " + info_queue.Count);
-                                //wr.Flush();
+                                //wr.WriteLine("Successfully Find: queue_count = " + info_queue.Count);
+                                ////wr.Flush();
                                 first_info.flag = 0;
                             }
                             break;
@@ -1392,8 +1409,8 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Message Exceed Time Limit: queue_count = " + info_queue.Count);
-                                //wr.Flush();
+                                //wr.WriteLine("Message Exceed Time Limit: queue_count = " + info_queue.Count);
+                                ////wr.Flush();
                                 first_info.flag = 0;        // 如果队列信息已经过期，剔除队列首个物体，然后继续寻找在队列中对下一个金属信息进行核验
                             }
                             //info_queue.Dequeue();   
@@ -1403,8 +1420,8 @@ namespace XEthernetDemo
                         {
                             lock (locker)
                             {
-                                wr.WriteLine("Channel not meet: queue_count = " + info_queue.Count);
-                                //wr.Flush();
+                                //wr.WriteLine("Channel not meet: queue_count = " + info_queue.Count);
+                                ////wr.Flush();
                                 //first_info.flag = 100;        // 如果通道数不符合，继续寻找在队列中对下一个金属信息进行核验
                             }
                             break;
@@ -1432,7 +1449,7 @@ namespace XEthernetDemo
                     // 让延迟一段时间发送物块信息 
                     // Thread.Sleep((int)(2400/speed) - );
                     // Thread t = new Thread(new ParameterizedThreadStart(thread_for_sending));
-                    // wr.WriteLine(t.ManagedThreadId + " thread start!");
+                    // //wr.WriteLine(t.ManagedThreadId + " thread start!");
                     // t.Start();
 
                     // 每个物块休眠2ms时间让PLC来得及处理物块信息
@@ -1440,10 +1457,15 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    int kk = Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
+                    int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
+                    Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
+                    Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
+                    Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
+                    Console.WriteLine("kk?:{0}", kk > 0);
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         num = SendData(data);
+                        Console.WriteLine("SendData");
                         data.typof_block = 1;
                         Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X+10, boundRect[i].Y),
                         HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
@@ -1464,10 +1486,10 @@ namespace XEthernetDemo
 
                     if (num == 23 && is_small)
                         queue_flag = 4;
-                    wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
+                    //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
                 }
-                wr?.Flush();
-                wr2?.Flush();
+                //wr?.Flush();
+                //wr2?.Flush();
                 // 画出原始图像和处理后图像
                 if (flag == 1)
                 {
@@ -1610,12 +1632,12 @@ namespace XEthernetDemo
         private void StopButton_Click(object sender, EventArgs e)
         {
             
-            wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
-            wr.Flush();
+            //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
+            //wr.Flush();
             // 暂停线阵
-            wr.Close();
+            //wr.Close();
             fs.Close();
-            wr2.Close();
+            //wr2.Close();
             fs2.Close();
             //AutoCheckTimer.Enabled = false;
             //AutoCheckTimer2.Enabled = false;
