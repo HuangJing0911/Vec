@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HxCardDLL.dll" size="11776">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HxCardDLL.dll" size="14336">
       <assemblyIdentity name="HxCardDLL" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>uo6CfFtrqKqA+o7YwDZXKA08W3TrGEPjekIl2j3m9GY=</dsig:DigestValue>
+        <dsig:DigestValue>QwbhASKdD6McOjHygs8+NjGgso0CrbrKuvBpb5Bys0c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -146,7 +146,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BVijIy+07+NAhiKzWkQ4FfmWTmXvFE+zTSEHPzspHEI=</dsig:DigestValue>
+        <dsig:DigestValue>hDRc3J49zUeqWk0uRgSqHKwSqQpgLxRrKwVxqxqLuck=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

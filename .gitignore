@@ -1,0 +1,7 @@
+bin
+.vs
+obj
+*.exe
+data
+*.zip
+

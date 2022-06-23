@@ -1,4 +1,4 @@
-﻿//#define _TEST
+﻿#define _TEST
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -310,6 +310,7 @@ namespace XEthernetDemo
         }
 
         #endregion
+
         public TestForm()
         {
             InitializeComponent();
@@ -420,7 +421,7 @@ namespace XEthernetDemo
         int pic_num = 0;
         int check_time_num = 0;                 // 定时器1的计数器
         int check_time_num2 = 0;                // 定时器2的计数器
-        float integral_time = 0.5F;                // 默认扫描积分时间3ms
+        float integral_time = 0.5F;             // 默认扫描积分时间3ms
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
@@ -608,7 +609,7 @@ namespace XEthernetDemo
             ////MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
             //ulong integral_times = (ulong)(integral * 1000);
             //xcommand.SetPara(3, integral_times, 0);
-            int integral = 500;//us
+            int integral = 800/3;//us
             hxCard.SetIntegrationTime((uint)integral);
             integral_time = integral;
         }
@@ -946,6 +947,8 @@ namespace XEthernetDemo
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            hxCard.SetGain(62);
+            hxCard.SetPixelMode(1);
             paraSetButton.Enabled = false;
             DeleteFiles(result_data + "pic/");
             frame_count = 0;
@@ -1057,7 +1060,7 @@ namespace XEthernetDemo
                 time_finish = DateTime.Now.Millisecond;
                 //Console.WriteLine("==================================");
                 //Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
-                getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);
+                getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, image.HeadTime);
             }
             catch (ThreadAbortException e)
             {
@@ -1121,7 +1124,7 @@ namespace XEthernetDemo
             return 0;
 
         }
-
+        int imgIndex = 0;
         public void getCounters_Pixel(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
             //CardNum2.Text = Convert.ToString(row)+"row";
@@ -1157,17 +1160,18 @@ namespace XEthernetDemo
                 //}
                 OpenCvSharp.Point p1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
                 OpenCvSharp.Point p2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
-                Cv2.Rectangle(image, p2, p1, 255, 2);
-                if(Math.Abs(p2.X-p1.X)>10)
+                Cv2.Rectangle(image, p2, p1, 100, 2);
+                if (Math.Abs(p2.X - p1.X) > 10) 
                 {
                     Console.WriteLine("Rect -> P2:{0}", p2);
                     Console.WriteLine("Rect -> P1:{0}", p1);
                 }
 
             }
-
-            DrawImg(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image));
-
+            Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+            DrawImg(bitmapImg);
+            bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+            imgIndex++;
             Rect[] boundRect = new Rect[contours.Length];
             RotatedRect[] box = new RotatedRect[contours.Length];
             //List<OpenCvSharp.Point[]> Resultcontours = new List<OpenCvSharp.Point[]>();
@@ -1467,7 +1471,7 @@ namespace XEthernetDemo
                         num = SendData(data);
                         Console.WriteLine("SendData");
                         data.typof_block = 1;
-                        Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X+10, boundRect[i].Y),
+                        Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
                         HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     }
 
@@ -1646,7 +1650,7 @@ namespace XEthernetDemo
             recv = false;
             //recv_thread.Abort();
             //xacquisition.Stop();
-            hxCard.StopSampling();
+            hxCard.Reset();
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
@@ -1944,6 +1948,7 @@ namespace XEthernetDemo
             bmp.Palette = tempPalette;
             return bmp;
         }
+
     }
 
 
