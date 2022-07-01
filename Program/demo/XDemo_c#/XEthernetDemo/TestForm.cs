@@ -425,6 +425,7 @@ namespace XEthernetDemo
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
+        public int AmplifierNum = 10;
         uint time_interval = 5;                 // 定时器定时时间为5ms
         public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
@@ -609,9 +610,9 @@ namespace XEthernetDemo
             ////MessageBox.Show("The pixel size is:" + pixel_size + "/10mm;The integral time is:" + integral + "ms");
             //ulong integral_times = (ulong)(integral * 1000);
             //xcommand.SetPara(3, integral_times, 0);
-            int integral = 800/3;//us
+            int integral = (int)(800 / speed);//us 像素长度/皮带运行速度
             hxCard.SetIntegrationTime((uint)integral);
-            integral_time = integral;
+            integral_time = integral/1000;
         }
 
         // 向PLC发送消息
@@ -1036,27 +1037,28 @@ namespace XEthernetDemo
                 int m, n, row, col;
                 row = (int)image.Height;
                 col = (int)image.Width;
-                col = col / 2 - 2;
-                for (uint i = 0; i < row; i++)
-                    for (uint j = 0; j < col; j++)
-                    {
-                        pixelval[i, j] = (uint)image.GetPixelVal(i, j + 2);
-                        if (pixelval[i, j] > maxp)
-                            maxp = pixelval[i, j];
-                        else if (pixelval[i, j] < minp)
-                            minp = pixelval[i, j];
-                    }
+                //col = col  - 2;
+                //for (uint i = 0; i < row; i++)
+                //    for (uint j = 0; j < col; j++)
+                //    {
+                //        pixelval[i, j] = (uint)image.GetPixelVal(i, j + 2);
+                //        if (pixelval[i, j] > maxp)
+                //            maxp = pixelval[i, j];
+                //        else if (pixelval[i, j] < minp)
+                //            minp = pixelval[i, j];
+                //    }
 
-                Mat image_mat = new Mat(row, col, MatType.CV_8UC1);
-                for (m = 0; m < row; m++)
-                {
-                    for (n = 0; n < col; n++)
-                    {
-                        float k = ((float)(pixelval[m, n] - minp)) / (maxp - minp);
-                        k = k * 255;
-                        image_mat.Set(m, n, (int)k);
-                    }
-                };
+                Mat image_mat = new Mat(new int[] { row, col }, MatType.CV_8UC1, image.Data);// new Mat(row, col, MatType.CV_8UC1);
+                //Mat image_mat = new Mat(row, col, MatType.CV_8UC1);
+                //for (m = 0; m < row; m++)
+                //{
+                //    for (n = 0; n < col; n++)
+                //    {
+                //        float k = ((float)(pixelval[m, n] - minp)) / (maxp - minp);
+                //        k = k * 255;
+                //        image_mat.Set(m, n, (int)k);
+                //    }
+                //};
                 time_finish = DateTime.Now.Millisecond;
                 //Console.WriteLine("==================================");
                 //Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
@@ -1149,29 +1151,9 @@ namespace XEthernetDemo
             HierarchyIndex[] hierarchy;
             Cv2.FindContours(image, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
             connImage.CopyTo(image);
-            foreach (OpenCvSharp.Point[] contour in contours)
-            {
-                //Cv2.Rectangle();
-                Rect bound = Cv2.BoundingRect(contour);
-                //int num = rect.Length;
-                //for(int i = 1;i<num;i++)
-                //{
-                //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
-                //}
-                OpenCvSharp.Point p1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
-                OpenCvSharp.Point p2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
-                Cv2.Rectangle(image, p2, p1, 100, 2);
-                if (Math.Abs(p2.X - p1.X) > 10) 
-                {
-                    Console.WriteLine("Rect -> P2:{0}", p2);
-                    Console.WriteLine("Rect -> P1:{0}", p1);
-                }
 
-            }
-            Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
-            DrawImg(bitmapImg);
-            bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
-            imgIndex++;
+
+
             Rect[] boundRect = new Rect[contours.Length];
             RotatedRect[] box = new RotatedRect[contours.Length];
             //List<OpenCvSharp.Point[]> Resultcontours = new List<OpenCvSharp.Point[]>();
@@ -1290,7 +1272,7 @@ namespace XEthernetDemo
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
 
-                    
+
 
 
                     // 对物块的种类进行判断
@@ -1299,10 +1281,14 @@ namespace XEthernetDemo
                     //opFlag = 2;                                 // 将当前队列可读写状态设置为2
                     //Queue<GFinfo> gfinfo = info_queue;
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
-                    int start_num = (int)Math.Ceiling((float)data.start_num * 10 / num_of_mouth);
-                    int end_num = (int)Math.Ceiling((float)data.end_num * 10 / num_of_mouth);
+                    int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierNum / num_of_mouth);
+                    int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierNum / num_of_mouth);
                     //while (info_queue.Count != 0 || first_info.flag != 0)
                     //while (!is_small)
+
+
+
+
                     while (true)
                     {
                         //gfinfo = info_queue;
@@ -1439,6 +1425,48 @@ namespace XEthernetDemo
                         //opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
                     }
 
+                    #region CZQ
+
+                    Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
+                    foreach (OpenCvSharp.Point[] contour in contours)
+                    {
+                        //Cv2.Rectangle();
+                        Rect bound = Cv2.BoundingRect(contour);
+                        //int num = rect.Length;
+                        //for(int i = 1;i<num;i++)
+                        //{
+                        //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
+                        //}
+                        OpenCvSharp.Point p1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
+                        OpenCvSharp.Point p2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
+                        Cv2.Rectangle(image, p2, p1, 100, 2);
+                        if (Math.Abs(p2.X - p1.X) > 10)
+                        {
+                            //Console.WriteLine("Rect -> P2:{0}", p2);
+                            //Console.WriteLine("Rect -> P1:{0}", p1);
+                        }
+
+                    }
+                    int itemButtomDown = TimeConvert2Index((Int64)(ximagew.HeadTime - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
+                    int itemButtomUp = TimeConvert2Index((Int64)(ximagew.HeadTime - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
+                    int itemLeft = (int)((float)(start_num - 1) / AmplifierNum * image.Width);
+                    int itemRight = (int)((float)end_num / AmplifierNum * image.Width);
+                    Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
+
+                    int AmpLineY = TimeConvert2Index((Int64)(ximagew.HeadTime - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
+                    int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
+                    int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
+                    Cv2.Line(image, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
+
+                    for (int ii = 1; ii < AmplifierNum; ii++)
+                        Cv2.Line(image, new OpenCvSharp.Point(ii * image.Width / AmplifierNum, 0), new OpenCvSharp.Point(ii * image.Width / AmplifierNum, 512), 100, 1);
+                    Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+                    DrawImg(bitmapImg);
+                    Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
+                    bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+                    imgIndex++;
+
+                    #endregion
 
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -1501,8 +1529,6 @@ namespace XEthernetDemo
                     ximagew.Save(System.Windows.Forms.Application.StartupPath + "/result/pic/TEST" + pic_num + ".txt");
                     Cv2.ImWrite(init_pic, connImage);
                 }
-
-
             }
 
             // ushort[,] line_info = get_timestamp_test(ximagew);
@@ -1517,6 +1543,7 @@ namespace XEthernetDemo
             //DeleteFiles(result_data + "pic/");
             //xsystem = new XSystemW();
             hxCard = new HxCard();
+            hxCard.Inverse = true;
             hxCard.Connect(arrayServer, arrayRemoteIp, arrayLocalRecvPort, arrayRemoteCmdPort, arrayRemoteCmdPort, arrayRemoteDataPort);
 
             //xsystem.LocalIP = arrayServer;
@@ -1947,6 +1974,12 @@ namespace XEthernetDemo
             }
             bmp.Palette = tempPalette;
             return bmp;
+        }
+
+        public int TimeConvert2Index(long imgTime,long itemTime)
+        {
+            long timeLength = itemTime - imgTime;
+            return (int)(timeLength / integral_time)+512;
         }
 
     }
