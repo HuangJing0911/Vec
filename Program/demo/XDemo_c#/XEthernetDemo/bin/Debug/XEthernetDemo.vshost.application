@@ -8,20 +8,20 @@
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="http://desktop-lqhh0af/XEthernetDemo/XEthernetDemo.application" />
+    <deploymentProvider codebase="http://desktop-j4ch4vh/XEthernetDemo/XEthernetDemo.application" />
   </deployment>
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="XEthernetDemo.exe.manifest" size="9196">
+    <dependentAssembly dependencyType="install" codebase="XEthernetDemo.exe.manifest" size="10030">
       <assemblyIdentity name="XEthernetDemo.exe" version="1.0.0.3" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Mbg9csxp4XtfZRUyoQWCff/k0NY=</dsig:DigestValue>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>9GjoKn8gIYfyEFsSZ2ZgJiFZFWPwx8POhf9UKQuCvmw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

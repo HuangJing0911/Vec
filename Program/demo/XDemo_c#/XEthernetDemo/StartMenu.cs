@@ -141,7 +141,7 @@ namespace XEthernetDemo
             f1.SDD = Convert.ToInt32(SDD.Text);
             f1.gap = Convert.ToInt32(gap.Text);
             f1.version = Version.Text;
-            f1.ShowDialog();
+            f1.Show();
         }
 
         private void StartMenu_Load(object sender, EventArgs e)

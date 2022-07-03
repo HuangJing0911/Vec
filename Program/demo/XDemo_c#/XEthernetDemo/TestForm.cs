@@ -1,4 +1,4 @@
-﻿#define _TEST
+﻿//#define _TEST
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -612,7 +612,7 @@ namespace XEthernetDemo
             //xcommand.SetPara(3, integral_times, 0);
             int integral = (int)(800 / speed);//us 像素长度/皮带运行速度
             hxCard.SetIntegrationTime((uint)integral);
-            integral_time = integral/1000;
+            integral_time = (float)integral/1000;
         }
 
         // 向PLC发送消息
@@ -816,6 +816,7 @@ namespace XEthernetDemo
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
+                    Console.WriteLine(ex.ToString());
                     continue;
                 }
                 //int length = client2.ReceiveFrom(data, ref remoteEndPoint);
@@ -1014,7 +1015,7 @@ namespace XEthernetDemo
             // 功放功能定时检测
             //ChannelChecktimer.Enabled = true;
 
-            MessageBox.Show("成功启动线阵与功放！");
+            //MessageBox.Show("成功启动线阵与功放！");
             StartButton.Enabled = false;
             StopButton.Enabled = true;
         }
@@ -1062,7 +1063,7 @@ namespace XEthernetDemo
                 time_finish = DateTime.Now.Millisecond;
                 //Console.WriteLine("==================================");
                 //Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
-                getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, image.HeadTime);
+                getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);//image.HeadTime);
             }
             catch (ThreadAbortException e)
             {
@@ -1295,12 +1296,15 @@ namespace XEthernetDemo
                         //GFinfo first_info = gfinfo.Dequeue();
                         //if (first_info.flag == 0)
                         //first_info = info_queue.Dequeue();
+
                         if (!gflist.is_active && info_queue.Count != 0)
                         {
                             gflist_Reset();
+                            Console.WriteLine("gflist.is_active：{0}", gflist.is_active);
                         }
                         if (!gflist.is_active)
                             break;
+                        Console.WriteLine("gflist.length：{0}",gflist.length);
                         for (int n = 0; n < gflist.length; n++)
                         {
                             first_info = gflist.list[n];
@@ -1447,16 +1451,17 @@ namespace XEthernetDemo
                         }
 
                     }
-                    int itemButtomDown = TimeConvert2Index((Int64)(ximagew.HeadTime - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
-                    int itemButtomUp = TimeConvert2Index((Int64)(ximagew.HeadTime - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
+                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
+                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
                     int itemLeft = (int)((float)(start_num - 1) / AmplifierNum * image.Width);
                     int itemRight = (int)((float)end_num / AmplifierNum * image.Width);
                     Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
 
-                    int AmpLineY = TimeConvert2Index((Int64)(ximagew.HeadTime - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
+                    int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
                     int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
                     int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
                     Cv2.Line(image, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
+                    Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
                     for (int ii = 1; ii < AmplifierNum; ii++)
                         Cv2.Line(image, new OpenCvSharp.Point(ii * image.Width / AmplifierNum, 0), new OpenCvSharp.Point(ii * image.Width / AmplifierNum, 512), 100, 1);
@@ -1498,6 +1503,7 @@ namespace XEthernetDemo
                     {
                         num = SendData(data);
                         Console.WriteLine("SendData");
+
                         data.typof_block = 1;
                         Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
                         HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
@@ -1519,6 +1525,7 @@ namespace XEthernetDemo
                     if (num == 23 && is_small)
                         queue_flag = 4;
                     //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
+                    Console.WriteLine();
                 }
                 //wr?.Flush();
                 //wr2?.Flush();
@@ -1613,7 +1620,7 @@ namespace XEthernetDemo
 
                 // 连接到PLC
                 Connect_to_PLC();
-                //SetIntegralTime();
+                SetIntegralTime();
 
                 StartButton.Enabled = true;
                 FindDeviceButton.Enabled = false;
