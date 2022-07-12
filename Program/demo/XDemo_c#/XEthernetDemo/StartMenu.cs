@@ -133,6 +133,7 @@ namespace XEthernetDemo
             //f1.arrayServer = LocalAdapter.Text;
             //f1.ntpServer = PLC_IP.Text;
             //f1.powerServer = Power_Amplifier.Text;
+
             f1.speed = Convert.ToSingle(Speed.Text);
             f1.num_of_mouth = Convert.ToInt32(MouthNum.Text);
             f1.length_belt = Convert.ToInt32(BeltLength.Text);
@@ -140,6 +141,11 @@ namespace XEthernetDemo
             f1.SOD = Convert.ToInt32(SOD.Text);
             f1.SDD = Convert.ToInt32(SDD.Text);
             f1.gap = Convert.ToInt32(gap.Text);
+
+            f1.offestPercentage = f1.t1 / (f1.t1 + f1.t2);
+            f1.l1 = f1.t1 * (f1.SDD / f1.SOD);
+            f1.l2 = f1.t2 * (f1.SDD / f1.SOD);
+
             f1.version = Version.Text;
             f1.Show();
         }

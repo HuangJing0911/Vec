@@ -1,4 +1,5 @@
-﻿//#define _TEST
+﻿#define _TEST
+#define _NEW_FUN
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -430,6 +431,13 @@ namespace XEthernetDemo
         public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
         public float SOD = 815;
+        public float t1 = 524;
+        public float t2 = 492;
+        public float p1 = 616;
+        public float p2 = 584;
+        public float offestPercentage = 524 / 1016;
+        public float l1 = 0;
+        public float l2 = 0;
         string result_pic;
         string init_pic;
         Socket client = null;                   //与PLC连接的socket
@@ -1246,7 +1254,13 @@ namespace XEthernetDemo
 
                     DateTime time1 = DateTime.Now;
 
-
+#if _NEW_FUN
+                    // 设置开始吹气阀号和停止吹气阀号
+                    float startPixel = LineConvert2Belt((float)boundRect[i].X / col * (p1 + p2));
+                    float endPixel = LineConvert2Belt((float)(boundRect[i].X+boundRect[i].Width) / col * (p1 + p2));
+                    data.start_num = PixelConvert2Num(startPixel);
+                    data.end_num = PixelConvert2Num(endPixel);
+#else
                     // 设置开始吹气阀号和停止吹气阀号
                     if ((float)boundRect[i].X / col > 0.5)
                     {
@@ -1261,6 +1275,7 @@ namespace XEthernetDemo
                         else
                             data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
                     }
+#endif
                     //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
                     //data.start_num = (Int16)(data.start_num);
                     //data.start_num = (short)1;
@@ -1304,7 +1319,7 @@ namespace XEthernetDemo
                         }
                         if (!gflist.is_active)
                             break;
-                        Console.WriteLine("gflist.length：{0}",gflist.length);
+                        Console.WriteLine("gflist.length：{0}", gflist.length);
                         for (int n = 0; n < gflist.length; n++)
                         {
                             first_info = gflist.list[n];
@@ -1429,7 +1444,7 @@ namespace XEthernetDemo
                         //opFlag = 0;                 // 将当前对队列读取状态转为可读取改动状态
                     }
 
-                    #region CZQ
+#region CZQ
 
                     Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
                     foreach (OpenCvSharp.Point[] contour in contours)
@@ -1441,10 +1456,10 @@ namespace XEthernetDemo
                         //{
                         //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
                         //}
-                        OpenCvSharp.Point p1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
-                        OpenCvSharp.Point p2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
-                        Cv2.Rectangle(image, p2, p1, 100, 2);
-                        if (Math.Abs(p2.X - p1.X) > 10)
+                        OpenCvSharp.Point point1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
+                        OpenCvSharp.Point point2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
+                        Cv2.Rectangle(image, point2, point1, 100, 2);
+                        if (Math.Abs(point2.X - point1.X) > 10)
                         {
                             //Console.WriteLine("Rect -> P2:{0}", p2);
                             //Console.WriteLine("Rect -> P1:{0}", p1);
@@ -1453,8 +1468,8 @@ namespace XEthernetDemo
                     }
                     int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
                     int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
-                    int itemLeft = (int)((float)(start_num - 1) / AmplifierNum * image.Width);
-                    int itemRight = (int)((float)end_num / AmplifierNum * image.Width);
+                    int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
+                    int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
                     Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
 
                     int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
@@ -1463,15 +1478,9 @@ namespace XEthernetDemo
                     Cv2.Line(image, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
                     Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
-                    for (int ii = 1; ii < AmplifierNum; ii++)
-                        Cv2.Line(image, new OpenCvSharp.Point(ii * image.Width / AmplifierNum, 0), new OpenCvSharp.Point(ii * image.Width / AmplifierNum, 512), 100, 1);
-                    Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
-                    DrawImg(bitmapImg);
                     Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
-                    bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
-                    imgIndex++;
 
-                    #endregion
+#endregion
 
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -1527,6 +1536,19 @@ namespace XEthernetDemo
                     //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
                     Console.WriteLine();
                 }
+
+#region CZQ
+                for (int ii = 0; ii <= AmplifierNum; ii++)
+                {
+                    Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
+                }
+                Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+                DrawImg(bitmapImg);
+                bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+                imgIndex++;
+#endregion
+
                 //wr?.Flush();
                 //wr2?.Flush();
                 // 画出原始图像和处理后图像
@@ -1619,8 +1641,12 @@ namespace XEthernetDemo
                 //SN.Text = "SN: " + sn;
 
                 // 连接到PLC
+
                 Connect_to_PLC();
+#if _TEST
+#else
                 SetIntegralTime();
+#endif
 
                 StartButton.Enabled = true;
                 FindDeviceButton.Enabled = false;
@@ -1989,6 +2015,37 @@ namespace XEthernetDemo
             return (int)(timeLength / integral_time)+512;
         }
 
+        public float LineConvert2Belt(float x)
+        {
+            float ret = 0;
+            if (x < p1) 
+            {
+                ret = t1 - (p1 - x) * SOD / SDD;
+            }
+            else
+            {
+                ret = (x - p1) * SOD / SDD + t1;
+            }
+            return ret;
+        }
+
+        public float BeltConvert2Line(float x)
+        {
+            float ret = 0;
+            if (x < p1)
+            {
+                ret = p1 - (t1 - x) * SDD / SOD;
+            }
+            else
+            {
+                ret = (x - t1) * SDD / SOD + p1;
+            }
+            return ret;
+        }
+        public short PixelConvert2Num(float beltPixel)
+        {
+            return (Int16)(num_of_mouth * beltPixel / (t1 + t2));
+        }
     }
 
 

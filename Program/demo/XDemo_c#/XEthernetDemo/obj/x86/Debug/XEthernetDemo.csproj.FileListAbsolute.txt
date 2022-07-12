@@ -532,7 +532,6 @@ D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.Extensio
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.pdb
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\OpenCvSharp.UserInterface.xml
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.AssemblyReference.cache
-D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.SuggestedBindingRedirects.cache
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.Properties.Resources.resources
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.StartMenu.resources
 D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.TestForm.resources
