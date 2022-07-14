@@ -1479,8 +1479,18 @@ namespace XEthernetDemo
                     Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
                     Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
-
-#endregion
+                    #region CZQ2
+                    for (int ii = 0; ii <= AmplifierNum; ii++)
+                    {
+                        Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
+                            new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
+                    }
+                    Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+                    DrawImg(bitmapImg);
+                    bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+                    imgIndex++;
+                    #endregion
+                    #endregion
 
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -1537,17 +1547,7 @@ namespace XEthernetDemo
                     Console.WriteLine();
                 }
 
-#region CZQ
-                for (int ii = 0; ii <= AmplifierNum; ii++)
-                {
-                    Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
-                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
-                }
-                Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
-                DrawImg(bitmapImg);
-                bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
-                imgIndex++;
-#endregion
+
 
                 //wr?.Flush();
                 //wr2?.Flush();
