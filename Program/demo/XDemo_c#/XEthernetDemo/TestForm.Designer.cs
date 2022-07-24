@@ -50,6 +50,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.Version = new System.Windows.Forms.TextBox();
             this.paraSetButton = new System.Windows.Forms.Button();
+            this.refreshThreshButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -80,7 +81,7 @@
             this.StartButton.Location = new System.Drawing.Point(737, 317);
             this.StartButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(188, 61);
+            this.StartButton.Size = new System.Drawing.Size(136, 61);
             this.StartButton.TabIndex = 4;
             this.StartButton.Tag = "0";
             this.StartButton.Text = "启动";
@@ -326,11 +327,28 @@
             this.paraSetButton.UseVisualStyleBackColor = false;
             this.paraSetButton.Click += new System.EventHandler(this.paraSetButton_Click);
             // 
+            // refreshThreshButton
+            // 
+            this.refreshThreshButton.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.refreshThreshButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.refreshThreshButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.refreshThreshButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.refreshThreshButton.Location = new System.Drawing.Point(879, 317);
+            this.refreshThreshButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.refreshThreshButton.Name = "refreshThreshButton";
+            this.refreshThreshButton.Size = new System.Drawing.Size(124, 61);
+            this.refreshThreshButton.TabIndex = 18;
+            this.refreshThreshButton.Tag = "0";
+            this.refreshThreshButton.Text = "刷新阈值";
+            this.refreshThreshButton.UseVisualStyleBackColor = false;
+            this.refreshThreshButton.Click += new System.EventHandler(this.refreshThreshButton_Click);
+            // 
             // TestForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(1027, 511);
+            this.Controls.Add(this.refreshThreshButton);
             this.Controls.Add(this.paraSetButton);
             this.Controls.Add(this.Version);
             this.Controls.Add(this.FunctionBox);
@@ -379,5 +397,6 @@
         private System.Windows.Forms.TextBox Version;
         private System.Windows.Forms.CheckBox FunctionSelect_YelCu;
         private System.Windows.Forms.Button paraSetButton;
+        private System.Windows.Forms.Button refreshThreshButton;
     }
 }

@@ -1,4 +1,4 @@
-﻿#define _TEST
+﻿//#define _TEST
 #define _NEW_FUN
 using System;
 using System.Collections.Generic;
@@ -38,10 +38,47 @@ namespace XEthernetDemo
 
         public struct GFinfo
         {
-            internal int channelindex;          // 物块在第几通道
+            int _channelindex;
+            Int64 _time;
+            int _flag;
+            bool _next_same;
+            internal int channelindex
+            {
+                set
+                {
+                    //Console.WriteLine("物块在第{0}通道",value);
+                    _channelindex = value;
+                }
+                get
+                {
+                    return _channelindex;
+                }
+            }          // 物块在第几通道
             internal Int64 time;                // 物块到达的时间
-            internal int flag;                  // 物块的类型
-            internal bool next_same;            // 下一个信息与自己时间信息是否相同
+            internal int flag
+            {
+                set
+                {
+                    //Console.WriteLine("物块为：{0}", value);
+                    _flag = value;
+                }
+                get
+                {
+                    return _flag;
+                }
+            }                  // 物块的类型
+            internal bool next_same
+            {
+                set
+                {
+                    //Console.WriteLine("下一个物块是否相同：{0}", value);
+                    _next_same = value;
+                }
+                get
+                {
+                    return _next_same;
+                }
+            }            // 下一个信息与自己时间信息是否相同
         }
 
         public struct GFList
@@ -857,6 +894,7 @@ namespace XEthernetDemo
                         if (Math.Abs(last_info.time - info.time) <= 5)
                         {
                             list[list.Length - 1].next_same = true;
+                            Console.WriteLine("运放中有物块！");
                         }
                         info_queue = new Queue<GFinfo>(list);
                     }
@@ -957,6 +995,7 @@ namespace XEthernetDemo
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            SetIntegralTime();
             hxCard.SetGain(62);
             hxCard.SetPixelMode(1);
             paraSetButton.Enabled = false;
@@ -1046,31 +1085,13 @@ namespace XEthernetDemo
                 int m, n, row, col;
                 row = (int)image.Height;
                 col = (int)image.Width;
-                //col = col  - 2;
-                //for (uint i = 0; i < row; i++)
-                //    for (uint j = 0; j < col; j++)
-                //    {
-                //        pixelval[i, j] = (uint)image.GetPixelVal(i, j + 2);
-                //        if (pixelval[i, j] > maxp)
-                //            maxp = pixelval[i, j];
-                //        else if (pixelval[i, j] < minp)
-                //            minp = pixelval[i, j];
-                //    }
+
+                Thread.Sleep(20);
 
                 Mat image_mat = new Mat(new int[] { row, col }, MatType.CV_8UC1, image.Data);// new Mat(row, col, MatType.CV_8UC1);
-                //Mat image_mat = new Mat(row, col, MatType.CV_8UC1);
-                //for (m = 0; m < row; m++)
-                //{
-                //    for (n = 0; n < col; n++)
-                //    {
-                //        float k = ((float)(pixelval[m, n] - minp)) / (maxp - minp);
-                //        k = k * 255;
-                //        image_mat.Set(m, n, (int)k);
-                //    }
-                //};
+
                 time_finish = DateTime.Now.Millisecond;
-                //Console.WriteLine("==================================");
-                //Console.WriteLine("read pixel value spend {0} millisecond", time_finish - time_now);
+
                 getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);//image.HeadTime);
             }
             catch (ThreadAbortException e)
@@ -1135,6 +1156,7 @@ namespace XEthernetDemo
             return 0;
 
         }
+
         int imgIndex = 0;
         public void getCounters_Pixel(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
@@ -1315,29 +1337,29 @@ namespace XEthernetDemo
                         if (!gflist.is_active && info_queue.Count != 0)
                         {
                             gflist_Reset();
-                            Console.WriteLine("gflist.is_active：{0}", gflist.is_active);
+                            //Console.WriteLine("gflist.is_active：{0}", gflist.is_active);
                         }
                         if (!gflist.is_active)
                             break;
-                        Console.WriteLine("gflist.length：{0}", gflist.length);
+                        //Console.WriteLine("gflist.length：{0}", gflist.length);
                         for (int n = 0; n < gflist.length; n++)
                         {
                             first_info = gflist.list[n];
                             Int64 a = data.start_time_int - first_info.time;
-                            Console.WriteLine("Start Time:{0}", data.start_time_int);
-                            Console.WriteLine("first_info.time:{0}", first_info.time);
+                            //Console.WriteLine("Start Time:{0}", data.start_time_int);
+                            //Console.WriteLine("first_info.time:{0}", first_info.time);
                             Console.WriteLine("a:" + a);
                             Console.WriteLine("========");
                             if (Math.Abs(a) <= 20)
                             {
-                                Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
-                                Console.WriteLine("end_channel:{0}", gflist.end_channel >= start_num);
+                                //Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
+                                //Console.WriteLine("end_channel:{0}", gflist.end_channel >= start_num);
                                 //if ((first_info.channelindex <= start_num && first_info.channelindex >= end_num) || (gflist.start_channel <= start_num && gflist.end_channel >= end_num))
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
                                 {
                                     queue_flag = 1;
                                     data.typof_block = (byte)first_info.flag;
-                                    Console.WriteLine("Block Type:" + data.typof_block);
+                                    //Console.WriteLine("Block Type:" + data.typof_block);
                                     break;
                                 }
                                 else
@@ -1446,7 +1468,7 @@ namespace XEthernetDemo
 
 #region CZQ
 
-                    Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
+                    //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
                     foreach (OpenCvSharp.Point[] contour in contours)
                     {
                         //Cv2.Rectangle();
@@ -1473,24 +1495,17 @@ namespace XEthernetDemo
                     Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
 
                     int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
-                    int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
-                    int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
+                    int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);//gflist.start_channel
+                    //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
+                    //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
+                    int AmpLineRight = (int)(BeltConvert2Line((float)(gflist.end_channel) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);//gflist.start_channel
                     Cv2.Line(image, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
-                    Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
+                    //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
-                    Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
-                    #region CZQ2
-                    for (int ii = 0; ii <= AmplifierNum; ii++)
-                    {
-                        Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
-                            new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
-                    }
-                    Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
-                    DrawImg(bitmapImg);
-                    bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
-                    imgIndex++;
-                    #endregion
-                    #endregion
+                    //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
+                    Console.WriteLine("图像中有物块！");
+
+#endregion
 
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -1514,14 +1529,15 @@ namespace XEthernetDemo
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
                     int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
-                    Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
-                    Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
-                    Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
-                    Console.WriteLine("kk?:{0}", kk > 0);
+                    //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
+                    //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
+                    //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
+                    //Console.WriteLine("kk?:{0}", kk > 0);
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         num = SendData(data);
                         Console.WriteLine("SendData");
+                        Console.WriteLine("***********************************");
 
                         data.typof_block = 1;
                         Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
@@ -1547,7 +1563,17 @@ namespace XEthernetDemo
                     Console.WriteLine();
                 }
 
-
+#region CZQ
+                for (int ii = 0; ii <= AmplifierNum; ii++)
+                {
+                    Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
+                }
+                Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+                DrawImg(bitmapImg);
+                bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+                imgIndex++;
+#endregion
 
                 //wr?.Flush();
                 //wr2?.Flush();
@@ -1565,6 +1591,376 @@ namespace XEthernetDemo
             image.Dispose();
             connImage.Dispose();
 
+        }
+
+        public void getCounters_Piexl_Pro(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
+        {
+
+            //CardNum2.Text = Convert.ToString(row)+"row";
+            //CardNum3.Text = Convert.ToString(col) + "col";
+            time_now = DateTime.Now.Millisecond;
+            //long time_now2 = time_now;
+            //Mat image = new Mat(row, col, type,p);
+            image.ConvertTo(image, MatType.CV_32F);
+            Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
+            image = image * 255;
+            image.ConvertTo(image, MatType.CV_8UC1);
+            init_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/init" + pic_num + ".png";
+            //Cv2.ImWrite(init_pic, image);
+            Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
+            image.CopyTo(connImage);
+            Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
+            //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
+            Cv2.Canny(image, image, 10, 80, 3, false); // 输入图像虚为单通道8位图像
+
+
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchy;
+            Cv2.FindContours(image, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+            connImage.CopyTo(image);
+
+
+
+            Rect[] boundRect = new Rect[contours.Length];
+            RotatedRect[] box = new RotatedRect[contours.Length];
+            //List<OpenCvSharp.Point[]> Resultcontours = new List<OpenCvSharp.Point[]>();
+
+
+            //Console.WriteLine("=====================");
+            //Console.WriteLine(contours.Length);
+            //Console.WriteLine("=====================");
+            time_finish = DateTime.Now.Millisecond;
+            //long time_finish2 = time_finish;
+            //Console.WriteLine("process picture spend {0} millisecond", time_finish2 - time_now2);
+
+            //wr2?.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
+            //wr2?.Flush();
+            //ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
+
+            if (contours.Length != 0)
+            {
+                //Console.WriteLine("=====================");
+                //Console.WriteLine("successfully detect{0} blocks!", contours.Length);
+                //Console.WriteLine("==================================\n\n");
+                total_card_num += contours.Length;
+                // Total_Block_Num.Text = Convert.ToString(total_card_num);
+                // 画出检测的轮廓
+                int flag = 0;
+                for (int i = 0; i < contours.Length; i++)
+                {
+                    /*
+                    if (contours.Length > 50)
+                    {
+                        break;
+                    }
+                    */
+
+                    double area = Cv2.ContourArea(contours[i]);
+                    boundRect[i] = Cv2.BoundingRect(contours[i]);
+                    if (area == 0 || boundRect[i].Height > row / 3)
+                        continue;
+                    Scalar color = new Scalar(0, 0, 255);
+                    //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
+                    boundRect[i] = Cv2.BoundingRect(contours[i]);
+                    Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                        new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
+                        new Scalar(0, 255, 0), 1, LineTypes.Link8);
+                    //Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                    //HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0));
+                    Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
+                    HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
+                }
+                result_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/result" + pic_num + ".png";
+                //Cv2.ImWrite(result_pic, connImage);
+
+                // 求出时间戳并发送物块信息
+                for (int j = 0; j < contours.Length; j++)
+                {
+                    int i = contours.Length - j - 1;
+                    //if (contours.Length > 50)
+                    //break;
+                    double area = Cv2.ContourArea(contours[i]);
+                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 5 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 4)
+                        continue;
+
+                    //wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
+                    //341 347 348 346
+
+
+                    flag = 1;
+                    Data_Set data = new Data_Set();                                 // 发送数据包
+                                                                                    // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
+                    data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
+
+                    bool is_small = false;
+                    /*
+                    if (area < 200)
+                    {
+                        is_small = true;
+                        data.typof_block = 10;
+                    }
+                    */
+
+
+                    // 设置开始喷吹时间(使用格林威治毫秒时间)
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
+                    TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
+                    data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
+                    long start_detect_time = data.start_time_int;
+
+
+                    DateTime time1 = DateTime.Now;
+
+#if _NEW_FUN
+                    // 设置开始吹气阀号和停止吹气阀号
+                    float startPixel = LineConvert2Belt((float)boundRect[i].X / col * (p1 + p2));
+                    float endPixel = LineConvert2Belt((float)(boundRect[i].X + boundRect[i].Width) / col * (p1 + p2));
+                    data.start_num = PixelConvert2Num(startPixel);
+                    data.end_num = PixelConvert2Num(endPixel);
+#else
+                    // 设置开始吹气阀号和停止吹气阀号
+                    if ((float)boundRect[i].X / col > 0.5)
+                    {
+                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                    }
+                    else
+                    {
+                        data.start_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                        if ((float)boundRect[i].X + boundRect[i].Width > col / 2)
+                            data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        else
+                            data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                    }
+#endif
+                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
+                    //data.start_num = (Int16)(data.start_num);
+                    //data.start_num = (short)1;
+                    if (data.start_num < 1)
+                        data.start_num = (short)1;
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
+                    //data.end_num = (Int16)(data.end_num);
+                    //data.end_num = (short)50;
+                    if (data.end_num > num_of_mouth)
+                        data.end_num = (short)num_of_mouth;
+
+
+
+
+                    // 对物块的种类进行判断
+                    // while (opFlag != 0)                      // 循环到没有对线阵进行操作
+                    // { }
+                    //opFlag = 2;                                 // 将当前队列可读写状态设置为2
+                    //Queue<GFinfo> gfinfo = info_queue;
+                    int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
+                    int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierNum / num_of_mouth);
+                    int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierNum / num_of_mouth);
+                    //while (info_queue.Count != 0 || first_info.flag != 0)
+                    //while (!is_small)
+
+
+
+
+                    while (true)
+                    {
+                        //gfinfo = info_queue;
+                        //GFinfo first_info = gfinfo.Dequeue();
+                        //if (first_info.flag == 0)
+                        //first_info = info_queue.Dequeue();
+
+                        if (!gflist.is_active && info_queue.Count != 0)
+                        {
+                            gflist_Reset();
+                            //Console.WriteLine("gflist.is_active：{0}", gflist.is_active);
+                        }
+                        if (!gflist.is_active)
+                            break;
+                        //Console.WriteLine("gflist.length：{0}", gflist.length);
+                        for (int n = 0; n < gflist.length; n++)
+                        {
+                            first_info = gflist.list[n];
+                            Int64 a = data.start_time_int - first_info.time;
+                            //Console.WriteLine("Start Time:{0}", data.start_time_int);
+                            //Console.WriteLine("first_info.time:{0}", first_info.time);
+                            Console.WriteLine("a:" + a);
+                            Console.WriteLine("========");
+                            if (Math.Abs(a) <= 20)
+                            {
+                                //Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
+                                //Console.WriteLine("end_channel:{0}", gflist.end_channel >= start_num);
+                                //if ((first_info.channelindex <= start_num && first_info.channelindex >= end_num) || (gflist.start_channel <= start_num && gflist.end_channel >= end_num))
+                                if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
+                                {
+                                    queue_flag = 1;
+                                    data.typof_block = (byte)first_info.flag;
+                                    //Console.WriteLine("Block Type:" + data.typof_block);
+                                    break;
+                                }
+                                else
+                                {
+                                    queue_flag = 3;
+                                    continue;
+                                }
+                            }
+                            else if (a > 20)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+                            {
+                                queue_flag = 2;
+                                break;
+                            }
+                            else                // 如果当前物块时间远小于列表时间
+                            {
+                                queue_flag = 0;
+                                break;
+                            }
+                        }
+                        if (queue_flag == 1)        // 如果队列信息已经被读取，需要对队列首个物块进行剔除
+                        {
+                            break;
+                        }
+                        else if (queue_flag == 2)                   // 如果列表中金属信息时间远小于当前物块时间，需要更新列表信息
+                        {
+                            lock (locker)
+                            {
+                                gflist.is_active = false;        // 如果队列信息已经过期，将当前列表设为未激活状态，下一个循环会当前列表信息更新
+                            }
+                        }
+                        else if (queue_flag == 3)               // 如果当前列表时间符合但通道数不符合，则说明当前物块不是需要喷吹的目标金属，跳出循环
+                        {
+                            break;
+                        }
+                        else                                    // 当前物块时间远小于列表时间，则说明当前物块不是需要喷吹的目标金属，跳出循环
+                        {
+                            break;
+                        }
+
+                    }
+
+                    #region CZQ
+
+                    //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
+                    foreach (OpenCvSharp.Point[] contour in contours)
+                    {
+                        //Cv2.Rectangle();
+                        Rect bound = Cv2.BoundingRect(contour);
+                        //int num = rect.Length;
+                        //for(int i = 1;i<num;i++)
+                        //{
+                        //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
+                        //}
+                        OpenCvSharp.Point point1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
+                        OpenCvSharp.Point point2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
+                        Cv2.Rectangle(image, point2, point1, 100, 2);
+                        if (Math.Abs(point2.X - point1.X) > 10)
+                        {
+                            //Console.WriteLine("Rect -> P2:{0}", p2);
+                            //Console.WriteLine("Rect -> P1:{0}", p1);
+                        }
+
+                    }
+                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
+                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
+                    int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
+                    int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
+                    Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
+
+                    int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
+                    int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);//gflist.start_channel
+                                                                                                                                                      //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
+                                                                                                                                                      //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
+                    int AmpLineRight = (int)(BeltConvert2Line((float)(gflist.end_channel) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);//gflist.start_channel
+                    Cv2.Line(image, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
+                    //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
+
+                    //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
+                    Console.WriteLine("图像中有物块！");
+
+                    #endregion
+
+                    // 确定物块最终喷吹的时间
+                    data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+
+
+                    //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
+                    // 设置持续喷吹的时间
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);
+                    //data.blow_time = (short)100;
+
+
+                    // 让延迟一段时间发送物块信息 
+                    // Thread.Sleep((int)(2400/speed) - );
+                    // Thread t = new Thread(new ParameterizedThreadStart(thread_for_sending));
+                    // //wr.WriteLine(t.ManagedThreadId + " thread start!");
+                    // t.Start();
+
+                    // 每个物块休眠2ms时间让PLC来得及处理物块信息
+                    //if (i != 0)
+                    //Thread.Sleep(2);
+                    int num = 0;
+                    //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
+                    int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
+                               //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
+                               //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
+                               //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
+                               //Console.WriteLine("kk?:{0}", kk > 0);
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
+                    {
+                        num = SendData(data);
+                        Console.WriteLine("SendData");
+                        Console.WriteLine("***********************************");
+
+                        data.typof_block = 1;
+                        Cv2.PutText(image, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
+                        HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
+                    }
+
+                    DateTime time2 = DateTime.Now;
+
+                    total_clock_num++;
+                    if (num == 23)
+                    {
+                        total_detect_num++;
+                        //CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
+                        //CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
+                        //CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
+                        //CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
+                        //CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
+                    }
+
+                    if (num == 23 && is_small)
+                        queue_flag = 4;
+                    //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
+                    Console.WriteLine();
+                }
+
+                #region CZQ
+                for (int ii = 0; ii <= AmplifierNum; ii++)
+                {
+                    Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
+                }
+                Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
+                DrawImg(bitmapImg);
+                bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+                imgIndex++;
+                #endregion
+
+                //wr?.Flush();
+                //wr2?.Flush();
+                // 画出原始图像和处理后图像
+                if (flag == 1)
+                {
+                    Cv2.ImWrite(result_pic, image);
+                    ximagew.Save(System.Windows.Forms.Application.StartupPath + "/result/pic/TEST" + pic_num + ".txt");
+                    Cv2.ImWrite(init_pic, connImage);
+                }
+            }
+
+            // ushort[,] line_info = get_timestamp_test(ximagew);
+            //Console.WriteLine(ximagew.DataOffset);
+            image.Dispose();
+            connImage.Dispose();
         }
 
         private void FindDeviceButton_Click(object sender, EventArgs e)
@@ -1645,7 +2041,7 @@ namespace XEthernetDemo
                 Connect_to_PLC();
 #if _TEST
 #else
-                SetIntegralTime();
+                //SetIntegralTime();
 #endif
 
                 StartButton.Enabled = true;
@@ -2013,6 +2409,11 @@ namespace XEthernetDemo
         {
             long timeLength = itemTime - imgTime;
             return (int)(timeLength / integral_time)+512;
+        }
+
+        private void refreshThreshButton_Click(object sender, EventArgs e)
+        {
+            hxCard.RefreshThresh();
         }
 
         public float LineConvert2Belt(float x)

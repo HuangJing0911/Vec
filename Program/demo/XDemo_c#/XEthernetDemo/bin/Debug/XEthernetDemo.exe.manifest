@@ -62,7 +62,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gvyDqkchAbnehPTQIteiXifXJc/jXaclxPxCREKCwQE=</dsig:DigestValue>
+        <dsig:DigestValue>uGkgrnDWTrMwYtyRKXGgClAh5JNP0+FoWwk3YiAyl4Q=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -139,14 +139,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="270848">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="274432">
       <assemblyIdentity name="XEthernetDemo" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>PPMS06utRlZT9kn/Le+Horwzqoq9mOvSPCV8mb5qt0E=</dsig:DigestValue>
+        <dsig:DigestValue>uDlansAa7av38ptvrngGmxPmkohChwkl1aePez7VCFc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
