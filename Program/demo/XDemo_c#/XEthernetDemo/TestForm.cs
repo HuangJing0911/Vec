@@ -1086,11 +1086,12 @@ namespace XEthernetDemo
                 row = (int)image.Height;
                 col = (int)image.Width;
 
-                Thread.Sleep(20);
 
                 Mat image_mat = new Mat(new int[] { row, col }, MatType.CV_8UC1, image.Data);// new Mat(row, col, MatType.CV_8UC1);
 
                 time_finish = DateTime.Now.Millisecond;
+
+                Thread.Sleep(30);
 
                 getCounters_Pixel(image, image_mat, row, col, MatType.CV_16UC1, stamp);//image.HeadTime);
             }
@@ -1158,6 +1159,7 @@ namespace XEthernetDemo
         }
 
         int imgIndex = 0;
+        int checkRange = 20;
         public void getCounters_Pixel(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
             //CardNum2.Text = Convert.ToString(row)+"row";
@@ -1350,7 +1352,7 @@ namespace XEthernetDemo
                             //Console.WriteLine("first_info.time:{0}", first_info.time);
                             Console.WriteLine("a:" + a);
                             Console.WriteLine("========");
-                            if (Math.Abs(a) <= 20)
+                            if (Math.Abs(a) <= checkRange)
                             {
                                 //Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
                                 //Console.WriteLine("end_channel:{0}", gflist.end_channel >= start_num);
@@ -1376,7 +1378,7 @@ namespace XEthernetDemo
                                 break;
                             }
                             */
-                            else if (a > 20)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+                            else if (a > checkRange)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                             {
                                 queue_flag = 2;
                                 break;
@@ -1488,8 +1490,8 @@ namespace XEthernetDemo
                         }
 
                     }
-                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
-                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
+                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - checkRange);
+                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + checkRange);
                     int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
                     int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
                     Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
