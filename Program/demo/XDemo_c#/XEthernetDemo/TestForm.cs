@@ -356,6 +356,7 @@ namespace XEthernetDemo
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandleException);
         }
 
+
         private void TestForm_Load(object sender, EventArgs e)
         {
             Version.Text = version;
@@ -894,7 +895,7 @@ namespace XEthernetDemo
                         if (Math.Abs(last_info.time - info.time) <= 5)
                         {
                             list[list.Length - 1].next_same = true;
-                            Console.WriteLine("运放中有物块！");
+                            Console.WriteLine("功率放中有物块！");
                         }
                         info_queue = new Queue<GFinfo>(list);
                     }
@@ -1595,24 +1596,17 @@ namespace XEthernetDemo
 
         }
 
-        public void getCounters_Piexl_Pro(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
+        public void getCounters_Pixel_Pro(HxCard.XImgFrame ximagew, Mat image, int row, int col, MatType type, DateTime stamp)
         {
-
-            //CardNum2.Text = Convert.ToString(row)+"row";
-            //CardNum3.Text = Convert.ToString(col) + "col";
             time_now = DateTime.Now.Millisecond;
-            //long time_now2 = time_now;
-            //Mat image = new Mat(row, col, type,p);
             image.ConvertTo(image, MatType.CV_32F);
             Cv2.Normalize(image, image, 1.0, 0, NormTypes.MinMax);
             image = image * 255;
             image.ConvertTo(image, MatType.CV_8UC1);
             init_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/init" + pic_num + ".png";
-            //Cv2.ImWrite(init_pic, image);
             Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             image.CopyTo(connImage);
             Cv2.Blur(image, image, new OpenCvSharp.Size(3, 3));
-            //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
             Cv2.Canny(image, image, 10, 80, 3, false); // 输入图像虚为单通道8位图像
 
 
@@ -1625,19 +1619,14 @@ namespace XEthernetDemo
 
             Rect[] boundRect = new Rect[contours.Length];
             RotatedRect[] box = new RotatedRect[contours.Length];
-            //List<OpenCvSharp.Point[]> Resultcontours = new List<OpenCvSharp.Point[]>();
 
 
             //Console.WriteLine("=====================");
             //Console.WriteLine(contours.Length);
             //Console.WriteLine("=====================");
             time_finish = DateTime.Now.Millisecond;
-            //long time_finish2 = time_finish;
             //Console.WriteLine("process picture spend {0} millisecond", time_finish2 - time_now2);
 
-            //wr2?.WriteLine("frame count: " + frame_count.ToString() + ";time: " + Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + ";length: " + contours.Length);
-            //wr2?.Flush();
-            //ximagew.Save("C:/Users/weike/Desktop/0413_data/2_with_timestamp/TEST" + pic_num + ".txt");
 
             if (contours.Length != 0)
             {
@@ -1650,58 +1639,36 @@ namespace XEthernetDemo
                 int flag = 0;
                 for (int i = 0; i < contours.Length; i++)
                 {
-                    /*
-                    if (contours.Length > 50)
-                    {
-                        break;
-                    }
-                    */
 
                     double area = Cv2.ContourArea(contours[i]);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3)
                         continue;
                     Scalar color = new Scalar(0, 0, 255);
-                    //Cv2.DrawContours(connImage, contours, i, color, 1, LineTypes.Link8, hierarchy);
                     boundRect[i] = Cv2.BoundingRect(contours[i]);
                     Cv2.Rectangle(image, new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                         new OpenCvSharp.Point(boundRect[i].X + boundRect[i].Width, boundRect[i].Y + boundRect[i].Height),
                         new Scalar(0, 255, 0), 1, LineTypes.Link8);
-                    //Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
-                    //HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0));
                     Cv2.PutText(image, i.ToString(), new OpenCvSharp.Point(boundRect[i].X, boundRect[i].Y),
                     HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                 }
                 result_pic = System.Windows.Forms.Application.StartupPath + "/result/pic/result" + pic_num + ".png";
-                //Cv2.ImWrite(result_pic, connImage);
 
                 // 求出时间戳并发送物块信息
                 for (int j = 0; j < contours.Length; j++)
                 {
                     int i = contours.Length - j - 1;
-                    //if (contours.Length > 50)
-                    //break;
                     double area = Cv2.ContourArea(contours[i]);
                     if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 5 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 4)
                         continue;
 
-                    //wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
-                    //341 347 348 346
 
 
                     flag = 1;
                     Data_Set data = new Data_Set();                                 // 发送数据包
-                                                                                    // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
                     data.Init_Dataset(boundRect[i], ximagew);                       // 初始化数据包为可吹气  
 
                     bool is_small = false;
-                    /*
-                    if (area < 200)
-                    {
-                        is_small = true;
-                        data.typof_block = 10;
-                    }
-                    */
 
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
@@ -1736,41 +1703,24 @@ namespace XEthernetDemo
                             data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
                     }
 #endif
-                    //data.start_num = (Int16)((float)boundRect[i].X / col * num_of_mouth);
-                    //data.start_num = (Int16)(data.start_num);
-                    //data.start_num = (short)1;
                     if (data.start_num < 1)
                         data.start_num = (short)1;
                     data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
-                    //data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * num_of_mouth);
-                    //data.end_num = (Int16)(data.end_num);
-                    //data.end_num = (short)50;
                     if (data.end_num > num_of_mouth)
                         data.end_num = (short)num_of_mouth;
 
 
 
 
-                    // 对物块的种类进行判断
-                    // while (opFlag != 0)                      // 循环到没有对线阵进行操作
-                    // { }
-                    //opFlag = 2;                                 // 将当前队列可读写状态设置为2
-                    //Queue<GFinfo> gfinfo = info_queue;
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
                     int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierNum / num_of_mouth);
                     int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierNum / num_of_mouth);
-                    //while (info_queue.Count != 0 || first_info.flag != 0)
-                    //while (!is_small)
 
 
 
 
                     while (true)
                     {
-                        //gfinfo = info_queue;
-                        //GFinfo first_info = gfinfo.Dequeue();
-                        //if (first_info.flag == 0)
-                        //first_info = info_queue.Dequeue();
 
                         if (!gflist.is_active && info_queue.Count != 0)
                         {
@@ -1788,11 +1738,10 @@ namespace XEthernetDemo
                             //Console.WriteLine("first_info.time:{0}", first_info.time);
                             Console.WriteLine("a:" + a);
                             Console.WriteLine("========");
-                            if (Math.Abs(a) <= 20)
+                            if (Math.Abs(a) <= checkRange)
                             {
                                 //Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
                                 //Console.WriteLine("end_channel:{0}", gflist.end_channel >= start_num);
-                                //if ((first_info.channelindex <= start_num && first_info.channelindex >= end_num) || (gflist.start_channel <= start_num && gflist.end_channel >= end_num))
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
                                 {
                                     queue_flag = 1;
@@ -1806,7 +1755,8 @@ namespace XEthernetDemo
                                     continue;
                                 }
                             }
-                            else if (a > 20)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+
+                            else if (a > checkRange)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
                             {
                                 queue_flag = 2;
                                 break;
@@ -1861,16 +1811,16 @@ namespace XEthernetDemo
                         }
 
                     }
-                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - 20);
-                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + 20);
+                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - checkRange);
+                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + checkRange);
                     int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
                     int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);
                     Cv2.Rectangle(image, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
 
                     int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
                     int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);//gflist.start_channel
-                                                                                                                                                      //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
-                                                                                                                                                      //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
+                    //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
+                    //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
                     int AmpLineRight = (int)(BeltConvert2Line((float)(gflist.end_channel) / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width);//gflist.start_channel
                     Cv2.Line(image, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
                     //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
@@ -1884,28 +1834,17 @@ namespace XEthernetDemo
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
 
-                    //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
                     data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);
-                    //data.blow_time = (short)100;
 
 
-                    // 让延迟一段时间发送物块信息 
-                    // Thread.Sleep((int)(2400/speed) - );
-                    // Thread t = new Thread(new ParameterizedThreadStart(thread_for_sending));
-                    // //wr.WriteLine(t.ManagedThreadId + " thread start!");
-                    // t.Start();
 
-                    // 每个物块休眠2ms时间让PLC来得及处理物块信息
-                    //if (i != 0)
-                    //Thread.Sleep(2);
                     int num = 0;
-                    //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
                     int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
-                               //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
-                               //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
-                               //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
-                               //Console.WriteLine("kk?:{0}", kk > 0);
+                    //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
+                    //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
+                    //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
+                    //Console.WriteLine("kk?:{0}", kk > 0);
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         num = SendData(data);
@@ -1923,16 +1862,10 @@ namespace XEthernetDemo
                     if (num == 23)
                     {
                         total_detect_num++;
-                        //CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
-                        //CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
-                        //CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
-                        //CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
-                        //CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
                     }
 
                     if (num == 23 && is_small)
                         queue_flag = 4;
-                    //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
                     Console.WriteLine();
                 }
 
@@ -1948,21 +1881,13 @@ namespace XEthernetDemo
                 imgIndex++;
                 #endregion
 
-                //wr?.Flush();
-                //wr2?.Flush();
-                // 画出原始图像和处理后图像
-                if (flag == 1)
-                {
-                    Cv2.ImWrite(result_pic, image);
-                    ximagew.Save(System.Windows.Forms.Application.StartupPath + "/result/pic/TEST" + pic_num + ".txt");
-                    Cv2.ImWrite(init_pic, connImage);
-                }
+
             }
 
-            // ushort[,] line_info = get_timestamp_test(ximagew);
             //Console.WriteLine(ximagew.DataOffset);
             image.Dispose();
             connImage.Dispose();
+
         }
 
         private void FindDeviceButton_Click(object sender, EventArgs e)
@@ -2416,6 +2341,59 @@ namespace XEthernetDemo
         private void refreshThreshButton_Click(object sender, EventArgs e)
         {
             hxCard.RefreshThresh();
+        }
+
+        private void TestForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
+        private void TestForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
+            //wr.Flush();
+            // 暂停线阵
+            //wr.Close();
+            fs.Close();
+            //wr2.Close();
+            fs2.Close();
+            //AutoCheckTimer.Enabled = false;
+            //AutoCheckTimer2.Enabled = false;
+            //t.Enabled = false;
+            timerthread.Abort();
+            recv = false;
+            //recv_thread.Abort();
+            //xacquisition.Stop();
+            hxCard.Reset();
+            // 暂停功放
+            quit_flag = true;
+            //udpRecv.Close();
+            listen_thread.Abort();
+            lock (locker)
+            {
+                msg_queue.Clear();
+                conditional_variable.Set();
+                //conditional_variable.Set();
+                //conditional_variable.Set();
+                //conditional_variable.Set();
+            }
+            process_thread1.Abort();
+            //process_thread2.Join();
+            //process_thread3.Join();
+            //process_thread4.Join();
+            if (writeFlag)
+            {
+                //write(SCAData);
+            }
+
+            ChannelChecktimer.Enabled = false;
+
+            MessageBox.Show("线阵与功放停止运行！");
+            StartButton.Enabled = true;
+            StopButton.Enabled = false;
+            FindDeviceButton.Enabled = true;
+            //FunctionBox.Enabled = true;
+            paraSetButton.Enabled = true;
         }
 
         public float LineConvert2Belt(float x)

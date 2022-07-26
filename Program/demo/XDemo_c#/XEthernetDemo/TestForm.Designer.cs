@@ -366,6 +366,8 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "TestForm";
             this.Text = "工业物料喷吹分拣系统";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TestForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TestForm_FormClosed);
             this.Load += new System.EventHandler(this.TestForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).EndInit();
             this.FunctionBox.ResumeLayout(false);
