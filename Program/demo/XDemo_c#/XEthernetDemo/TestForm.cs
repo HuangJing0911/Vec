@@ -894,9 +894,18 @@ namespace XEthernetDemo
                         GFinfo last_info = list[list.Length - 1];
                         if (Math.Abs(last_info.time - info.time) <= 5)
                         {
+                            
                             list[list.Length - 1].next_same = true;
                             Console.WriteLine("功率放中有物块！");
                         }
+                        else
+                        {
+                            if(list.Length < 2)
+                            {
+                                list = new GFinfo[0];
+                            }
+                        }
+
                         info_queue = new Queue<GFinfo>(list);
                     }
                     info_queue.Enqueue(info);
@@ -1506,7 +1515,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
                     //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
-                    Console.WriteLine("图像中有物块！");
+                    //Console.WriteLine("图像中有物块！");
 
 #endregion
 
@@ -1536,10 +1545,14 @@ namespace XEthernetDemo
                     //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
                     //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
                     //Console.WriteLine("kk?:{0}", kk > 0);
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         num = SendData(data);
                         Console.WriteLine("SendData");
+                        if ((data.typof_block == 1 && kk > 0) == true)
+                            Console.WriteLine("物块识别喷吹");
+                        if ((boundRect[i].Y >= row * 0.9) == true)
+                            Console.WriteLine("物块跨行喷吹");
                         Console.WriteLine("***********************************");
 
                         data.typof_block = 1;
@@ -1563,7 +1576,7 @@ namespace XEthernetDemo
                     if (num == 23 && is_small)
                         queue_flag = 4;
                     //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
-                    Console.WriteLine();
+                    //Console.WriteLine();
                 }
 
 #region CZQ
@@ -1736,8 +1749,8 @@ namespace XEthernetDemo
                             Int64 a = data.start_time_int - first_info.time;
                             //Console.WriteLine("Start Time:{0}", data.start_time_int);
                             //Console.WriteLine("first_info.time:{0}", first_info.time);
-                            Console.WriteLine("a:" + a);
-                            Console.WriteLine("========");
+                            //Console.WriteLine("a:" + a);
+                            //Console.WriteLine("========");
                             if (Math.Abs(a) <= checkRange)
                             {
                                 //Console.WriteLine("start_channel:{0}", gflist.start_channel <= end_num);
@@ -1826,7 +1839,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
                     //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
-                    Console.WriteLine("图像中有物块！");
+                    //Console.WriteLine("图像中有物块！");
 
                     #endregion
 
@@ -1847,6 +1860,10 @@ namespace XEthernetDemo
                     //Console.WriteLine("kk?:{0}", kk > 0);
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0) || (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
+                        if ((data.typof_block == 1 && kk > 0) == true)
+                            Console.WriteLine("物块识别喷吹");
+                        if ((boundRect[i].Y >= row * 0.9) == true)
+                            Console.WriteLine("物块跨行喷吹");
                         num = SendData(data);
                         Console.WriteLine("SendData");
                         Console.WriteLine("***********************************");
@@ -2354,9 +2371,9 @@ namespace XEthernetDemo
             //wr.Flush();
             // 暂停线阵
             //wr.Close();
-            fs.Close();
+            fs?.Close();
             //wr2.Close();
-            fs2.Close();
+            fs2?.Close();
             //AutoCheckTimer.Enabled = false;
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
