@@ -1,4 +1,4 @@
-﻿//#define _TEST
+﻿#define _TEST
 #define _NEW_FUN
 using System;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace XEthernetDemo
         {
             internal byte[] bytes;
             internal int length;
-            internal DateTime getTime;
+            internal DateTime getTime;//这个有效
             internal DateTime saveTime;
             internal DateTime pickTime;
             internal DateTime processTime;
@@ -986,7 +986,7 @@ namespace XEthernetDemo
             udpRecv.Bind(endpoint);
 
             udpSend = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                    //给HJ负责设备发送数据报
-            sendpoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1130);
+            sendpoint = new IPEndPoint(IPAddress.Parse(ntpServer2), 1130);
             //udpSend.Bind(sendpoint);
             udpSend.Connect(sendpoint);
         }
@@ -1002,7 +1002,68 @@ namespace XEthernetDemo
         {
 
         }
+#if _TEST
+        private void StartButton_Click(object sender, EventArgs e)
+        {
 
+            paraSetButton.Enabled = false;
+            DeleteFiles(result_data + "pic/");
+            frame_count = 0;
+            lost_line = 0;
+            total_clock_num = 0;
+            total_detect_num = 0;
+            DateTime time = DateTime.Now;
+            fs = new FileStream(result_data + "result_data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            fs2 = new FileStream(time_data + "frame-time-data " + time.ToString("yyyy-MM-dd") + " " + time.Hour + "-" + time.Minute + "-" + time.Second + ".txt", FileMode.Append);
+            DateTime dt = DateTime.Now;
+
+            LostLine.Text = "Lost Line: " + Convert.ToString(lost_line);
+            Console.WriteLine("start grab!!!");
+
+            // 设定定时器
+            timerthread = new Thread(timer);
+            timerthread.IsBackground = true;
+            timerthread.Start();
+
+            // 启动接收功放数据线程
+            recv = true;
+            if (recv)
+            {
+                //CardNum1.Text = "Start Receive!";
+                recv_thread = new Thread(recv_data);
+                recv_thread.IsBackground = true;
+                recv_thread.Start();
+            }
+
+            first_info.flag = 0;
+            first_info.channelindex = 0;
+            first_info.time = 0;
+
+            gflist.is_active = false;       // 初始设置保存队列中最早时间功放信息列表激活值为false，表示列表暂时未启用或需要重新刷新列表值
+            gflist.list = new GFinfo[100];
+            gflist.length = 0;
+            gflist2.is_active = false;       // 初始设置保存队列中最早时间功放信息列表激活值为false，表示列表暂时未启用或需要重新刷新列表值
+            gflist2.list = new GFinfo[100];
+            gflist2.length = 0;
+
+            quit_flag = false;
+            listen_thread = new Thread(RecvMessage);
+            process_thread1 = new Thread(ProcessMessage);
+            
+
+            listen_thread.IsBackground = true;
+            process_thread1.IsBackground = true;
+            listen_thread.Start();
+            process_thread1.Start();
+
+            // 功放功能定时检测
+            //ChannelChecktimer.Enabled = true;
+
+            //MessageBox.Show("成功启动线阵与功放！");
+            StartButton.Enabled = false;
+            StopButton.Enabled = true;
+        }
+#else
         private void StartButton_Click(object sender, EventArgs e)
         {
             SetIntegralTime();
@@ -1076,7 +1137,7 @@ namespace XEthernetDemo
             StartButton.Enabled = false;
             StopButton.Enabled = true;
         }
-
+#endif
         void threadCounters(Object obj)
         {
             DateTime stamp = DateTime.Now;
@@ -1802,7 +1863,7 @@ namespace XEthernetDemo
 
                     }
 
-                    #region CZQ
+#region CZQ
 
                     //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
                     foreach (OpenCvSharp.Point[] contour in contours)
@@ -1841,7 +1902,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
                     //Console.WriteLine("图像中有物块！");
 
-                    #endregion
+#endregion
 
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -1886,7 +1947,7 @@ namespace XEthernetDemo
                     Console.WriteLine();
                 }
 
-                #region CZQ
+#region CZQ
                 for (int ii = 0; ii <= AmplifierNum; ii++)
                 {
                     Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
@@ -1896,7 +1957,7 @@ namespace XEthernetDemo
                 DrawImg(bitmapImg);
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
                 imgIndex++;
-                #endregion
+#endregion
 
 
             }
@@ -2006,7 +2067,6 @@ namespace XEthernetDemo
                 try
                 {
                     read = udpRecv.Receive(buf);
-
                 }
                 catch (Exception ex)
                 {
@@ -2221,6 +2281,11 @@ namespace XEthernetDemo
                     udpSend.Send(gfData);
                     msg.sendTime = DateTime.Now;
                     //sendTime[CycleCount / 10, chnldx - 1] = msg.sendTime.TimeOfDay.ToString();
+                    Console.WriteLine("有物块");
+                }
+                else
+                {
+                    Console.WriteLine("无物块");
                 }
             }
             else
@@ -2377,7 +2442,7 @@ namespace XEthernetDemo
             //AutoCheckTimer.Enabled = false;
             //AutoCheckTimer2.Enabled = false;
             //t.Enabled = false;
-            timerthread.Abort();
+            timerthread?.Abort();
             recv = false;
             //recv_thread.Abort();
             //xacquisition.Stop();
@@ -2385,7 +2450,7 @@ namespace XEthernetDemo
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
-            listen_thread.Abort();
+            listen_thread?.Abort();
             lock (locker)
             {
                 msg_queue.Clear();
@@ -2394,7 +2459,7 @@ namespace XEthernetDemo
                 //conditional_variable.Set();
                 //conditional_variable.Set();
             }
-            process_thread1.Abort();
+            process_thread1?.Abort();
             //process_thread2.Join();
             //process_thread3.Join();
             //process_thread4.Join();
