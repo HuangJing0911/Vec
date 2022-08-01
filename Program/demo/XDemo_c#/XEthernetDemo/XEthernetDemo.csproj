@@ -124,6 +124,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\NET\vs2010\x86\XLibWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="XRayMsgDLL">
+      <HintPath>..\..\..\lib\RSHC\x64\XRayMsgDLL.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel.cs" />

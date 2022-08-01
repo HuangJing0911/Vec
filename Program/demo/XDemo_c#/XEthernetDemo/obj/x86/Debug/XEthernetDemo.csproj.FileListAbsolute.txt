@@ -581,3 +581,4 @@ C:\Users\weike\Desktop\test\220702\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\D
 C:\Users\weike\Desktop\test\220702\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.csproj.GenerateResource.Cache
 C:\Users\weike\Desktop\test\220702\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.exe.manifest
 C:\Users\weike\Desktop\test\220702\Program\demo\XDemo_c#\XEthernetDemo\obj\x86\Debug\XEthernetDemo.application
+D:\仓库\Vec\Program\demo\XDemo_c#\XEthernetDemo\bin\Debug\XRayMsgDLL.dll

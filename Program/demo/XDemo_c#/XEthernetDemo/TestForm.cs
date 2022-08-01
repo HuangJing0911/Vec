@@ -417,8 +417,8 @@ namespace XEthernetDemo
         public int[] recvData = new int[7];
         public int[] channelStateData = new int[10];
 
-        private Thread listen_thread;
-        private Thread process_thread1, process_thread2, process_thread3, process_thread4;
+        //private Thread listen_thread;
+        //private Thread process_thread1, process_thread2, process_thread3, process_thread4;
 
         // url
         //public Controller Conupdate = new Controller();
@@ -448,6 +448,7 @@ namespace XEthernetDemo
         //XTifFormatW xtifform;
 
         HxCard hxCard;
+        XRayMsgDLL.XRayPowerAmplifier xRayPower;
 
         int frame_count = 0;
         int lost_line = 0;
@@ -499,6 +500,7 @@ namespace XEthernetDemo
         public int arrayLocalRecvPort = 4001;      // 线阵本地信息接收端口
         public string powerServer = "127.0.0.10";        // 功放IP
         public string ntpServer2 = "127.0.0.11";
+        public string powerRemote = "127.0.0.22";
 #else
         public string ntpServer = "192.168.250.1";          // PLC IP
         public string arrayServer = "192.168.0.10";       // 线阵本地IP
@@ -508,6 +510,7 @@ namespace XEthernetDemo
         public int arrayLocalRecvPort = 4001;      // 线阵本地信息接收端口
         public string powerServer = "172.28.110.50";        // 功放IP
         public string ntpServer2 = "127.0.0.1";
+        public string powerRemote = "172.28.110.100";
 #endif
         //OmronFinsNet omronFinisNet = new OmronFinsNet("192.168.250.1", 6001);
         //System.Timers.Timer t = new System.Timers.Timer(5);
@@ -761,18 +764,18 @@ namespace XEthernetDemo
         }
 
         // 定时检测功放当前通道功能是否正常
-        public void ChannelStateCheck()
-        {
-            if (process_thread1.IsAlive)
-            {
-                for(int i = 0; i < channelStateData.Length; i++)
-                {
-                    if (channelStateData[i] != 1)
-                        OnError(50, "Channel " + i + " error!");
-                }
-            }
-            //wr2.WriteLine(DateTime.Now.ToString() + "ChannelStateCheck Finishing!");
-        }
+        //public void ChannelStateCheck()
+        //{
+        //    if (process_thread1.IsAlive)
+        //    {
+        //        for(int i = 0; i < channelStateData.Length; i++)
+        //        {
+        //            if (channelStateData[i] != 1)
+        //                OnError(50, "Channel " + i + " error!");
+        //        }
+        //    }
+        //    //wr2.WriteLine(DateTime.Now.ToString() + "ChannelStateCheck Finishing!");
+        //}
 
         // 发送当前时间点的时间戳
         public void timecheck()
@@ -930,6 +933,63 @@ namespace XEthernetDemo
 
         }
 
+        private void recv_data_Pro(object sender, EventArgs e)
+        {
+            XRayMsgDLL.XRayPowerAmplifier.XRayFrame frame = e as XRayMsgDLL.XRayPowerAmplifier.XRayFrame;
+            for (int j = 0; j < frame.ResponseArea.Length; j++) 
+            {
+                int channelGet = frame.ResponseArea[j];
+                if(channelGet == 2)
+                {
+                    // 解析时间和通道数
+                    GFinfo info = new GFinfo();
+                    Int64 time = frame.Time;
+                    info.time = time - 15;
+                    //index = index << 8 & data[9];
+
+                    info.channelindex = j + 1;// Convert.ToInt32(data[8].ToString("X2"), 16);
+                    info.flag = 1;               // 入队列的为铜的信息
+                    info.next_same = false;     // 初始化下一个物块时间信息与自己是不同的
+                                                // 检测当前进队列的物块时间信息和前一个物块是否相同
+                    lock (locker)
+                    {
+                        if (info_queue.Count != 0)
+                        {
+                            GFinfo[] list = info_queue.ToArray<GFinfo>();
+                            GFinfo last_info = list[list.Length - 1];
+                            if (Math.Abs(last_info.time - info.time) <= 5)
+                            {
+
+                                list[list.Length - 1].next_same = true;
+                                Console.WriteLine("功率放中有物块！");
+                            }
+                            else
+                            {
+                                if (list.Length < 2)
+                                {
+                                    list = new GFinfo[0];
+                                }
+                            }
+
+                            info_queue = new Queue<GFinfo>(list);
+                        }
+                        info_queue.Enqueue(info);
+                    }
+                    try
+                    {
+                        //wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
+                        //wr.Flush();
+                    }
+                    catch (ObjectDisposedException ex)
+                    {
+                        Error.Text = "Error: " + ex.Message;
+                    }
+                }
+
+            }
+           
+        }
+
         // 三个错误显示程序
         void OnError(int err_id, string msg)
         {
@@ -980,15 +1040,18 @@ namespace XEthernetDemo
             info_queue = new Queue<GFinfo>();
             conditional_variable = new AutoResetEvent(false);
             gflocker = new object();
+            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2);
+            xRayPower.RegisterFrameReadyCallback(recv_data_Pro);
+            xRayPower.Connect(powerServer, powerRemote, 27001, 19200);
+            //udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
+            //endpoint = new IPEndPoint(IPAddress.Parse(powerServer), 27001);          //172.28.110.50   27001
+            //udpRecv.Bind(endpoint);
+            //
+            //udpSend = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                    //给HJ负责设备发送数据报
+            //sendpoint = new IPEndPoint(IPAddress.Parse(ntpServer2), 1130);
+            ////udpSend.Bind(sendpoint);
+            //udpSend.Connect(sendpoint);
 
-            udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
-            endpoint = new IPEndPoint(IPAddress.Parse(powerServer), 27001);          //172.28.110.50   27001
-            udpRecv.Bind(endpoint);
-
-            udpSend = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                    //给HJ负责设备发送数据报
-            sendpoint = new IPEndPoint(IPAddress.Parse(ntpServer2), 1130);
-            //udpSend.Bind(sendpoint);
-            udpSend.Connect(sendpoint);
         }
 
         void OnFrameReady(HxCard.XImgFrame image)
@@ -1005,7 +1068,7 @@ namespace XEthernetDemo
 #if _TEST
         private void StartButton_Click(object sender, EventArgs e)
         {
-
+            xRayPower.Start();
             paraSetButton.Enabled = false;
             DeleteFiles(result_data + "pic/");
             frame_count = 0;
@@ -1047,14 +1110,14 @@ namespace XEthernetDemo
             gflist2.length = 0;
 
             quit_flag = false;
-            listen_thread = new Thread(RecvMessage);
-            process_thread1 = new Thread(ProcessMessage);
+            //listen_thread = new Thread(RecvMessage);
+            //process_thread1 = new Thread(ProcessMessage);
             
 
-            listen_thread.IsBackground = true;
-            process_thread1.IsBackground = true;
-            listen_thread.Start();
-            process_thread1.Start();
+            //listen_thread.IsBackground = true;
+            //process_thread1.IsBackground = true;
+            //listen_thread.Start();
+            //process_thread1.Start();
 
             // 功放功能定时检测
             //ChannelChecktimer.Enabled = true;
@@ -1066,6 +1129,7 @@ namespace XEthernetDemo
 #else
         private void StartButton_Click(object sender, EventArgs e)
         {
+            xRayPower.Start();
             SetIntegralTime();
             hxCard.SetGain(62);
             hxCard.SetPixelMode(1);
@@ -2114,7 +2178,7 @@ namespace XEthernetDemo
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
-            listen_thread.Abort();
+            //listen_thread.Abort();
             lock (locker)
             {
                 msg_queue.Clear();
@@ -2123,7 +2187,7 @@ namespace XEthernetDemo
                 //conditional_variable.Set();
                 //conditional_variable.Set();
             }
-            process_thread1.Abort();
+            //process_thread1.Abort();
             //process_thread2.Join();
             //process_thread3.Join();
             //process_thread4.Join();
@@ -2144,7 +2208,7 @@ namespace XEthernetDemo
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
         {
-            ChannelStateCheck();
+            //ChannelStateCheck();
         }
 
         private void paraSetButton_Click(object sender, EventArgs e)
@@ -2450,7 +2514,7 @@ namespace XEthernetDemo
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
-            listen_thread?.Abort();
+            //listen_thread?.Abort();
             lock (locker)
             {
                 msg_queue.Clear();
@@ -2459,7 +2523,7 @@ namespace XEthernetDemo
                 //conditional_variable.Set();
                 //conditional_variable.Set();
             }
-            process_thread1?.Abort();
+            //process_thread1?.Abort();
             //process_thread2.Join();
             //process_thread3.Join();
             //process_thread4.Join();
