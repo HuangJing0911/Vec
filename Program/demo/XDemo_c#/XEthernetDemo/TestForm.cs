@@ -1,4 +1,5 @@
-﻿#define _TEST
+﻿//#define _TEST
+//#define _OLD
 #define _NEW_FUN
 using System;
 using System.Collections.Generic;
@@ -516,7 +517,7 @@ namespace XEthernetDemo
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
         Thread recv_thread;
-        static Object locker;
+        static Object locker=new object();
         GFinfo first_info = new GFinfo();
         GFList gflist = new GFList();
         GFList gflist2 = new GFList();
@@ -944,7 +945,7 @@ namespace XEthernetDemo
                     // 解析时间和通道数
                     GFinfo info = new GFinfo();
                     Int64 time = frame.Time;
-                    info.time = time - 15;
+                    info.time = time - 35;
                     //index = index << 8 & data[9];
 
                     info.channelindex = j + 1;// Convert.ToInt32(data[8].ToString("X2"), 16);
@@ -988,6 +989,55 @@ namespace XEthernetDemo
 
             }
            
+        }
+
+        private void recv_data_SimplePro(object sender, EventArgs e)
+        {
+            XRayMsgDLL.XRayPowerAmplifier.SimpleFrame frame = e as XRayMsgDLL.XRayPowerAmplifier.SimpleFrame;
+            // 解析时间和通道数
+            GFinfo info = new GFinfo();
+            Int64 time = frame.Time;
+            info.time = time - 55;
+            //index = index << 8 & data[9];
+
+            info.channelindex = frame.Channel + 1;// Convert.ToInt32(data[8].ToString("X2"), 16);
+            info.flag = 1;               // 入队列的为铜的信息
+            info.next_same = false;     // 初始化下一个物块时间信息与自己是不同的
+                                        // 检测当前进队列的物块时间信息和前一个物块是否相同
+            lock (locker)
+            {
+                if (info_queue.Count != 0)
+                {
+                    GFinfo[] list = info_queue.ToArray<GFinfo>();
+                    GFinfo last_info = list[list.Length - 1];
+                    if (Math.Abs(last_info.time - info.time) <= 5)
+                    {
+
+                        list[list.Length - 1].next_same = true;
+                        Console.WriteLine("功率放中有物块！");
+                    }
+                    else
+                    {
+                        if (list.Length < 2)
+                        {
+                            list = new GFinfo[0];
+                        }
+                    }
+
+                    info_queue = new Queue<GFinfo>(list);
+                }
+                info_queue.Enqueue(info);
+            }
+            try
+            {
+                //wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
+                //wr.Flush();
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Error.Text = "Error: " + ex.Message;
+            }
+
         }
 
         // 三个错误显示程序
@@ -1040,8 +1090,9 @@ namespace XEthernetDemo
             info_queue = new Queue<GFinfo>();
             conditional_variable = new AutoResetEvent(false);
             gflocker = new object();
-            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2);
-            xRayPower.RegisterFrameReadyCallback(recv_data_Pro);
+            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2, true);
+            //xRayPower.RegisterFrameReadyCallback(recv_data_Pro);
+            xRayPower.RegisterSimpleReadyCallback(recv_data_SimplePro);
             xRayPower.Connect(powerServer, powerRemote, 27001, 19200);
             //udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
             //endpoint = new IPEndPoint(IPAddress.Parse(powerServer), 27001);          //172.28.110.50   27001
@@ -1185,6 +1236,7 @@ namespace XEthernetDemo
             gflist2.length = 0;
 
             quit_flag = false;
+#if _OLD
             listen_thread = new Thread(RecvMessage);
             process_thread1 = new Thread(ProcessMessage);
             
@@ -1193,7 +1245,7 @@ namespace XEthernetDemo
             process_thread1.IsBackground = true;
             listen_thread.Start();
             process_thread1.Start();
-
+#endif
             // 功放功能定时检测
             //ChannelChecktimer.Enabled = true;
 
@@ -1202,7 +1254,7 @@ namespace XEthernetDemo
             StopButton.Enabled = true;
         }
 #endif
-        void threadCounters(Object obj)
+            void threadCounters(Object obj)
         {
             DateTime stamp = DateTime.Now;
             HxCard.XImgFrame image = (HxCard.XImgFrame)obj;
@@ -2067,7 +2119,7 @@ namespace XEthernetDemo
             }
 
             //Power_Amplifier_Load();
-            locker = new object();
+            //locker = new object();
             open_recv();
 
             // openclick
@@ -2153,7 +2205,7 @@ namespace XEthernetDemo
                     msg_queue.Enqueue(msg);
                     //label4.Text = msg_queue.Count.ToString();//todo
                 }
-                conditional_variable.Set();
+                conditional_variable?.Set();
             }
         }
 
@@ -2175,6 +2227,7 @@ namespace XEthernetDemo
             //recv_thread.Abort();
             //xacquisition.Stop();
             hxCard.Reset();
+            xRayPower.Reset();
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
@@ -2182,7 +2235,7 @@ namespace XEthernetDemo
             lock (locker)
             {
                 msg_queue.Clear();
-                conditional_variable.Set();
+                conditional_variable?.Set();
                 //conditional_variable.Set();
                 //conditional_variable.Set();
                 //conditional_variable.Set();
@@ -2228,7 +2281,7 @@ namespace XEthernetDemo
             while (!quit_flag)
             {
                 List<Msg> msgs = new List<Msg>();
-                conditional_variable.WaitOne();
+                conditional_variable?.WaitOne();
                 if (quit_flag)
                     return;
                 lock (locker)
@@ -2510,15 +2563,15 @@ namespace XEthernetDemo
             recv = false;
             //recv_thread.Abort();
             //xacquisition.Stop();
-            hxCard.Reset();
+            hxCard?.Reset();
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
             //listen_thread?.Abort();
             lock (locker)
             {
-                msg_queue.Clear();
-                conditional_variable.Set();
+                msg_queue?.Clear();
+                conditional_variable?.Set();
                 //conditional_variable.Set();
                 //conditional_variable.Set();
                 //conditional_variable.Set();
