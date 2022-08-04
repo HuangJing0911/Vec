@@ -1456,7 +1456,7 @@ namespace XEthernetDemo
 
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
-                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * hxCard.ImgHeight);  // 找出物块在图像中的实际时间
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
@@ -1760,7 +1760,7 @@ namespace XEthernetDemo
                 for (int ii = 0; ii <= AmplifierNum; ii++)
                 {
                     Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
-                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, hxCard.ImgHeight), 100, 1);
                 }
                 Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
                 DrawImg(bitmapImg);
@@ -1862,7 +1862,7 @@ namespace XEthernetDemo
 
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
-                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * 512);  // 找出物块在图像中的实际时间
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * hxCard.ImgHeight);  // 找出物块在图像中的实际时间
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
@@ -2067,7 +2067,7 @@ namespace XEthernetDemo
                 for (int ii = 0; ii <= AmplifierNum; ii++)
                 {
                     Cv2.Line(image, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 0),
-                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, 512), 100, 1);
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * image.Width, hxCard.ImgHeight), 100, 1);
                 }
                 Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(image);
                 DrawImg(bitmapImg);
@@ -2088,8 +2088,8 @@ namespace XEthernetDemo
         {
             //DeleteFiles(result_data + "pic/");
             //xsystem = new XSystemW();
-            hxCard = new HxCard();
-            hxCard.Inverse = true;
+            hxCard = new HxCard(512);
+            hxCard.ImgPosiontType = HxCard.PositonType.Inverse;
             hxCard.Connect(arrayServer, arrayRemoteIp, arrayLocalRecvPort, arrayRemoteCmdPort, arrayRemoteCmdPort, arrayRemoteDataPort);
 
             //xsystem.LocalIP = arrayServer;
@@ -2534,7 +2534,7 @@ namespace XEthernetDemo
         public int TimeConvert2Index(long imgTime,long itemTime)
         {
             long timeLength = itemTime - imgTime;
-            return (int)(timeLength / integral_time)+512;
+            return (int)(timeLength / integral_time) + hxCard.ImgHeight;
         }
 
         private void refreshThreshButton_Click(object sender, EventArgs e)
