@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HxCardDLL.dll" size="14336">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HxCardDLL.dll" size="16384">
       <assemblyIdentity name="HxCardDLL" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8jWkihBv6iOTlv1mgGC4GSNOmzwsCutzmBw9Co00Q+0=</dsig:DigestValue>
+        <dsig:DigestValue>kesAk4YWOqKxSuP1s8M0ScwiGAheKoT2WXPiUf9PPaM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -139,14 +139,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="275968">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="278528">
       <assemblyIdentity name="XEthernetDemo" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ePYzoYSYiwQWXuWucb7bvicENVhdOUHzuJ14mkAGGI4=</dsig:DigestValue>
+        <dsig:DigestValue>/uKXRbDyeGEd4ObZSG3NZjzY3ilk2VodE94Fd5w2xUo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -163,14 +163,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XRayMsgDLL.dll" size="15872">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XRayMsgDLL.dll" size="16384">
       <assemblyIdentity name="XRayMsgDLL" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>v7MHU11qP5XvojsBWFcgkw1fOQoJqb3+vy/lwc3vkjw=</dsig:DigestValue>
+        <dsig:DigestValue>PseWQiiacEmESmrwQqXk/B39wYb7sgZEh4PQQrSFhYk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
