@@ -1371,12 +1371,12 @@ namespace XEthernetDemo
             Mat maskImg = img.Clone();
             Mat rawImg = new Mat(new int[] { row, col }, MatType.CV_8UC1, rawImage.Data);
 #if _DETECT
-            img.ConvertTo(img, MatType.CV_32F);
-            Cv2.Normalize(img, img, 1.0, 0, NormTypes.MinMax);
-            img = img * 255;
-            img.ConvertTo(img, MatType.CV_8UC1);
-            //Cv2.ImWrite(init_pic, image);
-            Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
+            //img.ConvertTo(img, MatType.CV_32F);
+            //Cv2.Normalize(img, img, 1.0, 0, NormTypes.MinMax);
+            //img = img * 255;
+            //img.ConvertTo(img, MatType.CV_8UC1);
+            ////Cv2.ImWrite(init_pic, image);
+            //Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
             //Cv2.Blur(img, img, new OpenCvSharp.Size(3, 3));
             Mat element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(3, 3));               //定义核，开运算
             Cv2.MorphologyEx(img, img, MorphTypes.Open, element);                    //进行形态学开运算操作
@@ -1468,7 +1468,7 @@ namespace XEthernetDemo
 
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
-                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * hxCard.ImgHeight);  // 找出物块在图像中的实际时间
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * maskImage.MaxHeight);  // 找出物块在图像中的实际时间
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
@@ -1714,7 +1714,6 @@ namespace XEthernetDemo
             // ushort[,] line_info = get_timestamp_test(ximagew);
             //Console.WriteLine(ximagew.DataOffset);
             imgRgb.Dispose();
-            connImage.Dispose();
             sw.Stop();
             Console.WriteLine("Img Time:" + sw.ElapsedMilliseconds);
             sw.Reset();
