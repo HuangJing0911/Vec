@@ -1,4 +1,4 @@
-﻿//#define _TEST
+﻿#define _TEST
 //#define _OLD
 #define _DETECT
 #define _NEW_FUN
@@ -363,6 +363,7 @@ namespace XEthernetDemo
         private void TestForm_Load(object sender, EventArgs e)
         {
             Version.Text = version;
+            selfDefParam();
         }
 
         private static void CurrentDomain_UnhandleException(object sender, UnhandledExceptionEventArgs e)
@@ -468,7 +469,8 @@ namespace XEthernetDemo
         public int num_of_mouth = 198;          // 喷嘴数量
         public int length_belt = 1016;          // 皮带长度为1000mm
         public int length_linearray = 1120;     // 线阵长度为1200mm
-        public int AmplifierNum = 10;
+        public int AmplifierSetNum = 5;
+        public int AmplifierEnableNum = 10;
         uint time_interval = 5;                 // 定时器定时时间为5ms
         public float speed = 3.0f;              // 传送带速度
         public float SDD = 914;
@@ -1002,7 +1004,7 @@ namespace XEthernetDemo
             info.time = time - 55;
             //index = index << 8 & data[9];
 
-            info.channelindex = frame.Channel + 1;// Convert.ToInt32(data[8].ToString("X2"), 16);
+            info.channelindex = (int)((frame.Channel + 1) * (float)AmplifierSetNum / AmplifierEnableNum);// Convert.ToInt32(data[8].ToString("X2"), 16);
             info.flag = 1;               // 入队列的为铜的信息
             info.next_same = false;     // 初始化下一个物块时间信息与自己是不同的
                                         // 检测当前进队列的物块时间信息和前一个物块是否相同
@@ -1092,7 +1094,7 @@ namespace XEthernetDemo
             info_queue = new Queue<GFinfo>();
             conditional_variable = new AutoResetEvent(false);
             gflocker = new object();
-            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2, true);
+            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2, true, AmplifierEnableNum);
             //xRayPower.RegisterFrameReadyCallback(recv_data_Pro);
             xRayPower.RegisterSimpleReadyCallback(recv_data_SimplePro);
             xRayPower.Connect(powerServer, powerRemote, 27001, 19200);
@@ -1358,6 +1360,7 @@ namespace XEthernetDemo
         int itemGrayThreshold = 80;
         int subItemGrayThresh = 60;
         int subItemAreaThresh = 20;
+        int grayMeanDiffThresh = 50;
 
 
         public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
@@ -1431,17 +1434,29 @@ namespace XEthernetDemo
                     Cv2.PutText(imgRgb, String.Format("mean{0}:{1}", index, mean.ToString("f1")),
                                 new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
                                 HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
-                    bool luosi = findBlockInItem(tinyItem, subItemGrayThresh, subItemAreaThresh);
-                    lineMetalType[index] = mean > itemGrayThreshold &&
-                        !luosi ? 0 : 1;
+                    double subArea = 0;
+                    double totalGray = 0;
+                    double subMean = 0;
+                    bool luosi = findBlockInItemGrayDiff(tinyItem, subItemGrayThresh, subItemAreaThresh, imgIndex,index, out subArea, out totalGray);
+                    double outMean = 0;
+                    outMean = (sumValue.Val0 - totalGray) / (area - subArea);
+                    subMean = subArea == 0 ? outMean : totalGray / subArea;
+                    double MeanDiff = Math.Abs(outMean - subMean);
+                    if (mean < itemGrayThreshold || !luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) 
+                    {
+                        lineMetalType[index] = 1;
+                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
+                    }
+                    else
+                    {
+                        lineMetalType[index] = 0;
+                    }
+
                     //Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
                     //            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y),
                     //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     //Console.WriteLine("Mean: {0}+{1}={2}", sumValue.Val0.ToString("f1"), area.ToString("f1"), mean.ToString("f1"));
-                    if (mean <= itemGrayThreshold || luosi) 
-                    {
-                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
-                    }
+
                 }
 
                 for (int j = 0; j < contours.Length; j++)
@@ -1509,8 +1524,8 @@ namespace XEthernetDemo
 
 
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
-                    int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierNum / num_of_mouth);
-                    int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierNum / num_of_mouth);
+                    int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierSetNum / num_of_mouth);
+                    int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierSetNum / num_of_mouth);
                     data.typof_block = (byte)lineMetalType[i];
 
 
@@ -1598,15 +1613,15 @@ namespace XEthernetDemo
                     //}
                     int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - checkRange);
                     int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + checkRange);
-                    int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
-                    int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
+                    int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
+                    int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
                     //Cv2.Rectangle(imgRgb, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
 
                     int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
-                    int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
-                    //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierNum * image.Width);//gflist.start_channel
-                    //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierNum * image.Width);//gflist.start_channel
-                    int AmpLineRight = (int)(BeltConvert2Line((float)(gflist.end_channel) / AmplifierNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
+                    int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
+                    //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierSetNum * image.Width);//gflist.start_channel
+                    //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierSetNum * image.Width);//gflist.start_channel
+                    int AmpLineRight = (int)(BeltConvert2Line((float)(gflist.end_channel) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
                     Cv2.Line(imgRgb, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
                     //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
 
@@ -1697,10 +1712,10 @@ namespace XEthernetDemo
                 OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
                 OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
                 Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
-                for (int ii = 0; ii <= AmplifierNum; ii++)
+                for (int ii = 0; ii <= AmplifierSetNum; ii++)
                 {
-                    Cv2.Line(imgRgb, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, 0),
-                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, hxCard.ImgHeight), 100, 1);
+                    Cv2.Line(imgRgb, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, 0),
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, hxCard.ImgHeight), 100, 1);
                 }
                 Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(imgRgb);
                 DrawImg(bitmapImg);
@@ -1733,11 +1748,54 @@ namespace XEthernetDemo
             foreach (OpenCvSharp.Point[] contour in contours)
             {
                 double area = Cv2.ContourArea(contour);
-                totalArea += area;
+                var boundingRect = Cv2.BoundingRect(contour);
+                if (boundingRect.Height < item.Height / 2 && boundingRect.Width < item.Width / 2)
+                    totalArea += area;
                 i++;
             }
             if (totalArea > areaThresh)
                 ret = true;
+            return ret;
+        }
+        private bool findBlockInItemGrayDiff(Mat item, int grayThresh, int areaThresh, int imgIndex, int itemIndex, out double totalArea, out double totalGray)
+        {
+            bool ret = false;
+            Mat threshItem = item.Clone();
+            Cv2.Threshold(item, threshItem, grayThresh, 255, ThresholdTypes.BinaryInv);
+            //Cv2.AdaptiveThreshold(item, threshItem, 255, AdaptiveThresholdTypes.GaussianC, ThresholdTypes.BinaryInv, 3, 0);
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchy;
+            Cv2.FindContours(threshItem, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+            totalArea = 0;
+
+            //for (int i = 0; i < contours.Length; i++)
+            //{
+            //    var contour = contours[i];
+            //
+            //    totalArea += area;
+            //}
+            double invArea = 0;
+            for (int i = 0; i < contours.Length; i++)
+            {
+                var contour = contours[i];
+                var boundingRect = Cv2.BoundingRect(contour);
+                if (!(boundingRect.Height < item.Height / 2 && boundingRect.Width < item.Width / 2))
+                {
+                    invArea += Cv2.CountNonZero(threshItem[boundingRect]);
+                }
+
+            }
+            totalArea = Cv2.CountNonZero(threshItem);
+            var subTotalArea = totalArea - invArea;
+            Mat gloryItem = threshItem.Clone();
+            Cv2.BitwiseAnd(item, threshItem, gloryItem);
+            Scalar sumValue = Cv2.Sum(gloryItem);
+
+            totalGray = sumValue.Val0;                         //计算每个mat的平均值
+
+            if (subTotalArea > areaThresh)
+                ret = true;
+            //gradientTest(item, ref itemIndex);
             return ret;
         }
         public void getNewPicture(HxCard.XImgFrame[] images)
@@ -2352,6 +2410,19 @@ namespace XEthernetDemo
         public short PixelConvert2Num(float beltPixel)
         {
             return (Int16)(num_of_mouth * beltPixel / (t1 + t2));
+        }
+        //int minItemArea = 20;
+        //int itemGrayThreshold = 80;
+        //int subItemGrayThresh = 60;
+        //int subItemAreaThresh = 20;
+        private void selfDefParam()
+        {
+            string[] content = File.ReadAllLines(".\\测试1\\参数.txt");
+            minItemArea = Convert.ToInt32(content[5]);
+            itemGrayThreshold = Convert.ToInt32(content[6]);
+            subItemGrayThresh = Convert.ToInt32(content[7]);
+            subItemAreaThresh = Convert.ToInt32(content[8]);
+            grayMeanDiffThresh = Convert.ToInt32(content[9]);
         }
     }
 
