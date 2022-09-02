@@ -139,14 +139,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="279552">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="XEthernetDemo.exe" size="280064">
       <assemblyIdentity name="XEthernetDemo" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>AwC7sceJEziDj2d8TxYDMZwjWj8vaiobrTwE1gVWviI=</dsig:DigestValue>
+        <dsig:DigestValue>blrFoetWZxkZtjP4eDiAAl2kq1ZKKECMZqvxpHqHPKY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

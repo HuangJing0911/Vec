@@ -1001,7 +1001,7 @@ namespace XEthernetDemo
             // 解析时间和通道数
             GFinfo info = new GFinfo();
             Int64 time = frame.Time;
-            info.time = time - 55;
+            info.time = time - 21;
             //index = index << 8 & data[9];
 
             info.channelindex = (int)((frame.Channel + 1) * (float)AmplifierSetNum / AmplifierEnableNum);// Convert.ToInt32(data[8].ToString("X2"), 16);
@@ -1193,7 +1193,7 @@ namespace XEthernetDemo
             System.Threading.Thread.Sleep(5);
             hxCard.SetGain(62);
             System.Threading.Thread.Sleep(5);
-            hxCard.SetPixelMode(64);
+            hxCard.SetPixelMode(1);
             System.Threading.Thread.Sleep(5);
             paraSetButton.Enabled = false;
             DeleteFiles(result_data + "pic/");
@@ -1429,11 +1429,10 @@ namespace XEthernetDemo
                     Mat tinyItem = rawImg[boundRect[index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
                     Mat gloryItem = tinyItem.Clone();
                     Cv2.BitwiseAnd(tinyItem, mask, gloryItem);
+                    area = Cv2.CountNonZero(gloryItem);
                     Scalar sumValue = Cv2.Sum(gloryItem);
                     double mean = sumValue.Val0 / area;                         //计算每个mat的平均值
-                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1}", index, mean.ToString("f1")),
-                                new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
-                                HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
+
                     double subArea = 0;
                     double totalGray = 0;
                     double subMean = 0;
@@ -1442,16 +1441,31 @@ namespace XEthernetDemo
                     outMean = (sumValue.Val0 - totalGray) / (area - subArea);
                     subMean = subArea == 0 ? outMean : totalGray / subArea;
                     double MeanDiff = Math.Abs(outMean - subMean);
-                    if (mean < itemGrayThreshold || !luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) 
+                    int flag = 0;
+                    if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) 
                     {
                         lineMetalType[index] = 1;
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
+                        if(mean < itemGrayThreshold)
+                        {
+                            flag += 4;
+                        }
+                        if(luosi)
+                        {
+                            flag += 2;
+                        }
+                        if(MeanDiff > grayMeanDiffThresh && subArea > 25)
+                        {
+                            flag += 1;
+                        }
                     }
                     else
                     {
                         lineMetalType[index] = 0;
                     }
-
+                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area,Convert.ToString(flag,2)),
+            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
+            HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
                     //Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
                     //            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y),
                     //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
@@ -2423,6 +2437,8 @@ namespace XEthernetDemo
             subItemGrayThresh = Convert.ToInt32(content[7]);
             subItemAreaThresh = Convert.ToInt32(content[8]);
             grayMeanDiffThresh = Convert.ToInt32(content[9]);
+            Console.WriteLine("minItemArea:{0},itemGrayThreshold:{1},subItemGrayThresh:{2},subItemAreaThresh:{3},grayMeanDiffThresh:{4}"
+                , minItemArea, itemGrayThreshold, subItemGrayThresh, subItemAreaThresh, grayMeanDiffThresh);
         }
     }
 
