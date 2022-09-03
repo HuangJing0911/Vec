@@ -1,4 +1,4 @@
-﻿#define _TEST
+﻿//#define _TEST
 //#define _OLD
 #define _DETECT
 #define _NEW_FUN
@@ -1361,7 +1361,8 @@ namespace XEthernetDemo
         int subItemGrayThresh = 60;
         int subItemAreaThresh = 20;
         int grayMeanDiffThresh = 50;
-
+        int trueItemCunt = 0;
+        int choosedItemCunt = 0;
 
         public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
@@ -1407,9 +1408,10 @@ namespace XEthernetDemo
                     boundRect[index] = Cv2.BoundingRect(contours[index]);                //获取每个contour的框
                     if (boundRect[index].TopLeft.Y > maskImage.RoiHeight)
                         continue;
-                    double area = Cv2.ContourArea(contours[index]);
+                    var subItemRect = Cv2.BoundingRect(contours[index]);
+                    double area = subItemRect.Height * subItemRect.Width;//Cv2.ContourArea(contours[index]);
 
-                    if (area < minItemArea || boundRect[index].Height > row / 3)
+                    if (area < minItemArea )//|| boundRect[index].Height > row / 3)
                     {
                         Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
                                     new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y-20),
@@ -1421,6 +1423,7 @@ namespace XEthernetDemo
                     {
                         Cv2.DrawContours(imgRgb, contours, index, new Scalar(255, 0, 0), 1);
                     }
+                    trueItemCunt++;
                     //Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
                     OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[index].BottomRight.X, boundRect[index].BottomRight.Y);
                     OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[index].TopLeft.X, boundRect[index].TopLeft.Y);
@@ -1482,7 +1485,7 @@ namespace XEthernetDemo
                     //if (contours.Length > 50)
                     //break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Height > row / 3 || boundRect[i].Width < 5 || boundRect[i].Width > num_of_mouth / 2 || boundRect[i].Height < 4)
+                    if (area == 0 || boundRect[i].Width < 5 || boundRect[i].Height < 4)
                         continue;
 
                     //wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
@@ -1672,6 +1675,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("kk?:{0}", kk > 0);
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
+                        choosedItemCunt++;
                         num = SendData(data);
                         Console.WriteLine("SendData");
                         if ((data.typof_block == 1 && kk > 0) == true)
@@ -2052,6 +2056,8 @@ namespace XEthernetDemo
             FindDeviceButton.Enabled = true;
             //FunctionBox.Enabled = true;
             paraSetButton.Enabled = true;
+            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
+            File.WriteAllText(@".\测试1\result.txt", result);
         }
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
