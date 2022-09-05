@@ -1485,8 +1485,8 @@ namespace XEthernetDemo
                     //if (contours.Length > 50)
                     //break;
                     double area = Cv2.ContourArea(contours[i]);
-                    if (area == 0 || boundRect[i].Width < 5 || boundRect[i].Height < 4)
-                        continue;
+                    //if (area == 0 || boundRect[i].Width < 5 || boundRect[i].Height < 4)
+                    //    continue;
 
                     //wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
                     //341 347 348 346
