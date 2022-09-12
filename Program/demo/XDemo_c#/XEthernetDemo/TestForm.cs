@@ -1,5 +1,6 @@
-﻿//#define _TEST
+﻿#define _TEST
 //#define _OLD
+#define _IO
 #define _DETECT
 #define _NEW_FUN
 using System;
@@ -1367,7 +1368,8 @@ namespace XEthernetDemo
         public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
             sw.Start();
-
+            int totalItemCunt = 0;
+            int choosedItemCunt = 0;
             int row = (int)maskImage.Height;
             int col = (int)maskImage.Width;
             Mat img = new Mat(new int[] { row, col }, MatType.CV_8UC1, maskImage.Data);
@@ -1402,6 +1404,8 @@ namespace XEthernetDemo
 #if _DETECT
             if (true)// contours.Length > 0)
             {
+                List<deepTestItem> deepResultList = new List<deepTestItem>();
+                List<ManualResetEvent> arrManul = new List<ManualResetEvent>();
 
                 for (int index = 0; index < contours.Length; index++)
                 {
@@ -1432,6 +1436,21 @@ namespace XEthernetDemo
                     Mat tinyItem = rawImg[boundRect[index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
                     Mat gloryItem = tinyItem.Clone();
                     Cv2.BitwiseAnd(tinyItem, mask, gloryItem);
+
+                    deepTestItem dlItem = new deepTestItem(tinyItem, index);
+                    dlItem.manual = new ManualResetEvent(false);
+                    arrManul.Add(dlItem.manual);
+                    if (area > 200)
+                    {
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(deepLearnTest), dlItem);
+                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 1);
+                    }
+                    else
+                    {
+                        dlItem.manual.Set();
+                    }
+                    deepResultList.Add(dlItem);
+
                     area = Cv2.CountNonZero(gloryItem);
                     Scalar sumValue = Cv2.Sum(gloryItem);
                     double mean = sumValue.Val0 / area;                         //计算每个mat的平均值
@@ -1445,7 +1464,7 @@ namespace XEthernetDemo
                     subMean = subArea == 0 ? outMean : totalGray / subArea;
                     double MeanDiff = Math.Abs(outMean - subMean);
                     int flag = 0;
-                    if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) 
+                    if ((mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) && false) 
                     {
                         lineMetalType[index] = 1;
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
@@ -1461,6 +1480,7 @@ namespace XEthernetDemo
                         {
                             flag += 1;
                         }
+                        choosedItemCunt++;
                     }
                     else
                     {
@@ -1473,9 +1493,32 @@ namespace XEthernetDemo
                     //            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y),
                     //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     //Console.WriteLine("Mean: {0}+{1}={2}", sumValue.Val0.ToString("f1"), area.ToString("f1"), mean.ToString("f1"));
-
+                    totalItemCunt++;
                 }
-
+                int tickCunt = 0;
+                bool deepLearnCheck = false;
+                if (totalItemCunt > 0)
+                {
+                    int batch = arrManul.Count / 64;
+                    int tail = arrManul.Count % 64;
+                    for (int j = 0; j < batch; j++)
+                    {
+                        deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(j * 64).Take(64).ToArray(), 130);
+                    }
+                    deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 130);
+                }
+                foreach (var item in deepResultList)
+                {
+                    if(item.result < 0.5)
+                    {
+                        lineMetalType[item.index] = 1;
+                        OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[item.index].BottomRight.X, boundRect[item.index].BottomRight.Y);
+                        OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[item.index].TopLeft.X, boundRect[item.index].TopLeft.Y);
+                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 5);
+                        choosedItemCunt++;
+                    }
+                }
+                Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -1735,10 +1778,11 @@ namespace XEthernetDemo
                     Cv2.Line(imgRgb, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, 0),
                         new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, hxCard.ImgHeight), 100, 1);
                 }
+#if _IO
                 Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(imgRgb);
                 DrawImg(bitmapImg);
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
-
+#endif
                 imgIndex++;
                 #endregion
 
@@ -1750,6 +1794,34 @@ namespace XEthernetDemo
             sw.Stop();
             Console.WriteLine("Img Time:" + sw.ElapsedMilliseconds);
             sw.Reset();
+        }
+        class deepTestItem
+        {
+            public ManualResetEvent manual;
+            public Mat img;
+            public string lab;
+            public double result = 0;
+            public int index;
+            public deepTestItem(Mat m, int i)
+            {
+                img = m;
+                index = i;
+            }
+        }
+        void deepLearnTest(object o)
+        {
+            deepTestItem tinyImgs = o as deepTestItem;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var deepLearnResult = User.InferenceModel(tinyImgs.img.Clone());
+            tinyImgs.lab = deepLearnResult.Label;
+            tinyImgs.result = deepLearnResult.Confidence;
+            sw.Stop();
+            Console.WriteLine("DeepLearnTime:{0}", sw.ElapsedMilliseconds);
+            sw.Reset();
+            //for (int i = 0; i < 1000; i++)
+            //    for (int j = 0; j < 1000; j++) ;
+            tinyImgs.manual.Set();
         }
 
         private bool findBlockInItem(Mat item, int grayThresh, int areaThresh)
@@ -1867,6 +1939,7 @@ namespace XEthernetDemo
                 i++;
             }
 #endif
+#if _IO
             Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(imgRgb);
             DrawImg(bitmapImg);
             string imgPath = ".\\data\\图像5\\";
@@ -1875,14 +1948,16 @@ namespace XEthernetDemo
                 Directory.CreateDirectory(imgPath);
             }
             bitmapImg.Save(imgPath + imgIndex.ToString() + ".bmp");
+#endif
             imgIndex++;
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds);
             sw.Reset();
         }
-
+        User user;
         private void FindDeviceButton_Click(object sender, EventArgs e)
         {
+            user = new User();
             //DeleteFiles(result_data + "pic/");
             //xsystem = new XSystemW();
             hxCard = new HxCard(512, 100);

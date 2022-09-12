@@ -152,7 +152,7 @@ namespace XEthernetDemo
 
         private void StartMenu_Load(object sender, EventArgs e)
         {
-            Sunisoft.IrisSkin.SkinEngine skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
+            //Sunisoft.IrisSkin.SkinEngine skinEngine1 = new Sunisoft.IrisSkin.SkinEngine();
             //skinEngine1.SkinFile = System.Environment.CurrentDirectory + "\\Skins\\MacOS.ssk";
         }
 
