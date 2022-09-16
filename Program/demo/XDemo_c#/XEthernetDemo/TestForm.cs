@@ -1266,7 +1266,7 @@ namespace XEthernetDemo
             StopButton.Enabled = true;
         }
 #endif
-            void threadCounters(Object obj)
+        void threadCounters(Object obj)
         {
             DateTime stamp = DateTime.Now;
             HxCard.XImgFrame[] images = (HxCard.XImgFrame[])obj;
@@ -1281,15 +1281,11 @@ namespace XEthernetDemo
                 uint minp = 65536;
                 int m, n, row, col;
 
-
-
-
-
                 time_finish = DateTime.Now.Millisecond;
 
                 Thread.Sleep(30);
                 //getNewPicture(images);
-                getCounters_Pixel(images[0],images[1], MatType.CV_16UC1, stamp);//image.HeadTime);
+                getCounters_Pixel(images[0], images[1], MatType.CV_16UC1, stamp);//image.HeadTime);
             }
             catch (ThreadAbortException e)
             {
@@ -1364,12 +1360,11 @@ namespace XEthernetDemo
         int grayMeanDiffThresh = 50;
         int trueItemCunt = 0;
         int choosedItemCunt = 0;
-
+        int totalItemCunt = 0;
         public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
             sw.Start();
-            int totalItemCunt = 0;
-            int choosedItemCunt = 0;
+
             int row = (int)maskImage.Height;
             int col = (int)maskImage.Width;
             Mat img = new Mat(new int[] { row, col }, MatType.CV_8UC1, maskImage.Data);
@@ -1427,7 +1422,7 @@ namespace XEthernetDemo
                     {
                         Cv2.DrawContours(imgRgb, contours, index, new Scalar(255, 0, 0), 1);
                     }
-                    trueItemCunt++;
+
                     //Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
                     OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[index].BottomRight.X, boundRect[index].BottomRight.Y);
                     OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[index].TopLeft.X, boundRect[index].TopLeft.Y);
@@ -1436,7 +1431,7 @@ namespace XEthernetDemo
                     Mat tinyItem = rawImg[boundRect[index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
                     Mat gloryItem = tinyItem.Clone();
                     Cv2.BitwiseAnd(tinyItem, mask, gloryItem);
-
+#if _DEEP
                     deepTestItem dlItem = new deepTestItem(tinyItem, index);
                     dlItem.manual = new ManualResetEvent(false);
                     arrManul.Add(dlItem.manual);
@@ -1450,7 +1445,7 @@ namespace XEthernetDemo
                         dlItem.manual.Set();
                     }
                     deepResultList.Add(dlItem);
-
+#endif
                     area = Cv2.CountNonZero(gloryItem);
                     Scalar sumValue = Cv2.Sum(gloryItem);
                     double mean = sumValue.Val0 / area;                         //计算每个mat的平均值
@@ -1464,8 +1459,10 @@ namespace XEthernetDemo
                     subMean = subArea == 0 ? outMean : totalGray / subArea;
                     double MeanDiff = Math.Abs(outMean - subMean);
                     int flag = 0;
-                    if ((mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) && false) 
+                    trueItemCunt++;
+                    if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) 
                     {
+                        choosedItemCunt++;
                         lineMetalType[index] = 1;
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
                         if(mean < itemGrayThreshold)
@@ -1480,7 +1477,7 @@ namespace XEthernetDemo
                         {
                             flag += 1;
                         }
-                        choosedItemCunt++;
+                        //choosedItemCunt++;
                     }
                     else
                     {
@@ -1496,6 +1493,7 @@ namespace XEthernetDemo
                     totalItemCunt++;
                 }
                 int tickCunt = 0;
+#if _DEEP
                 bool deepLearnCheck = false;
                 if (totalItemCunt > 0)
                 {
@@ -1518,6 +1516,7 @@ namespace XEthernetDemo
                         choosedItemCunt++;
                     }
                 }
+#endif
                 Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
                 for (int j = 0; j < contours.Length; j++)
                 {
@@ -1716,9 +1715,10 @@ namespace XEthernetDemo
                     //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
                     //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
                     //Console.WriteLine("kk?:{0}", kk > 0);
+
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
-                        choosedItemCunt++;
+
                         num = SendData(data);
                         Console.WriteLine("SendData");
                         if ((data.typof_block == 1 && kk > 0) == true)
@@ -1753,13 +1753,13 @@ namespace XEthernetDemo
             }
 
 #endif
-            //sw.Stop();
-            //Console.WriteLine(sw.ElapsedMilliseconds);
-            //sw.Reset();
+                    //sw.Stop();
+                    //Console.WriteLine(sw.ElapsedMilliseconds);
+                    //sw.Reset();
 
-            //time_finish = DateTime.Now.Millisecond;
+                    //time_finish = DateTime.Now.Millisecond;
 
-            if (contours.Length != 0)
+                    if (contours.Length != 0)
             {
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -2085,7 +2085,8 @@ namespace XEthernetDemo
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            
+            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
+            File.WriteAllText(@".\测试1\result.txt", result);
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
             // 暂停线阵
@@ -2100,8 +2101,11 @@ namespace XEthernetDemo
             recv = false;
             //recv_thread.Abort();
             //xacquisition.Stop();
+#if _TEST
+#else
             hxCard.Reset();
             xRayPower.Reset();
+#endif
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
@@ -2131,8 +2135,7 @@ namespace XEthernetDemo
             FindDeviceButton.Enabled = true;
             //FunctionBox.Enabled = true;
             paraSetButton.Enabled = true;
-            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
-            File.WriteAllText(@".\测试1\result.txt", result);
+
         }
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
@@ -2429,6 +2432,8 @@ namespace XEthernetDemo
 
         private void TestForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
+            File.WriteAllText(@".\测试1\result.txt", result);
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
             // 暂停线阵
@@ -2443,7 +2448,10 @@ namespace XEthernetDemo
             recv = false;
             //recv_thread.Abort();
             //xacquisition.Stop();
+#if _TEST
+#else
             hxCard?.Reset();
+#endif
             // 暂停功放
             quit_flag = true;
             //udpRecv.Close();
