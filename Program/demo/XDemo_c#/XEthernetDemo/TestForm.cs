@@ -1,6 +1,7 @@
 ﻿#define _TEST
 //#define _OLD
-#define _IO
+//#define _IO
+//#define _DEEP
 #define _DETECT
 #define _NEW_FUN
 using System;
@@ -1361,8 +1362,11 @@ namespace XEthernetDemo
         int trueItemCunt = 0;
         int choosedItemCunt = 0;
         int totalItemCunt = 0;
+
         public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
+            int lslItemCunt = 0;
+
             sw.Start();
 
             int row = (int)maskImage.Height;
@@ -1383,15 +1387,16 @@ namespace XEthernetDemo
             Cv2.MorphologyEx(img, img, MorphTypes.Open, element);                    //进行形态学开运算操作
             element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(3, 3));               //定义核，开运算
             Cv2.MorphologyEx(img, img, MorphTypes.Close, element);                    //进行形态学闭运算操作
-            Mat blurImg = img.Clone();
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
             Cv2.Canny(img, img, 10, 80, 3, false); // 输入图像虚为单通道8位图像
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchy;
             Cv2.FindContours(img, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
 #endif
+#if _IO
             Mat imgRgb = new Mat(new int[] { row, col }, MatType.CV_8UC3);
             Cv2.CvtColor(rawImg, imgRgb, ColorConversionCodes.GRAY2BGR);
+#endif
 
 
             Rect[] boundRect = new Rect[contours.Length];
@@ -1412,21 +1417,27 @@ namespace XEthernetDemo
 
                     if (area < minItemArea )//|| boundRect[index].Height > row / 3)
                     {
+#if _IO
                         Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
                                     new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y-20),
                                     HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 0, 255));
                         Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
+#endif
                         continue;
                     }
                     else
                     {
+#if _IO
                         Cv2.DrawContours(imgRgb, contours, index, new Scalar(255, 0, 0), 1);
+#endif
                     }
 
                     //Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
+#if _IO
                     OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[index].BottomRight.X, boundRect[index].BottomRight.Y);
                     OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[index].TopLeft.X, boundRect[index].TopLeft.Y);
                     Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
+#endif
                     Mat mask = maskImg[boundRect[index]];
                     Mat tinyItem = rawImg[boundRect[index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
                     Mat gloryItem = tinyItem.Clone();
@@ -1438,7 +1449,9 @@ namespace XEthernetDemo
                     if (area > 200)
                     {
                         ThreadPool.QueueUserWorkItem(new WaitCallback(deepLearnTest), dlItem);
+#if _IO
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 1);
+#endif
                     }
                     else
                     {
@@ -1446,7 +1459,7 @@ namespace XEthernetDemo
                     }
                     deepResultList.Add(dlItem);
 #endif
-                    area = Cv2.CountNonZero(gloryItem);
+                        area = Cv2.CountNonZero(gloryItem);
                     Scalar sumValue = Cv2.Sum(gloryItem);
                     double mean = sumValue.Val0 / area;                         //计算每个mat的平均值
 
@@ -1464,7 +1477,9 @@ namespace XEthernetDemo
                     {
                         choosedItemCunt++;
                         lineMetalType[index] = 1;
+#if _IO
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
+#endif
                         if(mean < itemGrayThreshold)
                         {
                             flag += 4;
@@ -1483,19 +1498,22 @@ namespace XEthernetDemo
                     {
                         lineMetalType[index] = 0;
                     }
+#if _IO
                     Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area,Convert.ToString(flag,2)),
             new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
             HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
+#endif
                     //Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
                     //            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y),
                     //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     //Console.WriteLine("Mean: {0}+{1}={2}", sumValue.Val0.ToString("f1"), area.ToString("f1"), mean.ToString("f1"));
                     totalItemCunt++;
+                    lslItemCunt++;
                 }
                 int tickCunt = 0;
 #if _DEEP
                 bool deepLearnCheck = false;
-                if (totalItemCunt > 0)
+                if (lslItemCunt > 0) 
                 {
                     int batch = arrManul.Count / 64;
                     int tail = arrManul.Count % 64;
@@ -1509,15 +1527,19 @@ namespace XEthernetDemo
                 {
                     if(item.result < 0.5)
                     {
+                        if (lineMetalType[item.index] != 1)
+                            choosedItemCunt++;
                         lineMetalType[item.index] = 1;
+#if _IO
                         OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[item.index].BottomRight.X, boundRect[item.index].BottomRight.Y);
                         OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[item.index].TopLeft.X, boundRect[item.index].TopLeft.Y);
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 5);
-                        choosedItemCunt++;
+#endif
+
                     }
                 }
 #endif
-                Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
+                        Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -1648,7 +1670,7 @@ namespace XEthernetDemo
                         }
 
                     }
-
+#if _IO
                     #region CZQ
 
                     //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
@@ -1688,7 +1710,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("图像中有物块！");
 
                     #endregion
-
+#endif
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
@@ -1728,8 +1750,10 @@ namespace XEthernetDemo
                         Console.WriteLine("***********************************");
 
                         data.typof_block = 1;
+#if _IO
                         Cv2.PutText(imgRgb, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
                         HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
+#endif
                     }
 
                     DateTime time2 = DateTime.Now;
@@ -1753,13 +1777,13 @@ namespace XEthernetDemo
             }
 
 #endif
-                    //sw.Stop();
-                    //Console.WriteLine(sw.ElapsedMilliseconds);
-                    //sw.Reset();
+                        //sw.Stop();
+                        //Console.WriteLine(sw.ElapsedMilliseconds);
+                        //sw.Reset();
 
-                    //time_finish = DateTime.Now.Millisecond;
+                        //time_finish = DateTime.Now.Millisecond;
 
-                    if (contours.Length != 0)
+            if (contours.Length != 0)
             {
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -1770,6 +1794,7 @@ namespace XEthernetDemo
 
 
                 #region CZQ
+#if _IO
                 OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
                 OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
                 Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
@@ -1778,7 +1803,6 @@ namespace XEthernetDemo
                     Cv2.Line(imgRgb, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, 0),
                         new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, hxCard.ImgHeight), 100, 1);
                 }
-#if _IO
                 Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(imgRgb);
                 DrawImg(bitmapImg);
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
@@ -1790,7 +1814,19 @@ namespace XEthernetDemo
 
             // ushort[,] line_info = get_timestamp_test(ximagew);
             //Console.WriteLine(ximagew.DataOffset);
+
+            element.Release();
+            element.Dispose();
+            rawImg.Release();
+            rawImg.Dispose();
+            maskImg.Release();
+            maskImg.Dispose();
+            img.Release();
+            img.Dispose();
+#if _IO
+            imgRgb.Release();
             imgRgb.Dispose();
+#endif
             sw.Stop();
             Console.WriteLine("Img Time:" + sw.ElapsedMilliseconds);
             sw.Reset();
@@ -1886,6 +1922,12 @@ namespace XEthernetDemo
             if (subTotalArea > areaThresh)
                 ret = true;
             //gradientTest(item, ref itemIndex);
+
+            threshItem.Release();
+            threshItem.Dispose();
+            gloryItem.Release();
+            gloryItem.Dispose();
+
             return ret;
         }
         public void getNewPicture(HxCard.XImgFrame[] images)
