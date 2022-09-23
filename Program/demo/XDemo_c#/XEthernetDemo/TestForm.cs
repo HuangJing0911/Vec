@@ -1367,7 +1367,7 @@ namespace XEthernetDemo
         {
             int lslItemCunt = 0;
 
-            sw.Start();
+
 
             int row = (int)maskImage.Height;
             int col = (int)maskImage.Width;
@@ -1410,7 +1410,8 @@ namespace XEthernetDemo
                 for (int index = 0; index < contours.Length; index++)
                 {
                     boundRect[index] = Cv2.BoundingRect(contours[index]);                //获取每个contour的框
-                    if (boundRect[index].TopLeft.Y > maskImage.RoiHeight)
+                    //"(hierarchy[i].Child < 0 && boundRect[i].TopLeft.Y == 0)"部分用于判断是否有跨页的物块被误识别，判断原理：https://stackoverflow.com/questions/22240746/recognize-open-and-closed-shapes-opencv
+                    if (boundRect[index].TopLeft.Y > maskImage.RoiHeight || (hierarchy[index].Child < 0 && boundRect[index].TopLeft.Y == 0)) 
                         continue;
                     var subItemRect = Cv2.BoundingRect(contours[index]);
                     double area = subItemRect.Height * subItemRect.Width;//Cv2.ContourArea(contours[index]);
@@ -1459,7 +1460,7 @@ namespace XEthernetDemo
                     }
                     deepResultList.Add(dlItem);
 #endif
-                        area = Cv2.CountNonZero(gloryItem);
+                    area = Cv2.CountNonZero(gloryItem);
                     Scalar sumValue = Cv2.Sum(gloryItem);
                     double mean = sumValue.Val0 / area;                         //计算每个mat的平均值
 
@@ -1510,6 +1511,9 @@ namespace XEthernetDemo
                     totalItemCunt++;
                     lslItemCunt++;
                 }
+
+
+
                 int tickCunt = 0;
 #if _DEEP
                 bool deepLearnCheck = false;
@@ -1539,7 +1543,7 @@ namespace XEthernetDemo
                     }
                 }
 #endif
-                        Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
+                sw.Start();
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -1548,7 +1552,7 @@ namespace XEthernetDemo
                         continue;
                     //if (contours.Length > 50)
                     //break;
-                    double area = Cv2.ContourArea(contours[i]);
+                    //double area = Cv2.ContourArea(contours[i]);
                     //if (area == 0 || boundRect[i].Width < 5 || boundRect[i].Height < 4)
                     //    continue;
 
@@ -1774,14 +1778,15 @@ namespace XEthernetDemo
                     //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
                     //Console.WriteLine();
                 }
+                sw.Stop();
             }
 
 #endif
-                        //sw.Stop();
-                        //Console.WriteLine(sw.ElapsedMilliseconds);
-                        //sw.Reset();
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+            //sw.Reset();
 
-                        //time_finish = DateTime.Now.Millisecond;
+            //time_finish = DateTime.Now.Millisecond;
 
             if (contours.Length != 0)
             {
@@ -1827,7 +1832,7 @@ namespace XEthernetDemo
             imgRgb.Release();
             imgRgb.Dispose();
 #endif
-            sw.Stop();
+
             Console.WriteLine("Img Time:" + sw.ElapsedMilliseconds);
             sw.Reset();
         }
