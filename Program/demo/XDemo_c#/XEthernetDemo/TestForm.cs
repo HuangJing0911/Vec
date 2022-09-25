@@ -1449,7 +1449,7 @@ namespace XEthernetDemo
                     arrManul.Add(dlItem.manual);
                     if (area > 200)
                     {
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(deepLearnTest), dlItem);
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(deepLearnClassificationAysn), dlItem);
 #if _IO
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 1);
 #endif
@@ -1832,8 +1832,371 @@ namespace XEthernetDemo
             imgRgb.Release();
             imgRgb.Dispose();
 #endif
+            if (sw.ElapsedMilliseconds > maxTime)
+                maxTime = sw.ElapsedMilliseconds;
+            Console.WriteLine("Img Time:{0}| MaxTime:{1}", sw.ElapsedMilliseconds, maxTime);
+            sw.Reset();
+        }
+        long maxTime = 0;
+        public void getCounters_Pixel_Asyn(HxCard.XImgFrame maskImage, HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
+        {
+            int lslItemCunt = 0;
 
-            Console.WriteLine("Img Time:" + sw.ElapsedMilliseconds);
+
+
+            int row = (int)maskImage.Height;
+            int col = (int)maskImage.Width;
+            Mat img = new Mat(new int[] { row, col }, MatType.CV_8UC1, maskImage.Data);
+            time_now = DateTime.Now.Millisecond;
+            Mat maskImg = img.Clone();
+            Mat rawImg = new Mat(new int[] { row, col }, MatType.CV_8UC1, rawImage.Data);
+#if _DETECT
+            //img.ConvertTo(img, MatType.CV_32F);
+            //Cv2.Normalize(img, img, 1.0, 0, NormTypes.MinMax);
+            //img = img * 255;
+            //img.ConvertTo(img, MatType.CV_8UC1);
+            ////Cv2.ImWrite(init_pic, image);
+            //Mat connImage = new Mat(100, 100, MatType.CV_8UC3, new Scalar(0, 0, 0));
+            //Cv2.Blur(img, img, new OpenCvSharp.Size(3, 3));
+            Mat element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(3, 3));               //定义核，开运算
+            Cv2.MorphologyEx(img, img, MorphTypes.Open, element);                    //进行形态学开运算操作
+            element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(3, 3));               //定义核，开运算
+            Cv2.MorphologyEx(img, img, MorphTypes.Close, element);                    //进行形态学闭运算操作
+            //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
+            Cv2.Canny(img, img, 10, 80, 3, false); // 输入图像虚为单通道8位图像
+            OpenCvSharp.Point[][] contours;
+            HierarchyIndex[] hierarchy;
+            Cv2.FindContours(img, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
+#endif
+#if _IO
+            Mat imgRgb = new Mat(new int[] { row, col }, MatType.CV_8UC3);
+            Cv2.CvtColor(rawImg, imgRgb, ColorConversionCodes.GRAY2BGR);
+#endif
+
+
+            Rect[] boundRect = new Rect[contours.Length];
+            int[] lineMetalType = new int[contours.Length];
+            sw.Start();
+#if _DETECT
+            if (true)// contours.Length > 0)
+            {
+                List<interVariableSet> deepResultList = new List<interVariableSet>();
+                List<ManualResetEvent> arrManul = new List<ManualResetEvent>();
+
+                for (int index = 0; index < contours.Length; index++)
+                {
+                    interVariableSet variable = new interVariableSet(boundRect, contours, index, (int)(rawImage.RoiHeight), maskImg, rawImg, hierarchy, lineMetalType);
+                    arrManul.Add(variable.manual);
+                    //itemClassification(variable);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(itemClassification), variable);
+                    deepResultList.Add(variable);
+                }
+                bool deepLearnCheck = false;
+                if (arrManul.Count > 0)
+                {
+                    int batch = arrManul.Count / 64;
+                    int tail = arrManul.Count % 64;
+                    for (int j = 0; j < batch; j++)
+                    {
+                        deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(j * 64).Take(64).ToArray(), 130);
+                    }
+                    deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 130);
+                }
+
+                int tickCunt = 0;
+
+
+                for (int j = 0; j < contours.Length; j++)
+                {
+
+                    int i = contours.Length - j - 1;
+                    if (boundRect[i].BottomRight.Y > maskImage.RoiHeight)
+                        continue;
+                    //if (contours.Length > 50)
+                    //break;
+                    //double area = Cv2.ContourArea(contours[i]);
+                    //if (area == 0 || boundRect[i].Width < 5 || boundRect[i].Height < 4)
+                    //    continue;
+
+                    //wr2?.WriteLine(Convert.ToString((stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + contours.Length + '\t' + boundRect[i].X + '\t' + boundRect[i].Y + '\t' + boundRect[i].Width + '\t' + boundRect[i].Height);
+                    //341 347 348 346
+
+
+                    Data_Set data = new Data_Set();                                 // 发送数据包
+                    // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
+                    data.Init_Dataset(boundRect[i], maskImage);                       // 初始化数据包为可吹气  
+
+                    bool is_small = false;
+
+
+                    // 设置开始喷吹时间(使用格林威治毫秒时间)
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * maskImage.MaxHeight);  // 找出物块在图像中的实际时间
+                    TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
+                    data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
+                    long start_detect_time = data.start_time_int;
+
+
+                    DateTime time1 = DateTime.Now;
+
+#if _NEW_FUN
+                    // 设置开始吹气阀号和停止吹气阀号
+                    float startPixel = LineConvert2Belt((float)boundRect[i].X / col * (p1 + p2));
+                    float endPixel = LineConvert2Belt((float)(boundRect[i].X + boundRect[i].Width) / col * (p1 + p2));
+                    data.start_num = PixelConvert2Num(startPixel);
+                    data.end_num = PixelConvert2Num(endPixel);
+#else
+                    // 设置开始吹气阀号和停止吹气阀号
+                    if ((float)boundRect[i].X / col > 0.5)
+                    {
+                        data.start_num = (Int16)((((float)boundRect[i].X / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                    }
+                    else
+                    {
+                        data.start_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - (float)boundRect[i].X / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                        if ((float)boundRect[i].X + boundRect[i].Width > col / 2)
+                            data.end_num = (Int16)(((((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray - (length_linearray / 2)) * (float)SOD / SDD + (length_belt / 2)) / length_belt * num_of_mouth);
+                        else
+                            data.end_num = (Int16)(((length_belt / 2) - ((length_linearray / 2) - ((float)boundRect[i].X + boundRect[i].Width) / col * length_linearray) * (float)SOD / SDD) / length_belt * num_of_mouth - 1);
+                    }
+#endif
+
+                    if (data.start_num < 1)
+                        data.start_num = (short)1;
+                    data.end_num = (Int16)(data.start_num + (float)boundRect[i].Width / col * length_linearray * (float)SOD / SDD / length_belt * num_of_mouth + 1);
+
+                    if (data.end_num > num_of_mouth)
+                        data.end_num = (short)num_of_mouth;
+
+
+                    int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
+                    int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierSetNum / num_of_mouth);
+                    int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierSetNum / num_of_mouth);
+                    data.typof_block = (byte)lineMetalType[i];
+
+
+                    while (true)
+                    {
+                        if (!gflist.is_active && info_queue.Count != 0)
+                        {
+                            gflist_Reset();
+                        }
+                        if (!gflist.is_active)
+                            break;
+                        for (int n = 0; n < gflist.length; n++)
+                        {
+                            first_info = gflist.list[n];
+                            Int64 a = data.start_time_int - first_info.time;
+                            Console.WriteLine("a:" + a);
+                            Console.WriteLine("========");
+                            if (Math.Abs(a) <= checkRange)
+                            {
+                                if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
+                                {
+                                    queue_flag = 1;
+                                    data.typof_block = (byte)first_info.flag;
+                                    break;
+                                }
+                                else
+                                {
+                                    queue_flag = 3;
+                                    continue;
+                                }
+                            }
+                            else if (a > checkRange)    // 如果当前物块时间已经大于当前队列中第一个物块的时间
+                            {
+                                queue_flag = 2;
+                                break;
+                            }
+                            else                // 如果当前物块时间远小于列表时间
+                            {
+                                queue_flag = 0;
+                                break;
+                            }
+                        }
+                        if (queue_flag == 1)        // 如果队列信息已经被读取，需要对队列首个物块进行剔除
+                        {
+                            break;
+                        }
+                        else if (queue_flag == 2)                   // 如果列表中金属信息时间远小于当前物块时间，需要更新列表信息
+                        {
+                            lock (locker)
+                            {
+                                gflist.is_active = false;        // 如果队列信息已经过期，将当前列表设为未激活状态，下一个循环会当前列表信息更新
+                            }
+                        }
+                        else if (queue_flag == 3)               // 如果当前列表时间符合但通道数不符合，则说明当前物块不是需要喷吹的目标金属，跳出循环
+                        {
+                            break;
+                        }
+                        else                                    // 当前物块时间远小于列表时间，则说明当前物块不是需要喷吹的目标金属，跳出循环
+                        {
+                            break;
+                        }
+
+                    }
+#if _IO
+                    #region CZQ
+
+                    //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
+                    //foreach (OpenCvSharp.Point[] contour in contours)
+                    //{
+                    //    //Cv2.Rectangle();
+                    //    Rect bound = Cv2.BoundingRect(contour);
+                    //    //int num = rect.Length;
+                    //    //for(int i = 1;i<num;i++)
+                    //    //{
+                    //    //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
+                    //    //}
+                    //    OpenCvSharp.Point point1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
+                    //    OpenCvSharp.Point point2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
+                    //    Cv2.Rectangle(imgRgb, point2, point1, 100, 2);
+                    //    if (Math.Abs(point2.X - point1.X) > 10)
+                    //    {
+                    //        //Console.WriteLine("Rect -> P2:{0}", p2);
+                    //        //Console.WriteLine("Rect -> P1:{0}", p1);
+                    //    }
+                    //}
+                    int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - checkRange);
+                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + checkRange);
+                    int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
+                    int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
+                    //Cv2.Rectangle(imgRgb, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
+
+                    int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
+                    int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
+                    //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierSetNum * image.Width);//gflist.start_channel
+                    //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierSetNum * image.Width);//gflist.start_channel
+                    int AmpLineRight = (int)(BeltConvert2Line((float)(gflist.end_channel) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
+                    Cv2.Line(imgRgb, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY), 100, 1);
+                    //Console.WriteLine("first_info Time:{0},AmpLine P1:{1},AmpLine P2:{2}", AmpLineY, new OpenCvSharp.Point(AmpLineLeft, AmpLineY), new OpenCvSharp.Point(AmpLineRight, AmpLineY));
+
+                    //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
+                    //Console.WriteLine("图像中有物块！");
+
+                    #endregion
+#endif
+                    // 确定物块最终喷吹的时间
+                    data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+
+
+                    //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
+                    // 设置持续喷吹的时间
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);
+                    //data.blow_time = (short)100;
+
+
+                    // 让延迟一段时间发送物块信息 
+                    // Thread.Sleep((int)(2400/speed) - );
+                    // Thread t = new Thread(new ParameterizedThreadStart(thread_for_sending));
+                    // //wr.WriteLine(t.ManagedThreadId + " thread start!");
+                    // t.Start();
+
+                    // 每个物块休眠2ms时间让PLC来得及处理物块信息
+                    //if (i != 0)
+                    //Thread.Sleep(2);
+                    int num = 0;
+                    //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
+                    int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
+                    //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
+                    //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
+                    //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
+                    //Console.WriteLine("kk?:{0}", kk > 0);
+
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
+                    {
+
+                        num = SendData(data);
+                        Console.WriteLine("SendData");
+                        if ((data.typof_block == 1 && kk > 0) == true)
+                            Console.WriteLine("物块识别喷吹");
+                        if ((boundRect[i].Y >= row * 0.9) == true)
+                            Console.WriteLine("物块跨行喷吹");
+                        Console.WriteLine("***********************************");
+
+                        data.typof_block = 1;
+#if _IO
+                        Cv2.PutText(imgRgb, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
+                        HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
+#endif
+                    }
+
+                    DateTime time2 = DateTime.Now;
+
+                    total_clock_num++;
+                    if (num == 23)
+                    {
+                        total_detect_num++;
+                        //CardNum1.Text = total_detect_num + "Detect / " + total_clock_num + " Find";
+                        //CardNum2.Text = "start:" + Convert.ToString(data.start_num) + "," + "end:" + Convert.ToString(data.end_num);
+                        //CardNum3.Text = Convert.ToString(data.start_time_int) + "ms " + k;
+                        //CardNum4.Text = Convert.ToString(DateTime.Now.Millisecond - stamp.Millisecond) + "ms";
+                        //CardNum5.Text = Convert.ToString(integral_time * 512) + "ms per picture";
+                    }
+
+                    if (num == 23 && is_small)
+                        queue_flag = 4;
+                    //wr?.WriteLine(Convert.ToString(frame_count) + " " + i.ToString() + '\t' + Convert.ToString(data.start_num) + " " + start_num + '\t' + Convert.ToString(data.end_num) + " " + end_num + '\t' + start_detect_time + '\t' + data.blow_time + "ms\t" + Convert.ToString((DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + "\t" + Convert.ToString((time1 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + Convert.ToString((time2 - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds) + '\t' + data.typof_block + "\t" + queue_flag + "\t" + area + "\t" + kk.ToString());
+                    //Console.WriteLine();
+                }
+
+            }
+            sw.Stop();
+
+#endif
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+            //sw.Reset();
+
+            //time_finish = DateTime.Now.Millisecond;
+
+            if (contours.Length != 0)
+            {
+                // Total_Block_Num.Text = Convert.ToString(total_card_num);
+                // 画出检测的轮廓
+                int flag = 0;
+                //Cv2.ImWrite(result_pic, connImage);
+
+                // 求出时间戳并发送物块信息
+
+
+                #region CZQ
+#if _IO
+                OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
+                OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
+                Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
+                for (int ii = 0; ii <= AmplifierSetNum; ii++)
+                {
+                    Cv2.Line(imgRgb, new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, 0),
+                        new OpenCvSharp.Point(BeltConvert2Line((float)ii / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width, hxCard.ImgHeight), 100, 1);
+                }
+                Bitmap bitmapImg = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(imgRgb);
+                DrawImg(bitmapImg);
+                bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
+#endif
+                imgIndex++;
+                #endregion
+
+            }
+
+            // ushort[,] line_info = get_timestamp_test(ximagew);
+            //Console.WriteLine(ximagew.DataOffset);
+
+            element.Release();
+            element.Dispose();
+            //rawImg.Release();
+            //rawImg.Dispose();
+            //maskImg.Release();
+            //maskImg.Dispose();
+            img.Release();
+            img.Dispose();
+#if _IO
+            imgRgb.Release();
+            imgRgb.Dispose();
+#endif
+
+            Console.WriteLine("Img Time:{0}| MaxTime:{1}", sw.ElapsedMilliseconds, maxTime);
             sw.Reset();
         }
         class deepTestItem
@@ -1849,7 +2212,127 @@ namespace XEthernetDemo
                 index = i;
             }
         }
-        void deepLearnTest(object o)
+        public class interVariableSet
+        {
+            public Rect[] boundRect;
+            public OpenCvSharp.Point[][] contours;
+            public int index;
+            public int roiHeight;
+            public Mat maskImg;
+            public Mat rawImg;
+            public HierarchyIndex[] hierarchy;
+            public ManualResetEvent manual;
+            public int[] lineMetalType;
+            public interVariableSet(Rect[] _boundRect, OpenCvSharp.Point[][] _contours, int _index,int _roiHeight, Mat _maskImg, Mat _rawImg,
+                HierarchyIndex[] _hierarchy, int[] _lineMetalType)
+            {
+                boundRect = _boundRect;
+                contours = _contours;
+                index = _index;
+                roiHeight = _roiHeight;
+                maskImg = _maskImg;
+                rawImg = _rawImg;
+                hierarchy = _hierarchy;
+                manual = new ManualResetEvent(false);
+                contours = _contours;
+                lineMetalType = _lineMetalType;
+            }
+        }
+
+        void itemClassification(object o)
+        {
+            interVariableSet item = o as interVariableSet;
+            item.boundRect[item.index] = Cv2.BoundingRect(item.contours[item.index]);                //获取每个contour的框
+            //"(hierarchy[i].Child < 0 && boundRect[i].TopLeft.Y == 0)"部分用于判断是否有跨页的物块被误识别，判断原理：https://stackoverflow.com/questions/22240746/recognize-open-and-closed-shapes-opencv
+            if (item.boundRect[item.index].TopLeft.Y > item.roiHeight || (item.hierarchy[item.index].Child < 0 && item.boundRect[item.index].TopLeft.Y == 0))
+                return;
+            var subItemRect = Cv2.BoundingRect(item.contours[item.index]);
+            double area = subItemRect.Height * subItemRect.Width;//Cv2.ContourArea(contours[index]);
+
+            if (area < minItemArea)//|| boundRect[index].Height > row / 3)
+            {
+#if _IO
+                        Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
+                                    new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y-20),
+                                    HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 0, 255));
+                        Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
+#endif
+                return;
+            }
+            else
+            {
+#if _IO
+                        Cv2.DrawContours(imgRgb, contours, index, new Scalar(255, 0, 0), 1);
+#endif
+            }
+
+            //Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
+#if _IO
+                    OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[index].BottomRight.X, boundRect[index].BottomRight.Y);
+                    OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[index].TopLeft.X, boundRect[index].TopLeft.Y);
+                    Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
+#endif
+            Mat mask = item.maskImg[item.boundRect[item.index]];
+            Mat tinyItem = item.rawImg[item.boundRect[item.index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
+            Mat gloryItem = tinyItem.Clone();
+            Cv2.BitwiseAnd(tinyItem, mask, gloryItem);
+#if _DEEP
+            deepLearnClassification(tinyItem,out string label,out float result);
+#endif
+
+            area = Cv2.CountNonZero(gloryItem);
+            Scalar sumValue = Cv2.Sum(gloryItem);
+            double mean = sumValue.Val0 / area;                         //计算每个mat的平均值
+
+            double subArea = 0;
+            double totalGray = 0;
+            double subMean = 0;
+            bool luosi = findBlockInItemGrayDiff(tinyItem, subItemGrayThresh, subItemAreaThresh, imgIndex, item.index, out subArea, out totalGray);
+            double outMean = 0;
+            outMean = (sumValue.Val0 - totalGray) / (area - subArea);
+            subMean = subArea == 0 ? outMean : totalGray / subArea;
+            double MeanDiff = Math.Abs(outMean - subMean);
+            int flag = 0;
+            trueItemCunt++;
+            if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25))
+            {
+                choosedItemCunt++;
+                item.lineMetalType[item.index] = 1;
+#if _IO
+                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
+#endif
+                if (mean < itemGrayThreshold)
+                {
+                    flag += 4;
+                }
+                if (luosi)
+                {
+                    flag += 2;
+                }
+                if (MeanDiff > grayMeanDiffThresh && subArea > 25)
+                {
+                    flag += 1;
+                }
+                //choosedItemCunt++;
+            }
+            else
+            {
+                item.lineMetalType[item.index] = 0;
+            }
+#if _IO
+                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area,Convert.ToString(flag,2)),
+            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
+            HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
+#endif
+            //Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
+            //            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y),
+            //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
+            //Console.WriteLine("Mean: {0}+{1}={2}", sumValue.Val0.ToString("f1"), area.ToString("f1"), mean.ToString("f1"));
+            totalItemCunt++;
+            item.manual.Set();
+        }
+
+        void deepLearnClassificationAysn(object o)
         {
             deepTestItem tinyImgs = o as deepTestItem;
             Stopwatch sw = new Stopwatch();
@@ -1863,6 +2346,12 @@ namespace XEthernetDemo
             //for (int i = 0; i < 1000; i++)
             //    for (int j = 0; j < 1000; j++) ;
             tinyImgs.manual.Set();
+        }
+        void deepLearnClassification(Mat img,out string label,out float result)
+        {
+            var deepLearnResult = User.InferenceModel(img.Clone());
+            label = deepLearnResult.Label;
+            result = deepLearnResult.Confidence;
         }
 
         private bool findBlockInItem(Mat item, int grayThresh, int areaThresh)
