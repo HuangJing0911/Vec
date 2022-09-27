@@ -1,6 +1,6 @@
 ﻿//#define _TEST
 //#define _OLD
-//#define _IO
+#define _IO
 //#define _DEEP
 #define _DETECT
 #define _NEW_FUN
@@ -23,6 +23,7 @@ using System.Net.Sockets;
 using System.Net;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace XEthernetDemo
 {
@@ -523,7 +524,7 @@ namespace XEthernetDemo
         //System.Timers.Timer t = new System.Timers.Timer(5);
         Thread timerthread;
         Thread recv_thread;
-        static Object locker=new object();
+        static Object locker = new object();
         GFinfo first_info = new GFinfo();
         GFList gflist = new GFList();
         GFList gflist2 = new GFList();
@@ -668,7 +669,7 @@ namespace XEthernetDemo
             //xcommand.SetPara(3, integral_times, 0);
             int integral = (int)(800 / speed);//us 像素长度/皮带运行速度
             hxCard.SetIntegrationTime((uint)integral);
-            integral_time = (float)integral/1000;
+            integral_time = (float)integral / 1000;
         }
 
         // 向PLC发送消息
@@ -904,13 +905,13 @@ namespace XEthernetDemo
                         GFinfo last_info = list[list.Length - 1];
                         if (Math.Abs(last_info.time - info.time) <= 5)
                         {
-                            
+
                             list[list.Length - 1].next_same = true;
                             Console.WriteLine("功率放中有物块！");
                         }
                         else
                         {
-                            if(list.Length < 2)
+                            if (list.Length < 2)
                             {
                                 list = new GFinfo[0];
                             }
@@ -925,11 +926,11 @@ namespace XEthernetDemo
                     //wr.WriteLine("Receive time: " + info.time.ToString() + ",index: " + info.channelindex.ToString());
                     //wr.Flush();
                 }
-                catch(ObjectDisposedException ex)
+                catch (ObjectDisposedException ex)
                 {
                     Error.Text = "Error: " + ex.Message;
                 }
-                
+
 
             }
             if (!recv)
@@ -943,10 +944,10 @@ namespace XEthernetDemo
         private void recv_data_Pro(object sender, EventArgs e)
         {
             XRayMsgDLL.XRayPowerAmplifier.XRayFrame frame = e as XRayMsgDLL.XRayPowerAmplifier.XRayFrame;
-            for (int j = 0; j < frame.ResponseArea.Length; j++) 
+            for (int j = 0; j < frame.ResponseArea.Length; j++)
             {
                 int channelGet = frame.ResponseArea[j];
-                if(channelGet == 2)
+                if (channelGet == 2)
                 {
                     // 解析时间和通道数
                     GFinfo info = new GFinfo();
@@ -994,7 +995,7 @@ namespace XEthernetDemo
                 }
 
             }
-           
+
         }
 
         private void recv_data_SimplePro(object sender, EventArgs e)
@@ -1338,9 +1339,9 @@ namespace XEthernetDemo
             else
                 return 0;
             */
-            for(int i = X; i <= X + Width; i += 2)
+            for (int i = X; i <= X + Width; i += 2)
             {
-                for(int j = Y; j <= Y + Height; j += 2)
+                for (int j = Y; j <= Y + Height; j += 2)
                 {
                     uint k = ximagew.GetPixelVal((uint)j, (uint)i);
                     if (k <= value)
@@ -1362,12 +1363,14 @@ namespace XEthernetDemo
         int trueItemCunt = 0;
         int choosedItemCunt = 0;
         int totalItemCunt = 0;
+        List<Data_Set> sendedMsgList = new List<Data_Set>();
+        long maxTime = 0;
 
-        public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
+        public void getCounters_Pixel(HxCard.XImgFrame maskImage, HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
             int lslItemCunt = 0;
 
-            sw.Start();
+
 
             int row = (int)maskImage.Height;
             int col = (int)maskImage.Width;
@@ -1402,6 +1405,7 @@ namespace XEthernetDemo
             Rect[] boundRect = new Rect[contours.Length];
             int[] lineMetalType = new int[contours.Length];
 #if _DETECT
+            sw.Start();
             if (true)// contours.Length > 0)
             {
                 List<deepTestItem> deepResultList = new List<deepTestItem>();
@@ -1411,16 +1415,16 @@ namespace XEthernetDemo
                 {
                     boundRect[index] = Cv2.BoundingRect(contours[index]);                //获取每个contour的框
                     //"(hierarchy[i].Child < 0 && boundRect[i].TopLeft.Y == 0)"部分用于判断是否有跨页的物块被误识别，判断原理：https://stackoverflow.com/questions/22240746/recognize-open-and-closed-shapes-opencv
-                    if (boundRect[index].TopLeft.Y > maskImage.RoiHeight || (hierarchy[index].Child < 0 && boundRect[index].TopLeft.Y == 0)) 
+                    if (boundRect[index].TopLeft.Y > maskImage.RoiHeight || (hierarchy[index].Child < 0 && boundRect[index].TopLeft.Y == 0))
                         continue;
                     var subItemRect = Cv2.BoundingRect(contours[index]);
                     double area = subItemRect.Height * subItemRect.Width;//Cv2.ContourArea(contours[index]);
 
-                    if (area < minItemArea )//|| boundRect[index].Height > row / 3)
+                    if (area < minItemArea)//|| boundRect[index].Height > row / 3)
                     {
 #if _IO
                         Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
-                                    new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y-20),
+                                    new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
                                     HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 0, 255));
                         Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
 #endif
@@ -1467,29 +1471,29 @@ namespace XEthernetDemo
                     double subArea = 0;
                     double totalGray = 0;
                     double subMean = 0;
-                    bool luosi = findBlockInItemGrayDiff(tinyItem, subItemGrayThresh, subItemAreaThresh, imgIndex,index, out subArea, out totalGray);
+                    bool luosi = findBlockInItemGrayDiff(tinyItem, subItemGrayThresh, subItemAreaThresh, imgIndex, index, out subArea, out totalGray);
                     double outMean = 0;
                     outMean = (sumValue.Val0 - totalGray) / (area - subArea);
                     subMean = subArea == 0 ? outMean : totalGray / subArea;
                     double MeanDiff = Math.Abs(outMean - subMean);
                     int flag = 0;
                     trueItemCunt++;
-                    if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25)) 
+                    if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > 25))
                     {
                         choosedItemCunt++;
                         lineMetalType[index] = 1;
 #if _IO
                         Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
 #endif
-                        if(mean < itemGrayThreshold)
+                        if (mean < itemGrayThreshold)
                         {
                             flag += 4;
                         }
-                        if(luosi)
+                        if (luosi)
                         {
                             flag += 2;
                         }
-                        if(MeanDiff > grayMeanDiffThresh && subArea > 25)
+                        if (MeanDiff > grayMeanDiffThresh && subArea > 25)
                         {
                             flag += 1;
                         }
@@ -1500,7 +1504,7 @@ namespace XEthernetDemo
                         lineMetalType[index] = 0;
                     }
 #if _IO
-                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area,Convert.ToString(flag,2)),
+                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area, Convert.ToString(flag, 2)),
             new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
             HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
 #endif
@@ -1543,13 +1547,11 @@ namespace XEthernetDemo
                     }
                 }
 #endif
-                        Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
+                Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
                 for (int j = 0; j < contours.Length; j++)
                 {
 
                     int i = contours.Length - j - 1;
-                    if (boundRect[i].BottomRight.Y > maskImage.RoiHeight)
-                        continue;
                     //if (contours.Length > 50)
                     //break;
                     double area = Cv2.ContourArea(contours[i]);
@@ -1746,6 +1748,7 @@ namespace XEthernetDemo
                     {
 
                         num = SendData(data);
+                        //sendedMsgList.Add(data);
                         Console.WriteLine("SendData");
                         if ((data.typof_block == 1 && kk > 0) == true)
                             Console.WriteLine("物块识别喷吹");
@@ -1779,13 +1782,13 @@ namespace XEthernetDemo
                     //Console.WriteLine();
                 }
             }
-
+            sw.Stop();
 #endif
-                        //sw.Stop();
-                        //Console.WriteLine(sw.ElapsedMilliseconds);
-                        //sw.Reset();
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+            //sw.Reset();
 
-                        //time_finish = DateTime.Now.Millisecond;
+            //time_finish = DateTime.Now.Millisecond;
 
             if (contours.Length != 0)
             {
@@ -1831,8 +1834,10 @@ namespace XEthernetDemo
             imgRgb.Release();
             imgRgb.Dispose();
 #endif
-            sw.Stop();
-            Console.WriteLine("Img Time:" + sw.ElapsedMilliseconds);
+
+            if (sw.ElapsedMilliseconds > maxTime)
+                maxTime = sw.ElapsedMilliseconds;
+            Console.WriteLine("Img Time:{0}| Max Time:{1}", sw.ElapsedMilliseconds, maxTime);
             sw.Reset();
         }
         class deepTestItem
@@ -2131,8 +2136,7 @@ namespace XEthernetDemo
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
-            File.WriteAllText(@".\测试1\result.txt", result);
+            saveData();
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
             // 暂停线阵
@@ -2192,13 +2196,13 @@ namespace XEthernetDemo
         private void paraSetButton_Click(object sender, EventArgs e)
         {
             ParamSettingForm psf = new ParamSettingForm();
-            if(psf.ShowDialog()== DialogResult.OK)
+            if (psf.ShowDialog() == DialogResult.OK)
             {
                 num_of_mouth = psf.nozzleNum;          // 喷嘴数量
                 length_belt = psf.beltLength;          // 皮带长度为1000mm
                 length_linearray = psf.arrayLength;     // 线阵长度为1200mm
                 speed = psf.beltVelocity;              // 传送带速度
-                if(xRayPower != null)
+                if (xRayPower != null)
                     xRayPower.ResponsThresHold = psf.powerThreshold;
                 minItemArea = psf.minItemArea;
                 itemGrayThreshold = psf.itemThreshold;
@@ -2305,9 +2309,9 @@ namespace XEthernetDemo
                 */
 
                 //if(FunctionSelect_Cu.Checked && dp.SCACount[0] > gap)
-                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 25) || 
-                    (FunctionSelect_Zn.Checked && dp.SCACount[0] > 25) || 
-                    (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) || 
+                if ((FunctionSelect_Cu.Checked && dp.SCACount[1] > 25) ||
+                    (FunctionSelect_Zn.Checked && dp.SCACount[0] > 25) ||
+                    (FunctionSelect_Pb.Checked && (dp.SCACount[3] > gap_pb || dp.SCACount[2] > gap_pb)) ||
                     (FunctionSelect_Fe.Checked && dp.SCACount[4] > 30) ||
                     (FunctionSelect_YelCu.Checked && dp.SCACount[1] > 15 && dp.SCACount[0] > 15))           //符合条件的数据报，发送给HJ
                 {
@@ -2460,7 +2464,7 @@ namespace XEthernetDemo
             return bmp;
         }
 
-        public int TimeConvert2Index(long imgTime,long itemTime)
+        public int TimeConvert2Index(long imgTime, long itemTime)
         {
             long timeLength = itemTime - imgTime;
             return (int)(timeLength / integral_time) + hxCard.ImgHeight;
@@ -2478,8 +2482,7 @@ namespace XEthernetDemo
 
         private void TestForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
-            File.WriteAllText(@".\测试1\result.txt", result);
+            saveData();
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
             // 暂停线阵
@@ -2532,7 +2535,7 @@ namespace XEthernetDemo
         public float LineConvert2Belt(float x)
         {
             float ret = 0;
-            if (x < p1) 
+            if (x < p1)
             {
                 ret = t1 - (p1 - x) * SOD / SDD;
             }
@@ -2574,6 +2577,22 @@ namespace XEthernetDemo
             grayMeanDiffThresh = Convert.ToInt32(content[9]);
             Console.WriteLine("minItemArea:{0},itemGrayThreshold:{1},subItemGrayThresh:{2},subItemAreaThresh:{3},grayMeanDiffThresh:{4}"
                 , minItemArea, itemGrayThreshold, subItemGrayThresh, subItemAreaThresh, grayMeanDiffThresh);
+        }
+        private void saveData()
+        {
+            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
+            File.WriteAllText(@".\测试1\result.txt", result);
+            //string sendedDataMsgStr = "send_Num:" + check.ToString() + "\n";
+            string sendedDataMsgStr = "red_Num:" + choosedItemCunt + "\n";
+            sendedDataMsgStr += "MaxTime:" + maxTime;
+            foreach (var data in sendedMsgList)
+            {
+                sendedDataMsgStr += string.Format("syn_code:{0}\nflow_num:{1}\ntypof_block:{2}\nblow:{3}\n" +
+                    "start_time_int:{4}\nmillionseconds{5}\nblow_time:{6}\nstart_num:{7}\n" +
+                    "end_num:{8}\nreserve:{9}\ncheck_num:{10}\n===========================\n", data.syn_code, data.flow_num, data.typof_block, data.blow,
+                    data.start_time_int, data.millionseconds, data.blow_time, data.start_num, data.end_num, data.reserve, data.check_num);
+            }
+            File.WriteAllText(@".\测试1\sendMessages.txt", sendedDataMsgStr);
         }
     }
 
