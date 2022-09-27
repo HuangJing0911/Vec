@@ -1,6 +1,6 @@
 ﻿#define _TEST
 //#define _OLD
-//#define _IO
+#define _IO
 //#define _DEEP
 #define _DETECT
 #define _NEW_FUN
@@ -1362,12 +1362,12 @@ namespace XEthernetDemo
         int trueItemCunt = 0;
         int choosedItemCunt = 0;
         int totalItemCunt = 0;
+        List<Data_Set> sendedMsgList = new List<Data_Set>();
+        int check = 0;
 
         public void getCounters_Pixel(HxCard.XImgFrame maskImage,HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
             int lslItemCunt = 0;
-
-
 
             int row = (int)maskImage.Height;
             int col = (int)maskImage.Width;
@@ -1548,8 +1548,11 @@ namespace XEthernetDemo
                 {
 
                     int i = contours.Length - j - 1;
-                    if (boundRect[i].BottomRight.Y > maskImage.RoiHeight)
-                        continue;
+
+
+
+                    //if (boundRect[i].BottomRight.Y > maskImage.RoiHeight)
+                    //    continue;
                     //if (contours.Length > 50)
                     //break;
                     //double area = Cv2.ContourArea(contours[i]);
@@ -1612,7 +1615,10 @@ namespace XEthernetDemo
                     int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierSetNum / num_of_mouth);
                     int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierSetNum / num_of_mouth);
                     data.typof_block = (byte)lineMetalType[i];
-
+                    if (data.typof_block == 1)
+                    {
+                        check++;
+                    }
 
                     while (true)
                     {
@@ -1633,7 +1639,7 @@ namespace XEthernetDemo
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
                                 {
                                     queue_flag = 1;
-                                    data.typof_block = (byte)first_info.flag;
+                                    data.typof_block = 1;//(byte)first_info.flag;
                                     break;
                                 }
                                 else
@@ -1676,26 +1682,6 @@ namespace XEthernetDemo
                     }
 #if _IO
                     #region CZQ
-
-                    //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
-                    //foreach (OpenCvSharp.Point[] contour in contours)
-                    //{
-                    //    //Cv2.Rectangle();
-                    //    Rect bound = Cv2.BoundingRect(contour);
-                    //    //int num = rect.Length;
-                    //    //for(int i = 1;i<num;i++)
-                    //    //{
-                    //    //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
-                    //    //}
-                    //    OpenCvSharp.Point point1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
-                    //    OpenCvSharp.Point point2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
-                    //    Cv2.Rectangle(imgRgb, point2, point1, 100, 2);
-                    //    if (Math.Abs(point2.X - point1.X) > 10)
-                    //    {
-                    //        //Console.WriteLine("Rect -> P2:{0}", p2);
-                    //        //Console.WriteLine("Rect -> P1:{0}", p1);
-                    //    }
-                    //}
                     int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - checkRange);
                     int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + checkRange);
                     int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
@@ -1736,18 +1722,19 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
+                    // Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
                     //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
                     //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
                     //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
                     //Console.WriteLine("kk?:{0}", kk > 0);
 
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
 
                         num = SendData(data);
+                        sendedMsgList.Add(data);
                         Console.WriteLine("SendData");
-                        if ((data.typof_block == 1 && kk > 0) == true)
+                        if ((data.typof_block == 1) == true)
                             Console.WriteLine("物块识别喷吹");
                         if ((boundRect[i].Y >= row * 0.9) == true)
                             Console.WriteLine("物块跨行喷吹");
@@ -2098,18 +2085,19 @@ namespace XEthernetDemo
                     //Thread.Sleep(2);
                     int num = 0;
                     //if ((data.typof_block == 1 && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0) || (is_small && Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Height, boundRect[i].Width, 8000) > 0))
-                    int kk = 1;// Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
+                    // Is_Material(ximagew, boundRect[i].X, boundRect[i].Y, boundRect[i].Width, boundRect[i].Height, 6000);
                     //Console.WriteLine("Checked?:{0}", FunctionSelect_NoSelect.Checked);
                     //Console.WriteLine("Metal_Type?:{0}", (data.typof_block == 1));
                     //Console.WriteLine("Rect?:{0}", (boundRect[i].Y >= row * 0.9));
                     //Console.WriteLine("kk?:{0}", kk > 0);
 
-                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
+                    if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
 
                         num = SendData(data);
+                        sendedMsgList.Add(data);
                         Console.WriteLine("SendData");
-                        if ((data.typof_block == 1 && kk > 0) == true)
+                        if ((data.typof_block == 1) == true)
                             Console.WriteLine("物块识别喷吹");
                         if ((boundRect[i].Y >= row * 0.9) == true)
                             Console.WriteLine("物块跨行喷吹");
@@ -2251,27 +2239,11 @@ namespace XEthernetDemo
 
             if (area < minItemArea)//|| boundRect[index].Height > row / 3)
             {
-#if _IO
-                        Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
-                                    new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y-20),
-                                    HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 0, 255));
-                        Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
-#endif
                 return;
-            }
-            else
-            {
-#if _IO
-                        Cv2.DrawContours(imgRgb, contours, index, new Scalar(255, 0, 0), 1);
-#endif
             }
 
             //Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
-#if _IO
-                    OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[index].BottomRight.X, boundRect[index].BottomRight.Y);
-                    OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[index].TopLeft.X, boundRect[index].TopLeft.Y);
-                    Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
-#endif
+
             Mat mask = item.maskImg[item.boundRect[item.index]];
             Mat tinyItem = item.rawImg[item.boundRect[item.index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
             Mat gloryItem = tinyItem.Clone();
@@ -2298,9 +2270,6 @@ namespace XEthernetDemo
             {
                 choosedItemCunt++;
                 item.lineMetalType[item.index] = 1;
-#if _IO
-                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
-#endif
                 if (mean < itemGrayThreshold)
                 {
                     flag += 4;
@@ -2319,11 +2288,6 @@ namespace XEthernetDemo
             {
                 item.lineMetalType[item.index] = 0;
             }
-#if _IO
-                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area,Convert.ToString(flag,2)),
-            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
-            HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
-#endif
             //Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
             //            new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y),
             //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
@@ -2621,8 +2585,6 @@ namespace XEthernetDemo
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
-            File.WriteAllText(@".\测试1\result.txt", result);
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
             // 暂停线阵
@@ -2671,7 +2633,7 @@ namespace XEthernetDemo
             FindDeviceButton.Enabled = true;
             //FunctionBox.Enabled = true;
             paraSetButton.Enabled = true;
-
+            saveData();
         }
 
         private void ChannelChecktimer_Tick(object sender, EventArgs e)
@@ -2968,8 +2930,6 @@ namespace XEthernetDemo
 
         private void TestForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
-            File.WriteAllText(@".\测试1\result.txt", result);
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
             // 暂停线阵
@@ -3017,6 +2977,7 @@ namespace XEthernetDemo
             FindDeviceButton.Enabled = true;
             //FunctionBox.Enabled = true;
             paraSetButton.Enabled = true;
+            saveData();
         }
 
         public float LineConvert2Belt(float x)
@@ -3064,6 +3025,21 @@ namespace XEthernetDemo
             grayMeanDiffThresh = Convert.ToInt32(content[9]);
             Console.WriteLine("minItemArea:{0},itemGrayThreshold:{1},subItemGrayThresh:{2},subItemAreaThresh:{3},grayMeanDiffThresh:{4}"
                 , minItemArea, itemGrayThreshold, subItemGrayThresh, subItemAreaThresh, grayMeanDiffThresh);
+        }
+        private void saveData()
+        {
+            string result = string.Format("Date:{0}\ntotal item num:{1}\nchoosed item num:{2}\nchoosed persentage:{3}", DateTime.Now, trueItemCunt, choosedItemCunt, ((float)choosedItemCunt / trueItemCunt * 100));
+            File.WriteAllText(@".\测试1\result.txt", result);
+            string sendedDataMsgStr = "send_Num:" + check.ToString() + "\n";
+            sendedDataMsgStr += "red_Num:" + choosedItemCunt + "\n";
+            foreach(var data in sendedMsgList)
+            {
+                sendedDataMsgStr += string.Format("syn_code:{0}\nflow_num:{1}\ntypof_block:{2}\nblow:{3}\n" +
+                    "start_time_int:{4}\nmillionseconds{5}\nblow_time:{6}\nstart_num:{7}\n" +
+                    "end_num:{8}\nreserve:{9}\ncheck_num:{10}\n===========================\n", data.syn_code, data.flow_num, data.typof_block, data.blow,
+                    data.start_time_int, data.millionseconds, data.blow_time, data.start_num, data.end_num, data.reserve, data.check_num);
+            }
+            File.WriteAllText(@".\测试1\sendMessages.txt", sendedDataMsgStr);
         }
     }
 
