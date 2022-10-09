@@ -2,8 +2,10 @@
 //#define _OLD
 //#define _IO
 //#define _DEEP
+//#define _RELEASE
 #define _DETECT
 #define _NEW_FUN
+#define _BUFFERSEND
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +31,7 @@ namespace XEthernetDemo
 {
     public partial class TestForm : Form
     {
-        #region  功放定义
+#region  功放定义
         public struct Msg
         {
             internal byte[] bytes;
@@ -353,7 +355,7 @@ namespace XEthernetDemo
             }
         }
 
-        #endregion
+#endregion
 
         public TestForm()
         {
@@ -671,7 +673,9 @@ namespace XEthernetDemo
             hxCard.SetIntegrationTime((uint)integral);
             integral_time = (float)integral / 1000;
         }
-
+#if _BUFFERSEND
+        Queue<Data_Set> sendMsgBuffer = new Queue<Data_Set>();
+#endif
         // 向PLC发送消息
         public int SendData(Data_Set data)
         {
@@ -827,10 +831,17 @@ namespace XEthernetDemo
             uint timestart = timeGetTime();
             while (true)
             {
+#if _BUFFERSEND
+                uint trick = time_interval;
+#endif
                 uint i = 0;
                 while (i < time_interval)
                 {
                     i = timeGetTime() - timestart;
+#if _BUFFERSEND
+                    if (trick-- > 0 && sendMsgBuffer.Count > 0) 
+                        SendData(sendMsgBuffer.Dequeue());
+#endif
                 }
                 timestart = timeGetTime();
                 timecheck();
@@ -907,7 +918,10 @@ namespace XEthernetDemo
                         {
 
                             list[list.Length - 1].next_same = true;
+#if _RELEASE
+#else
                             Console.WriteLine("功率放中有物块！");
+#endif
                         }
                         else
                         {
@@ -969,7 +983,10 @@ namespace XEthernetDemo
                             {
 
                                 list[list.Length - 1].next_same = true;
+#if _RELEASE
+#else
                                 Console.WriteLine("功率放中有物块！");
+#endif
                             }
                             else
                             {
@@ -1021,7 +1038,10 @@ namespace XEthernetDemo
                     {
 
                         list[list.Length - 1].next_same = true;
+#if _RELEASE
+#else
                         Console.WriteLine("功率放中有物块！");
+#endif
                     }
                     else
                     {
@@ -1361,13 +1381,19 @@ namespace XEthernetDemo
         int subItemAreaThresh = 20;
         int grayMeanDiffThresh = 50;
         int meanDiffAreaThresh = 25;
+#if _RELEASE
+#else
         List<long> timeList = new List<long>();
+#endif
 
         int trueItemCunt = 0;
         int choosedItemCunt = 0;
         int sendedItemCunt = 0;
         int totalItemCunt = 0;
+#if _RELEASE
+#else
         List<Data_Set> sendedMsgList = new List<Data_Set>();
+#endif
         long maxTime = 0;
 
         public void getCounters_Pixel(HxCard.XImgFrame maskImage, HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
@@ -1551,7 +1577,6 @@ namespace XEthernetDemo
                     }
                 }
 #endif
-                Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -1632,8 +1657,11 @@ namespace XEthernetDemo
                         {
                             first_info = gflist.list[n];
                             Int64 a = data.start_time_int - first_info.time;
+#if _RELEASE
+#else
                             Console.WriteLine("a:" + a);
                             Console.WriteLine("========");
+#endif
                             if (Math.Abs(a) <= checkRange)
                             {
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
@@ -1681,7 +1709,7 @@ namespace XEthernetDemo
 
                     }
 #if _IO
-                    #region CZQ
+                            #region CZQ
 
                     //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
                     //foreach (OpenCvSharp.Point[] contour in contours)
@@ -1719,7 +1747,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
                     //Console.WriteLine("图像中有物块！");
 
-                    #endregion
+                            #endregion
 #endif
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -1751,14 +1779,23 @@ namespace XEthernetDemo
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
                         sendedItemCunt++;
+
+#if _BUFFERSEND
+                        sendMsgBuffer.Enqueue(data);
+#else
                         num = SendData(data);
+#endif
                         //sendedMsgList.Add(data);
+#if _RELEASE
+#else
                         Console.WriteLine("SendData");
                         if ((data.typof_block == 1 && kk > 0) == true)
                             Console.WriteLine("物块识别喷吹");
                         if ((boundRect[i].Y >= row * 0.9) == true)
                             Console.WriteLine("物块跨行喷吹");
                         Console.WriteLine("***********************************");
+
+#endif
 
                         data.typof_block = 1;
 #if _IO
@@ -1788,13 +1825,13 @@ namespace XEthernetDemo
             }
             sw.Stop();
 #endif
-            //sw.Stop();
-            //Console.WriteLine(sw.ElapsedMilliseconds);
-            //sw.Reset();
+                        //sw.Stop();
+                        //Console.WriteLine(sw.ElapsedMilliseconds);
+                        //sw.Reset();
 
-            //time_finish = DateTime.Now.Millisecond;
+                        //time_finish = DateTime.Now.Millisecond;
 
-            if (contours.Length != 0)
+                        if (contours.Length != 0)
             {
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -1804,7 +1841,7 @@ namespace XEthernetDemo
                 // 求出时间戳并发送物块信息
 
 
-                #region CZQ
+#region CZQ
 #if _IO
                 OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
                 OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
@@ -1819,7 +1856,7 @@ namespace XEthernetDemo
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
 #endif
                 imgIndex++;
-                #endregion
+#endregion
 
             }
 
@@ -1841,11 +1878,17 @@ namespace XEthernetDemo
 
             if(sw.ElapsedMilliseconds > maxTime)
                 maxTime = sw.ElapsedMilliseconds;
+#if _RELEASE
+#else
             Console.WriteLine("Img Time:{0}| Max Time:{1}", sw.ElapsedMilliseconds, maxTime);
+#endif
+#if _RELEASE
+#else
             timeList.Add(sw.ElapsedMilliseconds);
+#endif
             sw.Reset();
         }
-        #region Aysn
+#region Aysn
         public class interVariableSet
         {
             public Rect[] boundRect;
@@ -2038,10 +2081,13 @@ namespace XEthernetDemo
                     interVariableSet variable = new interVariableSet(boundRect, contours, ref totalItemCunt, index, (int)maskImage.RoiHeight, maskImg, rawImg, null, hierarchy, lineMetalType);
 #endif
                     deepResultList.Add(variable);
+#if _RELEASE
+#else
                     if (!ThreadPool.QueueUserWorkItem(new WaitCallback(itemClassification), variable))
                     {
                         Console.WriteLine("Add File");
                     }
+#endif
                     arrManul.Add(variable.manual);
                 }
                 bool deepLearnCheck = true;
@@ -2055,12 +2101,14 @@ namespace XEthernetDemo
                     }
                     if (tail > 0)
                         deepLearnCheck &= WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 130);
+#if _RELEASE
+#else
                     if (!deepLearnCheck)
                     {
                         Console.WriteLine("Error Aysn");
                         Console.WriteLine("Img Time:{0}| Max Time:{1}", sw.ElapsedMilliseconds, maxTime);
                     }
-
+#endif
 
                 }
 
@@ -2094,7 +2142,7 @@ namespace XEthernetDemo
                     }
                 }
 #endif
-                Console.WriteLine("第{0}帧处理完毕，深度学习处理数量与常规检测数量是否相等:{1}", imgIndex, tickCunt == totalItemCunt);
+
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -2175,8 +2223,11 @@ namespace XEthernetDemo
                         {
                             first_info = gflist.list[n];
                             Int64 a = data.start_time_int - first_info.time;
+#if _RELEASE
+#else
                             Console.WriteLine("a:" + a);
                             Console.WriteLine("========");
+#endif
                             if (Math.Abs(a) <= checkRange)
                             {
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
@@ -2224,7 +2275,7 @@ namespace XEthernetDemo
 
                     }
 #if _IO
-                    #region CZQ
+                            #region CZQ
 
                     //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
                     //foreach (OpenCvSharp.Point[] contour in contours)
@@ -2262,7 +2313,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
                     //Console.WriteLine("图像中有物块！");
 
-                    #endregion
+                            #endregion
 #endif
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -2294,15 +2345,22 @@ namespace XEthernetDemo
                     if (FunctionSelect_NoSelect.Checked || (data.typof_block == 1 && kk > 0)) //|| (boundRect[i].Y >= row * 0.9 && kk > 0))
                     {
 
+                        //num = SendData(data);
+#if _BUFFERSEND
+                        sendMsgBuffer.Enqueue(data);
+#else
                         num = SendData(data);
+#endif
                         //sendedMsgList.Add(data);
+#if _RELEASE
+#else
                         Console.WriteLine("SendData");
                         if ((data.typof_block == 1 && kk > 0) == true)
                             Console.WriteLine("物块识别喷吹");
                         if ((boundRect[i].Y >= row * 0.9) == true)
                             Console.WriteLine("物块跨行喷吹");
                         Console.WriteLine("***********************************");
-
+#endif
                         data.typof_block = 1;
 #if _IO
                         Cv2.PutText(imgRgb, "blow", new OpenCvSharp.Point(boundRect[i].X + 10, boundRect[i].Y),
@@ -2331,13 +2389,13 @@ namespace XEthernetDemo
             }
             sw.Stop();
 #endif
-                    //sw.Stop();
-                    //Console.WriteLine(sw.ElapsedMilliseconds);
-                    //sw.Reset();
+                        //sw.Stop();
+                        //Console.WriteLine(sw.ElapsedMilliseconds);
+                        //sw.Reset();
 
-                    //time_finish = DateTime.Now.Millisecond;
+                        //time_finish = DateTime.Now.Millisecond;
 
-                    if (contours.Length != 0)
+                        if (contours.Length != 0)
             {
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -2347,7 +2405,7 @@ namespace XEthernetDemo
                 // 求出时间戳并发送物块信息
 
 
-                #region CZQ
+#region CZQ
 #if _IO
                 OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
                 OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
@@ -2362,7 +2420,7 @@ namespace XEthernetDemo
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
 #endif
                 imgIndex++;
-                #endregion
+#endregion
 
             }
 
@@ -2384,12 +2442,18 @@ namespace XEthernetDemo
 
             if (sw.ElapsedMilliseconds > maxTime)
                 maxTime = sw.ElapsedMilliseconds;
+#if _RELEASE
+#else
             Console.WriteLine("Img Time:{0}| Max Time:{1}", sw.ElapsedMilliseconds, maxTime);
+#endif
+#if _RELEASE
+#else
             timeList.Add(sw.ElapsedMilliseconds);
+#endif
             sw.Reset();
         }
 
-        #endregion
+#endregion
         class deepTestItem
         {
             public ManualResetEvent manual;
@@ -2406,14 +2470,20 @@ namespace XEthernetDemo
         void deepLearnTest(object o)
         {
             deepTestItem tinyImgs = o as deepTestItem;
+#if _RELEASE
+#else
             Stopwatch sw = new Stopwatch();
             sw.Start();
+#endif
             var deepLearnResult = User.InferenceModel(tinyImgs.img.Clone());
             tinyImgs.lab = deepLearnResult.Label;
             tinyImgs.result = deepLearnResult.Confidence;
+#if _RELEASE
+#else
             sw.Stop();
             Console.WriteLine("DeepLearnTime:{0}", sw.ElapsedMilliseconds);
             sw.Reset();
+#endif
             //for (int i = 0; i < 1000; i++)
             //    for (int j = 0; j < 1000; j++) ;
             tinyImgs.manual.Set();
@@ -2551,9 +2621,12 @@ namespace XEthernetDemo
             bitmapImg.Save(imgPath + imgIndex.ToString() + ".bmp");
 #endif
             imgIndex++;
+#if _RELEASE
+#else
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds);
             sw.Reset();
+#endif
         }
         User user;
         private void FindDeviceButton_Click(object sender, EventArgs e)
@@ -3135,6 +3208,8 @@ namespace XEthernetDemo
             //string sendedDataMsgStr = "send_Num:" + check.ToString() + "\n";
             string  sendedDataMsgStr = "red_Num:" + choosedItemCunt + "\n";
             sendedDataMsgStr += "MaxTime:" + maxTime;
+#if _RELEASE
+#else
             foreach (var data in sendedMsgList)
             {
                 sendedDataMsgStr += string.Format("syn_code:{0}\nflow_num:{1}\ntypof_block:{2}\nblow:{3}\n" +
@@ -3150,6 +3225,7 @@ namespace XEthernetDemo
                 timeMsg += time.ToString() + "\n";
             }
             File.WriteAllText(@".\测试1\timeList.txt", timeMsg);
+#endif
         }
     }
 
