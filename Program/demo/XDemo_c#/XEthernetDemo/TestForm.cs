@@ -1,4 +1,4 @@
-﻿#define _TEST
+﻿//#define _TEST
 //#define _OLD
 //#define _IO
 //#define _DEEP
@@ -839,7 +839,10 @@ namespace XEthernetDemo
                 {
                     i = timeGetTime() - timestart;
 #if _BUFFERSEND
-                    if (trick-- > 0 && sendMsgBuffer.Count > 0) 
+                    uint j = 0;
+                    while (j < 1) 
+                        j = timeGetTime() - timestart;
+                    if (sendMsgBuffer.Count > 0)
                         SendData(sendMsgBuffer.Dequeue());
 #endif
                 }
@@ -2395,7 +2398,7 @@ namespace XEthernetDemo
 
                         //time_finish = DateTime.Now.Millisecond;
 
-                        if (contours.Length != 0)
+            if (contours.Length != 0)
             {
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -2403,8 +2406,6 @@ namespace XEthernetDemo
                 //Cv2.ImWrite(result_pic, connImage);
 
                 // 求出时间戳并发送物块信息
-
-
 #region CZQ
 #if _IO
                 OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
@@ -2421,7 +2422,6 @@ namespace XEthernetDemo
 #endif
                 imgIndex++;
 #endregion
-
             }
 
             // ushort[,] line_info = get_timestamp_test(ximagew);
