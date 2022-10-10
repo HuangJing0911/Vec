@@ -1,4 +1,4 @@
-﻿//#define _TEST
+﻿#define _TEST
 //#define _OLD
 //#define _IO
 //#define _DEEP
@@ -824,10 +824,11 @@ namespace XEthernetDemo
             TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return (uint)time_stamp.TotalMilliseconds;
         }
-
+        Stopwatch sw = new Stopwatch();
         // 定时器功能实现函数
         private void timer()
         {
+            sw.start();
             uint timestart = timeGetTime();
             while (true)
             {
