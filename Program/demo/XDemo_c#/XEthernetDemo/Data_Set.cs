@@ -29,7 +29,7 @@ namespace XEthernetDemo
             //Console.WriteLine("对象已成功创建!");
         }
 
-        public void Init_Dataset(Rect boundRect,HxCard.XImgFrame image)
+        public void Init_Dataset(Rect boundRect,HxCard.XImgFrame image = null)
         {
             blow = 1;
         }

@@ -24,12 +24,7 @@ namespace XEthernetDemo
         }
         public static void InitOnnx(string modelPath)
         {
-
-
-
             IS = new InferenceSession(modelPath);
-            
-
         }
 
         public static Prediction InferenceModel(Mat image)

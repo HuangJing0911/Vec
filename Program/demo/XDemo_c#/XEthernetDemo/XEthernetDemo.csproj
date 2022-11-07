@@ -184,6 +184,7 @@
     <Compile Include="Prediction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimulatorByImg.cs" />
     <Compile Include="StartMenu.cs">
       <SubType>Form</SubType>
     </Compile>

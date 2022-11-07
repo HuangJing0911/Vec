@@ -1,11 +1,12 @@
 ﻿//#define _TEST
+//#define _IMGTEST
 //#define _OLD
 //#define _IO
 #define _DEEP
 //#define _RELEASE
 #define _DETECT
 #define _NEW_FUN
-#define _BUFFERSEND
+//#define _BUFFERSEND
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -368,6 +369,11 @@ namespace XEthernetDemo
         private void TestForm_Load(object sender, EventArgs e)
         {
             Version.Text = version;
+            for (int i = 1; i <= AmplifierSetNum; i++) 
+            {
+                string item = i.ToString();
+                ChannelListComboBox.Items.Add(item);
+            }
             selfDefParam();
         }
 
@@ -457,6 +463,11 @@ namespace XEthernetDemo
         //XTifFormatW xtifform;
 
         HxCard hxCard;
+
+#if _IMGTEST
+        SimulatorByImg imgSim = new SimulatorByImg(@".\");
+#endif
+
         XRayMsgDLL.XRayPowerAmplifier xRayPower;
 
         int frame_count = 0;
@@ -478,8 +489,6 @@ namespace XEthernetDemo
         public int AmplifierEnableNum = 10;
         uint time_interval = 5;                 // 定时器定时时间为5ms
         public float speed = 3.0f;              // 传送带速度
-        public float blowStartDelay = 3.5f;
-        public float blowStopDelay = 3.5f;
         public float SDD = 914;
         public float SOD = 815;
         public float t1 = 524;
@@ -826,6 +835,7 @@ namespace XEthernetDemo
             TimeSpan time_stamp = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return (uint)time_stamp.TotalMilliseconds;
         }
+
         // 定时器功能实现函数
         private void timer()
         {
@@ -1018,17 +1028,19 @@ namespace XEthernetDemo
             }
 
         }
-
+        int singleChannelIndex = -1;
         private void recv_data_SimplePro(object sender, EventArgs e)
         {
             XRayMsgDLL.XRayPowerAmplifier.SimpleFrame frame = e as XRayMsgDLL.XRayPowerAmplifier.SimpleFrame;
             // 解析时间和通道数
             GFinfo info = new GFinfo();
             Int64 time = frame.Time;
-            info.time = time - 21;
+            info.time = time - 45;
             //index = index << 8 & data[9];
 
-            info.channelindex = (int)((frame.Channel + 1) * (float)AmplifierSetNum / AmplifierEnableNum);// Convert.ToInt32(data[8].ToString("X2"), 16);
+            info.channelindex = (int)((frame.Channel) * (float)AmplifierSetNum / AmplifierEnableNum);// Convert.ToInt32(data[8].ToString("X2"), 16);
+            if (singleChannelIndex >= 0 && info.channelindex != singleChannelIndex) 
+                return;
             info.flag = 1;               // 入队列的为铜的信息
             info.next_same = false;     // 初始化下一个物块时间信息与自己是不同的
                                         // 检测当前进队列的物块时间信息和前一个物块是否相同
@@ -1123,7 +1135,7 @@ namespace XEthernetDemo
             gflocker = new object();
             xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2, true, AmplifierEnableNum);
             //xRayPower.RegisterFrameReadyCallback(recv_data_Pro);
-            //xRayPower.RegisterSimpleReadyCallback(recv_data_SimplePro);
+            xRayPower.RegisterSimpleReadyCallback(recv_data_SimplePro);
             xRayPower.Connect(powerServer, powerRemote, 27001, 19200);
             //udpRecv = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);                     //接收功放设备udp数据报   25ms10个包（10个通道每个通道25ms发一个包）
             //endpoint = new IPEndPoint(IPAddress.Parse(powerServer), 27001);          //172.28.110.50   27001
@@ -1207,9 +1219,12 @@ namespace XEthernetDemo
             //MessageBox.Show("成功启动线阵与功放！");
             StartButton.Enabled = false;
             StopButton.Enabled = true;
+#if _IMGTEST
+            imgSim.Start();
+#endif
         }
 #else
-        private void StartButton_Click(object sender, EventArgs e)
+            private void StartButton_Click(object sender, EventArgs e)
         {
             System.Threading.Thread.Sleep(5);
             xRayPower.Start();
@@ -1253,7 +1268,7 @@ namespace XEthernetDemo
             timerthread.Start();
 
             // 启动接收功放数据线程
-            recv = true;
+            recv = false;
             if (recv)
             {
                 //CardNum1.Text = "Start Receive!";
@@ -1290,6 +1305,7 @@ namespace XEthernetDemo
             //MessageBox.Show("成功启动线阵与功放！");
             StartButton.Enabled = false;
             StopButton.Enabled = true;
+
         }
 #endif
         void threadCounters(Object obj)
@@ -1387,7 +1403,8 @@ namespace XEthernetDemo
         int meanDiffAreaThresh = 25;
 #if _RELEASE
 #else
-        List<long> timeList = new List<long>();
+        //List<long> timeList = new List<long>();
+        List<int> itemCuntList = new List<int>();
 #endif
 
         int trueItemCunt = 0;
@@ -1402,16 +1419,33 @@ namespace XEthernetDemo
 
         public void getCounters_Pixel(HxCard.XImgFrame maskImage, HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
-            int lslItemCunt = 0;
-
-
-
+            //int lslItemCunt = 0;
             int row = (int)maskImage.Height;
             int col = (int)maskImage.Width;
             Mat img = new Mat(new int[] { row, col }, MatType.CV_8UC1, maskImage.Data);
             time_now = DateTime.Now.Millisecond;
-            Mat maskImg = img.Clone();
+            //Mat maskImg = img.Clone();
             Mat rawImg = new Mat(new int[] { row, col }, MatType.CV_8UC1, rawImage.Data);
+            getCounter_Pixel(rawImg, img, row, col, maskImage.RoiHeight, maskImage.MaxHeight, stamp);
+        }
+
+#if _IMGTEST
+        public void simCallback(Mat rawImg, Mat maskImg, int roiHeight, out int totalItemCunt, out int selectedItemCunt)
+        {
+            totalItemCunt = trueItemCunt;
+            selectedItemCunt = choosedItemCunt;
+            getCounter_Pixel(rawImg, maskImg, roiHeight, maskImg.Width, (uint)roiHeight, (uint)maskImg.Height, DateTime.Now);
+        }
+#endif
+
+        public void getCounter_Pixel(Mat rawImg, Mat img, int row, int col, uint roiHeight, uint maxHeight, DateTime stamp)
+        {
+#if _DEEP
+            int lslItemCunt = 0;
+#endif
+            time_now = DateTime.Now.Millisecond;
+            //Mat maskImg = img.Clone();
+            //Mat rawImg = new Mat(new int[] { row, col }, MatType.CV_8UC1, rawImage.Data);
 #if _DETECT
             //img.ConvertTo(img, MatType.CV_32F);
             //Cv2.Normalize(img, img, 1.0, 0, NormTypes.MinMax);
@@ -1438,6 +1472,10 @@ namespace XEthernetDemo
 
             Rect[] boundRect = new Rect[contours.Length];
             int[] lineMetalType = new int[contours.Length];
+#if _RELEASE
+#else
+            int itemSumPerFrame = 0;
+#endif
 #if _DETECT
             sw.Start();
             if (true)// contours.Length > 0)
@@ -1449,16 +1487,16 @@ namespace XEthernetDemo
                 {
                     boundRect[index] = Cv2.BoundingRect(contours[index]);                //获取每个contour的框
                     //"(hierarchy[i].Child < 0 && boundRect[i].TopLeft.Y == 0)"部分用于判断是否有跨页的物块被误识别，判断原理：https://stackoverflow.com/questions/22240746/recognize-open-and-closed-shapes-opencv
-                    if (boundRect[index].TopLeft.Y > maskImage.RoiHeight || (hierarchy[index].Child < 0 && boundRect[index].TopLeft.Y == 0))
+                    if (boundRect[index].TopLeft.Y > roiHeight || (hierarchy[index].Child < 0 && boundRect[index].TopLeft.Y == 0))
                         continue;
                     var subItemRect = Cv2.BoundingRect(contours[index]);
                     double area = subItemRect.Height * subItemRect.Width;//Cv2.ContourArea(contours[index]);
 
-                    if (area < minItemArea)//|| boundRect[index].Height > row / 3)
+                    if (hierarchy[index].Parent != -1) //|| boundRect[index].Height > row / 3)
                     {
 #if _IO
                         Cv2.PutText(imgRgb, String.Format("area{0}:{1}", index, area.ToString("f1")),
-                                    new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y-20),
+                                    new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
                                     HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 0, 255));
                         Cv2.DrawContours(imgRgb, contours, index, new Scalar(0, 0, 255), 1);
 #endif
@@ -1477,7 +1515,7 @@ namespace XEthernetDemo
                     OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[index].TopLeft.X, boundRect[index].TopLeft.Y);
                     Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
 #endif
-                    Mat mask = maskImg[boundRect[index]];
+                    Mat mask = img[boundRect[index]];
                     Mat tinyItem = rawImg[boundRect[index]];                        //用框裁剪出所有contour的最小mat,生成一个mat[]
                     Mat gloryItem = tinyItem.Clone();
                     Cv2.BitwiseAnd(tinyItem, mask, gloryItem);
@@ -1505,20 +1543,31 @@ namespace XEthernetDemo
                     double subArea = 0;
                     double totalGray = 0;
                     double subMean = 0;
-                    bool luosi = findBlockInItemGrayDiff(tinyItem, subItemGrayThresh, subItemAreaThresh, imgIndex, index, out subArea, out totalGray);
+                    bool luosi = false;
+                    double MeanDiff = 0;
+#if _DEEP
+#else
+                    luosi = findBlockInItemGrayDiff(tinyItem, subItemGrayThresh, subItemAreaThresh, imgIndex, index, out subArea, out totalGray);
                     double outMean = 0;
                     outMean = (sumValue.Val0 - totalGray) / (area - subArea);
                     subMean = subArea == 0 ? outMean : totalGray / subArea;
-                    double MeanDiff = Math.Abs(outMean - subMean);
+                    MeanDiff = Math.Abs(outMean - subMean);
+#endif
                     int flag = 0;
                     trueItemCunt++;
                     if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > meanDiffAreaThresh))
                     {
-                        choosedItemCunt++;
-                        lineMetalType[index] = 1;
+//#if _DEEP
+//#else
+                        if(lineMetalType[index] != 1 )
+                        {
+                            choosedItemCunt++;
+                            lineMetalType[index] = 1;
 #if _IO
-                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
+                            Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 0, 255), 5);
 #endif
+                        }
+//#endif
                         if (mean < itemGrayThreshold)
                         {
                             flag += 4;
@@ -1538,7 +1587,7 @@ namespace XEthernetDemo
                         lineMetalType[index] = 0;
                     }
 #if _IO
-                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area,Convert.ToString(flag,2)),
+                    Cv2.PutText(imgRgb, String.Format("mean{0}:{1},area:{2},trick:{3}", index, mean.ToString("f1"), area, Convert.ToString(flag, 2)),
             new OpenCvSharp.Point(boundRect[index].X + 10, boundRect[index].Y - 20),
             HersheyFonts.HersheySimplex, 0.3, new Scalar(125, 125, 0));
 #endif
@@ -1547,7 +1596,13 @@ namespace XEthernetDemo
                     //            HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 0));
                     //Console.WriteLine("Mean: {0}+{1}={2}", sumValue.Val0.ToString("f1"), area.ToString("f1"), mean.ToString("f1"));
                     totalItemCunt++;
+#if _DEEP
                     lslItemCunt++;
+#endif
+#if _RELEASE
+#else
+                    itemSumPerFrame++;
+#endif
                 }
 
 
@@ -1561,26 +1616,46 @@ namespace XEthernetDemo
                     int tail = arrManul.Count % 64;
                     for (int j = 0; j < batch; j++)
                     {
-                        deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(j * 64).Take(64).ToArray(), 130);
+                        deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(j * 64).Take(64).ToArray(), 200);
                     }
-                    deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 130);
+                    deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 200);
                 }
-                foreach (var item in deepResultList)
+                if(deepResultList.Count > 0)
                 {
-                    if(item.result < 0.5)
+                    foreach (var item in deepResultList)
                     {
-                        if (lineMetalType[item.index] != 1)
-                            choosedItemCunt++;
-                        lineMetalType[item.index] = 1;
 #if _IO
-                        OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[item.index].BottomRight.X, boundRect[item.index].BottomRight.Y);
-                        OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[item.index].TopLeft.X, boundRect[item.index].TopLeft.Y);
-                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 5);
+                        Cv2.PutText(imgRgb, String.Format("intex_{0}:{1}", item.index, item.result.ToString("f5")),
+                            new OpenCvSharp.Point(boundRect[item.index].X + 10, boundRect[item.index].Y - 10),HersheyFonts.HersheySimplex, 0.3, new Scalar(0, 255, 255));
 #endif
+                        if (item.result < 0.89 && item.result >= 0) 
+                        {
 
+                            if (lineMetalType[item.index] != 1)
+                                choosedItemCunt++;
+                            lineMetalType[item.index] = 1;
+#if _IO
+                            OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[item.index].BottomRight.X, boundRect[item.index].BottomRight.Y);
+                            OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[item.index].TopLeft.X, boundRect[item.index].TopLeft.Y);
+                            Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 5);
+#endif
+                        }
+                        else
+                        {
+#if _IO
+                            Console.WriteLine(item.result);
+#endif
+                            if (lineMetalType[item.index] == 1)
+                                choosedItemCunt--;
+                            lineMetalType[item.index] = 0;
+                            
+                        }
                     }
                 }
+
+
 #endif
+                            int ls = 0;
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -1597,13 +1672,14 @@ namespace XEthernetDemo
 
                     Data_Set data = new Data_Set();                                 // 发送数据包
                     // data.flow_num = Convert.ToString(total_card_num % 1000);        // 设置流水编号
-                    data.Init_Dataset(boundRect[i], maskImage);                       // 初始化数据包为可吹气  
+                    data.Init_Dataset(boundRect[i]);                       // 初始化数据包为可吹气  
 
                     bool is_small = false;
 
 
                     // 设置开始喷吹时间(使用格林威治毫秒时间)
-                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * maskImage.MaxHeight);  // 找出物块在图像中的实际时间
+                    int k = (int)((boundRect[i].Y * integral_time) - integral_time * maxHeight);  // 找出物块在图像中的实际时间
+                    ls = (int)(boundRect[i].Y);
                     TimeSpan time_stamp = stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0);
                     data.start_time_int = (Int64)time_stamp.TotalMilliseconds;
                     data.start_time_int = data.start_time_int + k;                                      // 计算物块到达X光的时间
@@ -1646,7 +1722,7 @@ namespace XEthernetDemo
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
                     int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierSetNum / num_of_mouth);
                     int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierSetNum / num_of_mouth);
-                    data.typof_block = (byte)lineMetalType[i];
+                    data.typof_block =  (byte)lineMetalType[i];
 
 
                     while (true)
@@ -1661,12 +1737,15 @@ namespace XEthernetDemo
                         {
                             first_info = gflist.list[n];
                             Int64 a = data.start_time_int - first_info.time;
+                            Int64 b = data.start_time_int - first_info.time;
+                            //if (first_info.time > data.start_time_int - checkRange && first_info.time < data.start_time_int + data.blow_time + checkRange) ;
 #if _RELEASE
 #else
                             Console.WriteLine("a:" + a);
                             Console.WriteLine("========");
 #endif
-                            if (Math.Abs(a) <= checkRange)
+                            //if (Math.Abs(a) <= checkRange)
+                            if (first_info.time > data.start_time_int - checkRange && first_info.time < data.start_time_int + data.blow_time + checkRange)
                             {
                                 if (gflist.start_channel <= end_num && gflist.end_channel >= start_num)
                                 {
@@ -1715,13 +1794,33 @@ namespace XEthernetDemo
 #if _IO
                     #region CZQ
 
+                    //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
+                    //foreach (OpenCvSharp.Point[] contour in contours)
+                    //{
+                    //    //Cv2.Rectangle();
+                    //    Rect bound = Cv2.BoundingRect(contour);
+                    //    //int num = rect.Length;
+                    //    //for(int i = 1;i<num;i++)
+                    //    //{
+                    //    //    Cv2.Line(image, rect[i - 1], rect[i], 255, 2);
+                    //    //}
+                    //    OpenCvSharp.Point point1 = new OpenCvSharp.Point(bound.BottomRight.X, bound.BottomRight.Y);
+                    //    OpenCvSharp.Point point2 = new OpenCvSharp.Point(bound.TopLeft.X, bound.TopLeft.Y);
+                    //    Cv2.Rectangle(imgRgb, point2, point1, 100, 2);
+                    //    if (Math.Abs(point2.X - point1.X) > 10)
+                    //    {
+                    //        //Console.WriteLine("Rect -> P2:{0}", p2);
+                    //        //Console.WriteLine("Rect -> P1:{0}", p1);
+                    //    }
+                    //}
                     int itemButtomDown = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int - checkRange);
-                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + checkRange);
+                    int itemButtomUp = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int + (int)(boundRect[i].Height * integral_time) + checkRange);
                     int itemLeft = (int)(BeltConvert2Line((float)(start_num - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
                     int itemRight = (int)(BeltConvert2Line((float)end_num / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);
                     //Cv2.Rectangle(imgRgb, new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp), 100, 5);
 
                     int AmpLineY = TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, first_info.time);
+                    int distance = AmpLineY - TimeConvert2Index((Int64)(stamp - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalMilliseconds, data.start_time_int);
                     int AmpLineLeft = (int)(BeltConvert2Line((float)(gflist.start_channel - 1) / AmplifierSetNum * (t1 + t2)) / (p1 + p2) * imgRgb.Width);//gflist.start_channel
                     //int AmpLineLeft = (int)((float)(gflist.start_channel - 1) / AmplifierSetNum * image.Width);//gflist.start_channel
                     //int AmpLineRight = (int)((float)(gflist.end_channel) / AmplifierSetNum * image.Width);//gflist.start_channel
@@ -1735,12 +1834,13 @@ namespace XEthernetDemo
                     #endregion
 #endif
                     // 确定物块最终喷吹的时间
-                    data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
+                    var offsetValue = (int)(2400 / speed) - 13;//2;
+                    data.start_time_int += offsetValue >= 0 ? offsetValue : 0;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
 
 
                     //data.start_time = (Int64)stamp.TotalMilliseconds + (Int64)(boundRect[i].Y / line_num_persecond);
                     // 设置持续喷吹的时间
-                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);
+                    data.blow_time = (Int16)(boundRect[i].Height * integral_time + 7);//-11);
                     //data.blow_time = (short)100;
 
 
@@ -1810,13 +1910,13 @@ namespace XEthernetDemo
             }
             sw.Stop();
 #endif
-            //sw.Stop();
-            //Console.WriteLine(sw.ElapsedMilliseconds);
-            //sw.Reset();
+                    //sw.Stop();
+                    //Console.WriteLine(sw.ElapsedMilliseconds);
+                    //sw.Reset();
 
-            //time_finish = DateTime.Now.Millisecond;
+                    //time_finish = DateTime.Now.Millisecond;
 
-            if (contours.Length != 0)
+                    if (contours.Length != 0)
             {
                 // Total_Block_Num.Text = Convert.ToString(total_card_num);
                 // 画出检测的轮廓
@@ -1826,9 +1926,9 @@ namespace XEthernetDemo
                 // 求出时间戳并发送物块信息
 
 
-#region CZQ
+                #region CZQ
 #if _IO
-                OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
+                OpenCvSharp.Point point1 = new OpenCvSharp.Point(img.Width, roiHeight);
                 OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
                 Cv2.Rectangle(imgRgb, point2, point1, 100, 1);
                 for (int ii = 0; ii <= AmplifierSetNum; ii++)
@@ -1841,7 +1941,7 @@ namespace XEthernetDemo
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
 #endif
                 imgIndex++;
-#endregion
+                #endregion
 
             }
 
@@ -1852,8 +1952,8 @@ namespace XEthernetDemo
             element.Dispose();
             rawImg.Release();
             rawImg.Dispose();
-            maskImg.Release();
-            maskImg.Dispose();
+            //maskImg.Release();
+            //maskImg.Dispose();
             img.Release();
             img.Dispose();
 #if _IO
@@ -1861,7 +1961,7 @@ namespace XEthernetDemo
             imgRgb.Dispose();
 #endif
 
-            if(sw.ElapsedMilliseconds > maxTime)
+            if (sw.ElapsedMilliseconds > maxTime)
                 maxTime = sw.ElapsedMilliseconds;
 #if _RELEASE
 #else
@@ -1869,7 +1969,8 @@ namespace XEthernetDemo
 #endif
 #if _RELEASE
 #else
-            timeList.Add(sw.ElapsedMilliseconds);
+            itemCuntList.Add(itemSumPerFrame);
+            //timeList.Add(sw.ElapsedMilliseconds);
 #endif
             sw.Reset();
         }
@@ -1887,12 +1988,8 @@ namespace XEthernetDemo
             public ManualResetEvent manual;
             public int[] lineMetalType;
             public int totalItemCunt;
-#if _DEEP
-            public List<ManualResetEvent> arrManul;
-            public List<interVariableSet> deepResultList;
-#endif
             public interVariableSet(Rect[] _boundRect, OpenCvSharp.Point[][] _contours, ref int _totalItemCunt, int _index, int _roiHeight, Mat _maskImg, Mat _rawImg, Mat _imgRgb,
-                HierarchyIndex[] _hierarchy, int[] _lineMetalType,List<ManualResetEvent> _arrManul, List<interVariableSet> _deepResultList)
+                HierarchyIndex[] _hierarchy, int[] _lineMetalType)
             {
                 boundRect = _boundRect;
                 contours = _contours;
@@ -1906,15 +2003,11 @@ namespace XEthernetDemo
                 lineMetalType = _lineMetalType;
                 imgRgb = _imgRgb;
                 totalItemCunt = _totalItemCunt;
-                arrManul = _arrManul;
-                deepResultList = _deepResultList;
             }
         }
-
-
+#if _ASYN
         public void itemClassification(object o)
         {
-
             interVariableSet item = o as interVariableSet;
             item.boundRect[item.i] = Cv2.BoundingRect(item.contours[item.i]);                //获取每个contour的框
                                                                                  //"(hierarchy[i].Child < 0 && boundRect[i].TopLeft.Y == 0)"部分用于判断是否有跨页的物块被误识别，判断原理：https://stackoverflow.com/questions/22240746/recognize-open-and-closed-shapes-opencv
@@ -1956,9 +2049,9 @@ namespace XEthernetDemo
             Mat gloryItem = tinyItem.Clone();
             Cv2.BitwiseAnd(tinyItem, mask, gloryItem);
 #if _DEEP
-                    deepTestItem dlItem = new deepTestItem(tinyItem, item.i);
+                    deepTestItem dlItem = new deepTestItem(tinyItem, index);
                     dlItem.manual = new ManualResetEvent(false);
-                    item.arrManul.Add(dlItem.manual);
+                    arrManul.Add(dlItem.manual);
                     if (area > 200)
                     {
                         ThreadPool.QueueUserWorkItem(new WaitCallback(deepLearnTest), dlItem);
@@ -1970,7 +2063,7 @@ namespace XEthernetDemo
                     {
                         dlItem.manual.Set();
                     }
-            //item.deepResultList.Add(dlItem);有误，使用ASYN时需要解除此处BUG
+                    deepResultList.Add(dlItem);
 #endif
             area = Cv2.CountNonZero(gloryItem);
             Scalar sumValue = Cv2.Sum(gloryItem);
@@ -2023,8 +2116,8 @@ namespace XEthernetDemo
             totalItemCunt++;
             item.manual.Set();
         }
-
-
+#endif
+#if _ASYN
         public void getCounters_Pixel_Asyn(HxCard.XImgFrame maskImage, HxCard.XImgFrame rawImage, MatType type, DateTime stamp)
         {
 
@@ -2060,6 +2153,10 @@ namespace XEthernetDemo
 
             Rect[] boundRect = new Rect[contours.Length];
             int[] lineMetalType = new int[contours.Length];
+#if _RELEASE
+#else
+            int itemSumPerFrame = 0;
+#endif
 #if _DETECT
             sw.Start();
 
@@ -2073,7 +2170,7 @@ namespace XEthernetDemo
 #if _IO
                     interVariableSet variable = new interVariableSet(boundRect, contours, ref totalItemCunt, index, (int)maskImage.RoiHeight, maskImg, rawImg, imgRgb, hierarchy, lineMetalType);
 #else
-                    interVariableSet variable = new interVariableSet(boundRect, contours, ref totalItemCunt, index, (int)maskImage.RoiHeight, maskImg, rawImg, null, hierarchy, lineMetalType,arrManul, deepResultList);
+                    interVariableSet variable = new interVariableSet(boundRect, contours, ref totalItemCunt, index, (int)maskImage.RoiHeight, maskImg, rawImg, null, hierarchy, lineMetalType);
 #endif
                     deepResultList.Add(variable);
 #if _RELEASE
@@ -2109,34 +2206,34 @@ namespace XEthernetDemo
 
 
                 int tickCunt = 0;
-//#if _DEEP
-//                bool deepLearnCheck = false;
-//                if (lslItemCunt > 0) 
-//                {
-//                    int batch = arrManul.Count / 64;
-//                    int tail = arrManul.Count % 64;
-//                    for (int j = 0; j < batch; j++)
-//                    {
-//                        deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(j * 64).Take(64).ToArray(), 130);
-//                    }
-//                    deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 130);
-//                }
-//                foreach (var item in deepResultList)
-//                {
-//                    if(item.result < 0.5)
-//                    {
-//                        if (lineMetalType[item.index] != 1)
-//                            choosedItemCunt++;
-//                        lineMetalType[item.index] = 1;
-//#if _IO
-//                        OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[item.index].BottomRight.X, boundRect[item.index].BottomRight.Y);
-//                        OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[item.index].TopLeft.X, boundRect[item.index].TopLeft.Y);
-//                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 5);
-//#endif
-//
-//                    }
-//                }
-//#endif
+#if _DEEP
+                bool deepLearnCheck = false;
+                if (lslItemCunt > 0) 
+                {
+                    int batch = arrManul.Count / 64;
+                    int tail = arrManul.Count % 64;
+                    for (int j = 0; j < batch; j++)
+                    {
+                        deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(j * 64).Take(64).ToArray(), 130);
+                    }
+                    deepLearnCheck = WaitHandle.WaitAll(arrManul.Skip(batch * 64).Take(tail).ToArray(), 130);
+                }
+                foreach (var item in deepResultList)
+                {
+                    if(item.result < 0.5)
+                    {
+                        if (lineMetalType[item.index] != 1)
+                            choosedItemCunt++;
+                        lineMetalType[item.index] = 1;
+#if _IO
+                        OpenCvSharp.Point point1 = new OpenCvSharp.Point(boundRect[item.index].BottomRight.X, boundRect[item.index].BottomRight.Y);
+                        OpenCvSharp.Point point2 = new OpenCvSharp.Point(boundRect[item.index].TopLeft.X, boundRect[item.index].TopLeft.Y);
+                        Cv2.Rectangle(imgRgb, point2, point1, new Scalar(0, 255, 255), 5);
+#endif
+
+                    }
+                }
+#endif
 
                 for (int j = 0; j < contours.Length; j++)
                 {
@@ -2270,7 +2367,7 @@ namespace XEthernetDemo
 
                     }
 #if _IO
-                            #region CZQ
+        #region CZQ
 
                     //Console.WriteLine("Start Num：{0}，End Num：{1}", data.start_num, data.end_num);
                     //foreach (OpenCvSharp.Point[] contour in contours)
@@ -2308,7 +2405,7 @@ namespace XEthernetDemo
                     //Console.WriteLine("Get Rect,{0},{1}", new OpenCvSharp.Point(itemLeft, itemButtomDown), new OpenCvSharp.Point(itemRight, itemButtomUp));
                     //Console.WriteLine("图像中有物块！");
 
-                            #endregion
+        #endregion
 #endif
                     // 确定物块最终喷吹的时间
                     data.start_time_int += (int)(2400 / speed) - 13;                                    // 计算出物块到达喷嘴的格林威治毫秒时间
@@ -2398,7 +2495,7 @@ namespace XEthernetDemo
                 //Cv2.ImWrite(result_pic, connImage);
 
                 // 求出时间戳并发送物块信息
-#region CZQ
+        #region CZQ
 #if _IO
                 OpenCvSharp.Point point1 = new OpenCvSharp.Point(maskImage.Width, maskImage.RoiHeight);
                 OpenCvSharp.Point point2 = new OpenCvSharp.Point(0, 0);
@@ -2413,7 +2510,7 @@ namespace XEthernetDemo
                 bitmapImg.Save(".\\测试1\\" + imgIndex + ".bmp");
 #endif
                 imgIndex++;
-#endregion
+        #endregion
             }
 
             // ushort[,] line_info = get_timestamp_test(ximagew);
@@ -2440,18 +2537,19 @@ namespace XEthernetDemo
 #endif
 #if _RELEASE
 #else
-            timeList.Add(sw.ElapsedMilliseconds);
+            itemCuntList.Add(itemSumPerFrame);
+            //timeList.Add(sw.ElapsedMilliseconds);
 #endif
             sw.Reset();
         }
-
-#endregion
-        public class deepTestItem
+#endif
+        #endregion
+        class deepTestItem
         {
             public ManualResetEvent manual;
             public Mat img;
             public string lab;
-            public double result = 0;
+            public double result = -1;
             public int index;
             public deepTestItem(Mat m, int i)
             {
@@ -2465,16 +2563,16 @@ namespace XEthernetDemo
 #if _RELEASE
 #else
             Stopwatch sw = new Stopwatch();
-            sw.Start();
+            //sw.Start();
 #endif
             var deepLearnResult = User.InferenceModel(tinyImgs.img.Clone());
             tinyImgs.lab = deepLearnResult.Label;
             tinyImgs.result = deepLearnResult.Confidence;
 #if _RELEASE
 #else
-            sw.Stop();
-            Console.WriteLine("DeepLearnTime:{0}", sw.ElapsedMilliseconds);
-            sw.Reset();
+            //sw.Stop();
+            //Console.WriteLine("DeepLearnTime:{0}", sw.ElapsedMilliseconds);
+            //sw.Reset();
 #endif
             //for (int i = 0; i < 1000; i++)
             //    for (int j = 0; j < 1000; j++) ;
@@ -2671,31 +2769,12 @@ namespace XEthernetDemo
 
             if (true)//xcommand.Open(xdevice) > 0)
             {
-                //xtransfer = new XFrameTransferW();
-                //xtransfer.LineNum = Convert.ToUInt32("512");
-                //xtransfer.OnXError += new XFrameTransferW.DelOnXError(OnError);
-                //xtransfer.OnXEvent += new XFrameTransferW.DelOnXEvent(OnEvent1);
-                //xtransfer.OnXFrameReady += new XFrameTransferW.DelOnFrameReady(OnFrameReady);
+#if _IMGTEST
+                imgSim.RegisterImgCallback(simCallback);
+#else
                 hxCard.RegisterImgCallback(OnFrameReady);
-                //hxCard.RegisterImgCallback(getNewPicture);
-                //xacquisition = new XAcquisitionW();
-                //xacquisition.Factory = xfactory;
-                //xacquisition.Transfer = xtransfer;
-                //xacquisition.OnXError += new XAcquisitionW.DelOnXError(OnError);
-                //xacquisition.OnXEvent += new XAcquisitionW.DelOnXEvent(OnEvent1);
-                //xacquisition.EnableLineInfo = 1;
-                //MessageBox.Show("Finished Start the Line Info!");
+#endif
 
-                //if (xacquisition.Open(xdevice, xcommand) > 0)
-                //{
-                //    xdisplay = new XDisplayW();
-                //    xdisplay.Open(xdevice, xtransfer.LineNum, DisWin.Handle, Convert.ToUInt32(0));
-                //    xcorrect = new XOffCorrectW();
-                //    xcorrect.Open(xdevice);
-                //}
-                //Get serial number of X-GCU
-                //string sn = xcommand.GetPara(51, 0);
-                //SN.Text = "SN: " + sn;
 
                 // 连接到PLC
 
@@ -3082,7 +3161,11 @@ namespace XEthernetDemo
         public int TimeConvert2Index(long imgTime, long itemTime)
         {
             long timeLength = itemTime - imgTime;
-            return (int)(timeLength / integral_time) + hxCard.ImgHeight;
+#if _IMGTEST
+            return (int)(timeLength / integral_time) + imgSim.MaxHeight;
+#else
+            return (int)(timeLength / integral_time) + hxCard.ImgHeight + hxCard.DeathHeight;
+#endif
         }
 
         private void refreshThreshButton_Click(object sender, EventArgs e)
@@ -3212,12 +3295,41 @@ namespace XEthernetDemo
             File.WriteAllText(@".\测试1\sendMessages.txt", sendedDataMsgStr);
 
             string timeMsg = "";
-            foreach(var time in timeList)
+            int itemCuntListLenght;
+            lock (gflocker)
             {
-                timeMsg += time.ToString() + "\n";
+                itemCuntListLenght = itemCuntList.Count;
             }
-            File.WriteAllText(@".\测试1\timeList.txt", timeMsg);
+            for(int j = 0;j<itemCuntListLenght;j++)
+            {
+                timeMsg += itemCuntList[j].ToString() + "\n";
+            }
+            //foreach(var time in itemCuntList)
+            //{
+            //    timeMsg += time.ToString() + "\n";
+            //}
+            //File.WriteAllText(@".\测试1\itemCuntList.txt", timeMsg);
 #endif
+        }
+
+        private void PowerPanelEnableButton_Click(object sender, EventArgs e)
+        {
+            FunctionBox.Enabled = !FunctionBox.Enabled;
+        }
+
+        private void SingleChannelEnableCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            ChannelListComboBox.Enabled = SingleChannelEnableCheckBox.Checked;
+            if (SingleChannelEnableCheckBox.Checked == false)
+            {
+                ChannelListComboBox.SelectedIndex = -1;
+            }
+        }
+
+        private void ChannelListComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            singleChannelIndex = ChannelListComboBox.SelectedIndex;
+            Console.WriteLine(singleChannelIndex);
         }
     }
 

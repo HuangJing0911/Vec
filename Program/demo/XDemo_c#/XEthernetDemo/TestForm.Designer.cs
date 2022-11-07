@@ -51,6 +51,9 @@
             this.Version = new System.Windows.Forms.TextBox();
             this.paraSetButton = new System.Windows.Forms.Button();
             this.refreshThreshButton = new System.Windows.Forms.Button();
+            this.ChannelListComboBox = new System.Windows.Forms.ComboBox();
+            this.PowerPanelEnableButton = new System.Windows.Forms.Button();
+            this.SingleChannelEnableCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -98,7 +101,7 @@
             this.StopButton.Location = new System.Drawing.Point(737, 417);
             this.StopButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StopButton.Name = "StopButton";
-            this.StopButton.Size = new System.Drawing.Size(188, 61);
+            this.StopButton.Size = new System.Drawing.Size(136, 61);
             this.StopButton.TabIndex = 5;
             this.StopButton.Tag = "0";
             this.StopButton.Text = "停止";
@@ -186,6 +189,8 @@
             // 
             // FunctionBox
             // 
+            this.FunctionBox.Controls.Add(this.SingleChannelEnableCheckBox);
+            this.FunctionBox.Controls.Add(this.ChannelListComboBox);
             this.FunctionBox.Controls.Add(this.FunctionSelect_YelCu);
             this.FunctionBox.Controls.Add(this.FunctionSelect_NoSelect);
             this.FunctionBox.Controls.Add(this.FunctionSelect_Fe);
@@ -207,7 +212,7 @@
             this.FunctionSelect_YelCu.AutoSize = true;
             this.FunctionSelect_YelCu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_YelCu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_YelCu.Location = new System.Drawing.Point(51, 145);
+            this.FunctionSelect_YelCu.Location = new System.Drawing.Point(19, 143);
             this.FunctionSelect_YelCu.Name = "FunctionSelect_YelCu";
             this.FunctionSelect_YelCu.Size = new System.Drawing.Size(56, 23);
             this.FunctionSelect_YelCu.TabIndex = 21;
@@ -219,7 +224,7 @@
             this.FunctionSelect_NoSelect.AutoSize = true;
             this.FunctionSelect_NoSelect.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_NoSelect.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_NoSelect.Location = new System.Drawing.Point(152, 145);
+            this.FunctionSelect_NoSelect.Location = new System.Drawing.Point(81, 143);
             this.FunctionSelect_NoSelect.Name = "FunctionSelect_NoSelect";
             this.FunctionSelect_NoSelect.Size = new System.Drawing.Size(70, 23);
             this.FunctionSelect_NoSelect.TabIndex = 20;
@@ -231,7 +236,7 @@
             this.FunctionSelect_Fe.AutoSize = true;
             this.FunctionSelect_Fe.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_Fe.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Fe.Location = new System.Drawing.Point(152, 105);
+            this.FunctionSelect_Fe.Location = new System.Drawing.Point(81, 103);
             this.FunctionSelect_Fe.Name = "FunctionSelect_Fe";
             this.FunctionSelect_Fe.Size = new System.Drawing.Size(70, 23);
             this.FunctionSelect_Fe.TabIndex = 19;
@@ -245,7 +250,7 @@
             this.FunctionSelect_Pb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Pb.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Pb.Location = new System.Drawing.Point(51, 105);
+            this.FunctionSelect_Pb.Location = new System.Drawing.Point(19, 103);
             this.FunctionSelect_Pb.Name = "FunctionSelect_Pb";
             this.FunctionSelect_Pb.Size = new System.Drawing.Size(42, 23);
             this.FunctionSelect_Pb.TabIndex = 18;
@@ -259,7 +264,7 @@
             this.FunctionSelect_Zn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Zn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_Zn.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Zn.Location = new System.Drawing.Point(152, 65);
+            this.FunctionSelect_Zn.Location = new System.Drawing.Point(81, 63);
             this.FunctionSelect_Zn.Name = "FunctionSelect_Zn";
             this.FunctionSelect_Zn.Size = new System.Drawing.Size(42, 23);
             this.FunctionSelect_Zn.TabIndex = 17;
@@ -273,7 +278,7 @@
             this.FunctionSelect_Cu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Cu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_Cu.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.FunctionSelect_Cu.Location = new System.Drawing.Point(51, 65);
+            this.FunctionSelect_Cu.Location = new System.Drawing.Point(19, 63);
             this.FunctionSelect_Cu.Name = "FunctionSelect_Cu";
             this.FunctionSelect_Cu.Size = new System.Drawing.Size(42, 23);
             this.FunctionSelect_Cu.TabIndex = 16;
@@ -343,11 +348,49 @@
             this.refreshThreshButton.UseVisualStyleBackColor = false;
             this.refreshThreshButton.Click += new System.EventHandler(this.refreshThreshButton_Click);
             // 
+            // ChannelListComboBox
+            // 
+            this.ChannelListComboBox.Enabled = false;
+            this.ChannelListComboBox.FormattingEnabled = true;
+            this.ChannelListComboBox.Location = new System.Drawing.Point(174, 136);
+            this.ChannelListComboBox.Name = "ChannelListComboBox";
+            this.ChannelListComboBox.Size = new System.Drawing.Size(47, 30);
+            this.ChannelListComboBox.TabIndex = 22;
+            this.ChannelListComboBox.SelectedIndexChanged += new System.EventHandler(this.ChannelListComboBox_SelectedIndexChanged);
+            // 
+            // PowerPanelEnableButton
+            // 
+            this.PowerPanelEnableButton.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.PowerPanelEnableButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.PowerPanelEnableButton.Font = new System.Drawing.Font("微软雅黑", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.PowerPanelEnableButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.PowerPanelEnableButton.Location = new System.Drawing.Point(879, 417);
+            this.PowerPanelEnableButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.PowerPanelEnableButton.Name = "PowerPanelEnableButton";
+            this.PowerPanelEnableButton.Size = new System.Drawing.Size(124, 61);
+            this.PowerPanelEnableButton.TabIndex = 19;
+            this.PowerPanelEnableButton.Tag = "0";
+            this.PowerPanelEnableButton.Text = "功放面板";
+            this.PowerPanelEnableButton.UseVisualStyleBackColor = false;
+            this.PowerPanelEnableButton.Click += new System.EventHandler(this.PowerPanelEnableButton_Click);
+            // 
+            // SingleChannelEnableCheckBox
+            // 
+            this.SingleChannelEnableCheckBox.AutoSize = true;
+            this.SingleChannelEnableCheckBox.Location = new System.Drawing.Point(174, 100);
+            this.SingleChannelEnableCheckBox.Name = "SingleChannelEnableCheckBox";
+            this.SingleChannelEnableCheckBox.Size = new System.Drawing.Size(77, 26);
+            this.SingleChannelEnableCheckBox.TabIndex = 23;
+            this.SingleChannelEnableCheckBox.Text = "单通道";
+            this.SingleChannelEnableCheckBox.UseVisualStyleBackColor = true;
+            this.SingleChannelEnableCheckBox.CheckedChanged += new System.EventHandler(this.SingleChannelEnableCheckBox_CheckedChanged);
+            // 
             // TestForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(1027, 511);
+            this.Controls.Add(this.PowerPanelEnableButton);
             this.Controls.Add(this.refreshThreshButton);
             this.Controls.Add(this.paraSetButton);
             this.Controls.Add(this.Version);
@@ -400,5 +443,8 @@
         private System.Windows.Forms.CheckBox FunctionSelect_YelCu;
         private System.Windows.Forms.Button paraSetButton;
         private System.Windows.Forms.Button refreshThreshButton;
+        private System.Windows.Forms.ComboBox ChannelListComboBox;
+        private System.Windows.Forms.Button PowerPanelEnableButton;
+        private System.Windows.Forms.CheckBox SingleChannelEnableCheckBox;
     }
 }
