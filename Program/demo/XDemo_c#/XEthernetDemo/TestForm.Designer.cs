@@ -41,6 +41,8 @@
             this.DisWin = new System.Windows.Forms.PictureBox();
             this.ChannelChecktimer = new System.Windows.Forms.Timer(this.components);
             this.FunctionBox = new System.Windows.Forms.GroupBox();
+            this.SingleChannelEnableCheckBox = new System.Windows.Forms.CheckBox();
+            this.ChannelListComboBox = new System.Windows.Forms.ComboBox();
             this.FunctionSelect_YelCu = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_NoSelect = new System.Windows.Forms.CheckBox();
             this.FunctionSelect_Fe = new System.Windows.Forms.CheckBox();
@@ -51,9 +53,8 @@
             this.Version = new System.Windows.Forms.TextBox();
             this.paraSetButton = new System.Windows.Forms.Button();
             this.refreshThreshButton = new System.Windows.Forms.Button();
-            this.ChannelListComboBox = new System.Windows.Forms.ComboBox();
             this.PowerPanelEnableButton = new System.Windows.Forms.Button();
-            this.SingleChannelEnableCheckBox = new System.Windows.Forms.CheckBox();
+            this.CMOSCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -189,6 +190,7 @@
             // 
             // FunctionBox
             // 
+            this.FunctionBox.Controls.Add(this.CMOSCheckBox);
             this.FunctionBox.Controls.Add(this.SingleChannelEnableCheckBox);
             this.FunctionBox.Controls.Add(this.ChannelListComboBox);
             this.FunctionBox.Controls.Add(this.FunctionSelect_YelCu);
@@ -199,13 +201,33 @@
             this.FunctionBox.Controls.Add(this.FunctionSelect_Cu);
             this.FunctionBox.Controls.Add(this.textBox1);
             this.FunctionBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.FunctionBox.Enabled = false;
             this.FunctionBox.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionBox.Location = new System.Drawing.Point(737, 12);
             this.FunctionBox.Name = "FunctionBox";
             this.FunctionBox.Size = new System.Drawing.Size(254, 181);
             this.FunctionBox.TabIndex = 15;
             this.FunctionBox.TabStop = false;
+            // 
+            // SingleChannelEnableCheckBox
+            // 
+            this.SingleChannelEnableCheckBox.AutoSize = true;
+            this.SingleChannelEnableCheckBox.Location = new System.Drawing.Point(174, 100);
+            this.SingleChannelEnableCheckBox.Name = "SingleChannelEnableCheckBox";
+            this.SingleChannelEnableCheckBox.Size = new System.Drawing.Size(77, 26);
+            this.SingleChannelEnableCheckBox.TabIndex = 23;
+            this.SingleChannelEnableCheckBox.Text = "单通道";
+            this.SingleChannelEnableCheckBox.UseVisualStyleBackColor = true;
+            this.SingleChannelEnableCheckBox.CheckedChanged += new System.EventHandler(this.SingleChannelEnableCheckBox_CheckedChanged);
+            // 
+            // ChannelListComboBox
+            // 
+            this.ChannelListComboBox.Enabled = false;
+            this.ChannelListComboBox.FormattingEnabled = true;
+            this.ChannelListComboBox.Location = new System.Drawing.Point(174, 136);
+            this.ChannelListComboBox.Name = "ChannelListComboBox";
+            this.ChannelListComboBox.Size = new System.Drawing.Size(47, 30);
+            this.ChannelListComboBox.TabIndex = 22;
+            this.ChannelListComboBox.SelectedIndexChanged += new System.EventHandler(this.ChannelListComboBox_SelectedIndexChanged);
             // 
             // FunctionSelect_YelCu
             // 
@@ -348,16 +370,6 @@
             this.refreshThreshButton.UseVisualStyleBackColor = false;
             this.refreshThreshButton.Click += new System.EventHandler(this.refreshThreshButton_Click);
             // 
-            // ChannelListComboBox
-            // 
-            this.ChannelListComboBox.Enabled = false;
-            this.ChannelListComboBox.FormattingEnabled = true;
-            this.ChannelListComboBox.Location = new System.Drawing.Point(174, 136);
-            this.ChannelListComboBox.Name = "ChannelListComboBox";
-            this.ChannelListComboBox.Size = new System.Drawing.Size(47, 30);
-            this.ChannelListComboBox.TabIndex = 22;
-            this.ChannelListComboBox.SelectedIndexChanged += new System.EventHandler(this.ChannelListComboBox_SelectedIndexChanged);
-            // 
             // PowerPanelEnableButton
             // 
             this.PowerPanelEnableButton.BackColor = System.Drawing.Color.AntiqueWhite;
@@ -374,16 +386,19 @@
             this.PowerPanelEnableButton.UseVisualStyleBackColor = false;
             this.PowerPanelEnableButton.Click += new System.EventHandler(this.PowerPanelEnableButton_Click);
             // 
-            // SingleChannelEnableCheckBox
+            // CMOSCheckBox
             // 
-            this.SingleChannelEnableCheckBox.AutoSize = true;
-            this.SingleChannelEnableCheckBox.Location = new System.Drawing.Point(174, 100);
-            this.SingleChannelEnableCheckBox.Name = "SingleChannelEnableCheckBox";
-            this.SingleChannelEnableCheckBox.Size = new System.Drawing.Size(77, 26);
-            this.SingleChannelEnableCheckBox.TabIndex = 23;
-            this.SingleChannelEnableCheckBox.Text = "单通道";
-            this.SingleChannelEnableCheckBox.UseVisualStyleBackColor = true;
-            this.SingleChannelEnableCheckBox.CheckedChanged += new System.EventHandler(this.SingleChannelEnableCheckBox_CheckedChanged);
+            this.CMOSCheckBox.AutoSize = true;
+            this.CMOSCheckBox.Checked = true;
+            this.CMOSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CMOSCheckBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.CMOSCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CMOSCheckBox.Location = new System.Drawing.Point(174, 63);
+            this.CMOSCheckBox.Name = "CMOSCheckBox";
+            this.CMOSCheckBox.Size = new System.Drawing.Size(70, 23);
+            this.CMOSCheckBox.TabIndex = 24;
+            this.CMOSCheckBox.Text = "CMOS";
+            this.CMOSCheckBox.UseVisualStyleBackColor = true;
             // 
             // TestForm
             // 
@@ -446,5 +461,6 @@
         private System.Windows.Forms.ComboBox ChannelListComboBox;
         private System.Windows.Forms.Button PowerPanelEnableButton;
         private System.Windows.Forms.CheckBox SingleChannelEnableCheckBox;
+        private System.Windows.Forms.CheckBox CMOSCheckBox;
     }
 }

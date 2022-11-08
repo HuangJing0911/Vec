@@ -2,7 +2,7 @@
 //#define _IMGTEST
 //#define _OLD
 //#define _IO
-#define _DEEP
+//#define _DEEP
 //#define _RELEASE
 #define _DETECT
 #define _NEW_FUN
@@ -1555,7 +1555,7 @@ namespace XEthernetDemo
 #endif
                     int flag = 0;
                     trueItemCunt++;
-                    if (mean < itemGrayThreshold || luosi || (MeanDiff > grayMeanDiffThresh && subArea > meanDiffAreaThresh))
+                    if (mean < itemGrayThreshold)// || luosi || (MeanDiff > grayMeanDiffThresh && subArea > meanDiffAreaThresh))
                     {
 //#if _DEEP
 //#else
@@ -1655,7 +1655,7 @@ namespace XEthernetDemo
 
 
 #endif
-                            int ls = 0;
+                int ls = 0;
                 for (int j = 0; j < contours.Length; j++)
                 {
 
@@ -1722,7 +1722,8 @@ namespace XEthernetDemo
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
                     int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierSetNum / num_of_mouth);
                     int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierSetNum / num_of_mouth);
-                    data.typof_block =  (byte)lineMetalType[i];
+                    if (CMOSCheckBox.Checked)
+                        data.typof_block = (byte)lineMetalType[i];
 
 
                     while (true)
