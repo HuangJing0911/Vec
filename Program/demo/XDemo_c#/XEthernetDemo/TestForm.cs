@@ -1,7 +1,7 @@
-﻿//#define _TEST
-//#define _IMGTEST
+﻿#define _TEST
+#define _IMGTEST
 //#define _OLD
-//#define _IO
+#define _IO
 //#define _DEEP
 //#define _RELEASE
 #define _DETECT
@@ -390,7 +390,7 @@ namespace XEthernetDemo
         static Queue<GFinfo> info_queue;
         static Socket socket;
         static AutoResetEvent conditional_variable;
-        static Object gflocker;
+        static Object gflocker = new object(); 
         static volatile bool quit_flag = false;
         static IPEndPoint ep;
 
@@ -1132,8 +1132,46 @@ namespace XEthernetDemo
             msg_queue = new Queue<Msg>();
             info_queue = new Queue<GFinfo>();
             conditional_variable = new AutoResetEvent(false);
-            gflocker = new object();
-            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(2, true, AmplifierEnableNum);
+            xRayPower = new XRayMsgDLL.XRayPowerAmplifier(true, false, false, true, 2, true, AmplifierEnableNum);
+            int xRayPowerStyle = xRayPower.CurrentType();
+            for(int k = 0; k < 4; k++)
+            {
+                if (xRayPowerStyle % 2 == 1)
+                {
+                    FunctionSelect_Cu.Checked = true;
+                    FunctionSelect_YelCu.Checked = true;
+                }
+                else
+                {
+                    FunctionSelect_Cu.Checked = false;
+                    FunctionSelect_YelCu.Checked = false;
+                }
+                if ((xRayPowerStyle >> 1)%2 == 1)
+                {
+                    FunctionSelect_Fe.Checked = true;
+                }
+                else
+                {
+                    FunctionSelect_Fe.Checked = false;
+                }
+                if ((xRayPowerStyle >> 2) % 2 == 1)
+                {
+                    FunctionSelect_Pb.Checked = true;
+                }
+                else
+                {
+                    FunctionSelect_Pb.Checked = false;
+                }
+                if ((xRayPowerStyle >> 3) % 2 == 1)
+                {
+                    FunctionSelect_Zn.Checked = true;
+                }
+                else
+                {
+                    FunctionSelect_Zn.Checked = false;
+                }
+
+            }
             //xRayPower.RegisterFrameReadyCallback(recv_data_Pro);
             xRayPower.RegisterSimpleReadyCallback(recv_data_SimplePro);
             xRayPower.Connect(powerServer, powerRemote, 27001, 19200);
@@ -1162,6 +1200,7 @@ namespace XEthernetDemo
 #if _TEST
         private void StartButton_Click(object sender, EventArgs e)
         {
+            FunctionBox.Enabled = false;
             xRayPower.Start();
             paraSetButton.Enabled = false;
             DeleteFiles(result_data + "pic/");
@@ -1459,7 +1498,7 @@ namespace XEthernetDemo
             element = Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(3, 3));               //定义核，开运算
             Cv2.MorphologyEx(img, img, MorphTypes.Close, element);                    //进行形态学闭运算操作
             //Cv2.CvtColor(image, image, ColorConversionCodes.BGR2GRAY); // 具体看输入图像为几通道，单通道则注释
-            Cv2.Canny(img, img, 10, 80, 3, false); // 输入图像虚为单通道8位图像
+            //Cv2.Canny(img, img, 10, 80, 3, false); // 输入图像虚为单通道8位图像
             OpenCvSharp.Point[][] contours;
             HierarchyIndex[] hierarchy;
             Cv2.FindContours(img, out contours, out hierarchy, RetrievalModes.External, ContourApproximationModes.ApproxSimple);
@@ -1722,8 +1761,7 @@ namespace XEthernetDemo
                     int queue_flag = 0;                         // 标志当前队列第一个是否与物块信息符合,默认为最新金属还没轮到当前物块
                     int start_num = (int)Math.Ceiling((float)data.start_num * AmplifierSetNum / num_of_mouth);
                     int end_num = (int)Math.Ceiling((float)data.end_num * AmplifierSetNum / num_of_mouth);
-                    if (CMOSCheckBox.Checked)
-                        data.typof_block = (byte)lineMetalType[i];
+                    data.typof_block = (byte)lineMetalType[i];
 
 
                     while (true)
@@ -2722,6 +2760,7 @@ namespace XEthernetDemo
         User user;
         private void FindDeviceButton_Click(object sender, EventArgs e)
         {
+            FunctionBox.Enabled = false;
             user = new User();
             //DeleteFiles(result_data + "pic/");
             //xsystem = new XSystemW();
@@ -2831,6 +2870,7 @@ namespace XEthernetDemo
 
         private void StopButton_Click(object sender, EventArgs e)
         {
+            FunctionBox.Enabled = true;
             saveData();
             //wr.WriteLine("Total_num = " + total_clock_num.ToString() + ", Total_detect: " + total_detect_num.ToString());
             //wr.Flush();
@@ -2897,8 +2937,8 @@ namespace XEthernetDemo
                 length_belt = psf.beltLength;          // 皮带长度为1000mm
                 length_linearray = psf.arrayLength;     // 线阵长度为1200mm
                 speed = psf.beltVelocity;              // 传送带速度
-                if (xRayPower != null)
-                    xRayPower.ResponsThresHold = psf.powerThreshold;
+                //if (xRayPower != null)
+                //    xRayPower.ResponsThresHold = psf.powerThreshold;
                 minItemArea = psf.minItemArea;
                 itemGrayThreshold = psf.itemThreshold;
             }
@@ -3331,6 +3371,70 @@ namespace XEthernetDemo
         {
             singleChannelIndex = ChannelListComboBox.SelectedIndex;
             Console.WriteLine(singleChannelIndex);
+        }
+
+        private void FunctionSelect_Cu_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FunctionSelect_Cu.Checked )
+            {
+                FunctionSelect_YelCu.Checked = true;
+                xRayPower.AddType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Cu);
+            }
+            else
+            {
+                FunctionSelect_YelCu.Checked = false;
+                xRayPower.RemoveType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Cu);
+            }
+        }
+
+        private void FunctionSelect_Zn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FunctionSelect_Zn.Checked)
+            {
+                xRayPower.AddType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Zn);
+            }
+            else
+            {
+                xRayPower.RemoveType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Zn);
+            }
+        }
+
+        private void FunctionSelect_Fe_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FunctionSelect_Fe.Checked)
+            {
+                xRayPower.AddType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Fe);
+            }
+            else
+            {
+                xRayPower.RemoveType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Fe);
+            }
+        }
+
+        private void FunctionSelect_Pb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FunctionSelect_Pb.Checked)
+            {
+                xRayPower.AddType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Pb);
+            }
+            else
+            {
+                xRayPower.RemoveType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Pb);
+            }
+        }
+
+        private void FunctionSelect_YelCu_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FunctionSelect_YelCu.Checked)
+            {
+                FunctionSelect_Cu.Checked = true;
+                xRayPower.AddType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Cu);
+            }
+            else
+            {
+                FunctionSelect_Cu.Checked = false;
+                xRayPower.RemoveType(XRayMsgDLL.XRayPowerAmplifier.MetalType.Cu);
+            }
         }
     }
 

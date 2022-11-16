@@ -20,7 +20,7 @@ namespace XEthernetDemo
             public int _beltLength;
             public int _arrayLength;
             public int _beltVelocity;
-            public double _powerThreshold;
+            //public double[] _powerThreshold;
             public int _minItemArea;
             public int _itemThreshold;
         }
@@ -29,7 +29,7 @@ namespace XEthernetDemo
         public int beltLength { get { return parms._beltLength; } set { parms._beltLength = value; } }
         public int arrayLength { get { return parms._arrayLength; }set { parms._arrayLength = value; } }
         public int beltVelocity { get { return parms._beltVelocity; } set { parms._beltVelocity = value; } }
-        public double powerThreshold { get { return parms._powerThreshold; } set { parms._powerThreshold = value; } }
+        //public double[] powerThreshold { get { return parms._powerThreshold; } set { parms._powerThreshold = value; } }
         public int minItemArea { get { return parms._minItemArea; } set { parms._minItemArea = value; } }
         public int itemThreshold { get { return parms._itemThreshold; } set { parms._itemThreshold = value; } }
 
@@ -47,7 +47,7 @@ namespace XEthernetDemo
             beltLength = _beltLength;
             arrayLength = _arrayLength;
             beltLength = _beltVelocity;
-            powerThreshold = _powerThreshold;
+            //powerThreshold = _powerThreshold;
             minItemArea = _minItemArea;
             itemThreshold = _itemThreshold;
 
@@ -55,7 +55,7 @@ namespace XEthernetDemo
             beltLengthTextBox.Text = beltLength.ToString();
             arrayLengthTextBox.Text = arrayLength.ToString();
             beltVelocityTextBox.Text = beltVelocity.ToString();
-            powerThresholdTextBox.Text = powerThreshold.ToString();
+            //powerThresholdTextBox.Text = powerThreshold.ToString();
             minItemAreaTextBox.Text = minItemArea.ToString();
             itemThresholdTextBox.Text = itemThreshold.ToString();
 
@@ -101,7 +101,7 @@ namespace XEthernetDemo
             beltLength = Convert.ToInt32(beltLengthTextBox.Text);
             arrayLength = Convert.ToInt32(arrayLengthTextBox.Text);
             beltLength = Convert.ToInt32(beltLengthTextBox.Text);
-            powerThreshold = Convert.ToDouble(powerThresholdTextBox.Text);
+            //powerThreshold = Convert.ToDouble(powerThresholdTextBox.Text);
             minItemArea = Convert.ToInt32(minItemAreaTextBox.Text);
             itemThreshold = Convert.ToInt32(itemThresholdTextBox.Text);
 

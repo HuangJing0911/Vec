@@ -41,6 +41,7 @@
             this.DisWin = new System.Windows.Forms.PictureBox();
             this.ChannelChecktimer = new System.Windows.Forms.Timer(this.components);
             this.FunctionBox = new System.Windows.Forms.GroupBox();
+            this.CMOSCheckBox = new System.Windows.Forms.CheckBox();
             this.SingleChannelEnableCheckBox = new System.Windows.Forms.CheckBox();
             this.ChannelListComboBox = new System.Windows.Forms.ComboBox();
             this.FunctionSelect_YelCu = new System.Windows.Forms.CheckBox();
@@ -54,7 +55,6 @@
             this.paraSetButton = new System.Windows.Forms.Button();
             this.refreshThreshButton = new System.Windows.Forms.Button();
             this.PowerPanelEnableButton = new System.Windows.Forms.Button();
-            this.CMOSCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DisWin)).BeginInit();
             this.FunctionBox.SuspendLayout();
             this.SuspendLayout();
@@ -201,12 +201,27 @@
             this.FunctionBox.Controls.Add(this.FunctionSelect_Cu);
             this.FunctionBox.Controls.Add(this.textBox1);
             this.FunctionBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FunctionBox.Enabled = false;
             this.FunctionBox.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionBox.Location = new System.Drawing.Point(737, 12);
             this.FunctionBox.Name = "FunctionBox";
             this.FunctionBox.Size = new System.Drawing.Size(254, 181);
             this.FunctionBox.TabIndex = 15;
             this.FunctionBox.TabStop = false;
+            // 
+            // CMOSCheckBox
+            // 
+            this.CMOSCheckBox.AutoSize = true;
+            this.CMOSCheckBox.Checked = true;
+            this.CMOSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CMOSCheckBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.CMOSCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CMOSCheckBox.Location = new System.Drawing.Point(174, 63);
+            this.CMOSCheckBox.Name = "CMOSCheckBox";
+            this.CMOSCheckBox.Size = new System.Drawing.Size(70, 23);
+            this.CMOSCheckBox.TabIndex = 24;
+            this.CMOSCheckBox.Text = "CMOS";
+            this.CMOSCheckBox.UseVisualStyleBackColor = true;
             // 
             // SingleChannelEnableCheckBox
             // 
@@ -240,6 +255,7 @@
             this.FunctionSelect_YelCu.TabIndex = 21;
             this.FunctionSelect_YelCu.Text = "黄铜";
             this.FunctionSelect_YelCu.UseVisualStyleBackColor = true;
+            this.FunctionSelect_YelCu.CheckedChanged += new System.EventHandler(this.FunctionSelect_YelCu_CheckedChanged);
             // 
             // FunctionSelect_NoSelect
             // 
@@ -264,12 +280,11 @@
             this.FunctionSelect_Fe.TabIndex = 19;
             this.FunctionSelect_Fe.Text = "不锈钢";
             this.FunctionSelect_Fe.UseVisualStyleBackColor = true;
+            this.FunctionSelect_Fe.CheckedChanged += new System.EventHandler(this.FunctionSelect_Fe_CheckedChanged);
             // 
             // FunctionSelect_Pb
             // 
             this.FunctionSelect_Pb.AutoSize = true;
-            this.FunctionSelect_Pb.Checked = true;
-            this.FunctionSelect_Pb.CheckState = System.Windows.Forms.CheckState.Checked;
             this.FunctionSelect_Pb.Cursor = System.Windows.Forms.Cursors.Hand;
             this.FunctionSelect_Pb.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FunctionSelect_Pb.Location = new System.Drawing.Point(19, 103);
@@ -278,6 +293,7 @@
             this.FunctionSelect_Pb.TabIndex = 18;
             this.FunctionSelect_Pb.Text = "铅";
             this.FunctionSelect_Pb.UseVisualStyleBackColor = true;
+            this.FunctionSelect_Pb.CheckedChanged += new System.EventHandler(this.FunctionSelect_Pb_CheckedChanged);
             // 
             // FunctionSelect_Zn
             // 
@@ -292,6 +308,7 @@
             this.FunctionSelect_Zn.TabIndex = 17;
             this.FunctionSelect_Zn.Text = "锌";
             this.FunctionSelect_Zn.UseVisualStyleBackColor = true;
+            this.FunctionSelect_Zn.CheckedChanged += new System.EventHandler(this.FunctionSelect_Zn_CheckedChanged);
             // 
             // FunctionSelect_Cu
             // 
@@ -306,6 +323,7 @@
             this.FunctionSelect_Cu.TabIndex = 16;
             this.FunctionSelect_Cu.Text = "铜";
             this.FunctionSelect_Cu.UseVisualStyleBackColor = true;
+            this.FunctionSelect_Cu.CheckedChanged += new System.EventHandler(this.FunctionSelect_Cu_CheckedChanged);
             // 
             // textBox1
             // 
@@ -385,20 +403,6 @@
             this.PowerPanelEnableButton.Text = "功放面板";
             this.PowerPanelEnableButton.UseVisualStyleBackColor = false;
             this.PowerPanelEnableButton.Click += new System.EventHandler(this.PowerPanelEnableButton_Click);
-            // 
-            // CMOSCheckBox
-            // 
-            this.CMOSCheckBox.AutoSize = true;
-            this.CMOSCheckBox.Checked = true;
-            this.CMOSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CMOSCheckBox.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.CMOSCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CMOSCheckBox.Location = new System.Drawing.Point(174, 63);
-            this.CMOSCheckBox.Name = "CMOSCheckBox";
-            this.CMOSCheckBox.Size = new System.Drawing.Size(70, 23);
-            this.CMOSCheckBox.TabIndex = 24;
-            this.CMOSCheckBox.Text = "CMOS";
-            this.CMOSCheckBox.UseVisualStyleBackColor = true;
             // 
             // TestForm
             // 
